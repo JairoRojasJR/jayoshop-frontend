@@ -1,0 +1,12 @@
+.sectionsContainer {
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.sectionBtn {
+  font-weight: 800;
+  border-radius: .3rem;
+  padding: .5rem;
+  background-color: var(--darkprimary);
+  box-shadow: var(--colorfullborder);
+}

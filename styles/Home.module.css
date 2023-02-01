@@ -1,0 +1,152 @@
+.title {
+  width: 75%;
+  font-size: 2.5rem;
+  margin: 0;
+  padding: 2rem;
+}
+
+.title span {
+  text-shadow: 2px 2px 2px rgb(138, 66, 255), -2px -2px 2px rgb(92, 252, 255);
+}
+
+.headerpresentation {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  flex-grow: 1;
+  min-height: 300px;
+}
+
+.misscontainer {
+  position: absolute;
+  right: 0;
+  width: 100px;
+  height: 100%;
+  z-index: 200;
+}
+
+@media screen and (min-width: 400px) {
+  .misscontainer {
+    width: 250px;
+  }
+}
+
+.miss {
+  bottom: 0;
+  z-index: 100;
+  right: -50px;
+}
+
+.store {
+  position: absolute;
+  bottom: 0;
+  height: 100%;
+  right: -150px;
+}
+
+.desc {
+  position: absolute;
+  bottom: 0;
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 0.5rem;
+  width: 225px;
+}
+
+.desc p {
+  background: #000;
+  color: #fefefe;
+  opacity: 0.9;
+  font-weight: 800;
+  font-size: 1.3rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin: 0;
+  border-top-left-radius: 0;
+}
+
+.desc button {
+  font-family: sans-serif;
+  background: linear-gradient(rgb(138, 66, 255), rgb(92, 252, 255));
+  color: #1b1b3b;
+  border-top: 3px solid rgb(92, 252, 255);
+  border-left: 3px solid rgb(92, 252, 255);
+  border-right: 3px solid rgb(138, 66, 255);
+  border-bottom: 3px solid rgb(138, 66, 255);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border-top-left-radius: 0;
+  cursor: pointer;
+  font-weight: 800;
+  text-shadow: 2px 2px 2px rgb(138, 66, 255), -2px -2px 2px rgb(92, 252, 255);
+  box-shadow: -2px -2px 2px rgb(138, 66, 255), 2px 2px 2px rgb(92, 252, 255);
+}
+
+.mpContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  grid-template-rows: repeat(2, 50%);
+  min-width: 350px;
+  min-height: 350px;
+  width: 100%;
+  height: 150vw;
+  padding: 1rem;
+}
+
+.mpCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+
+.mpImgContainer {
+  position: relative;
+  flex-grow: 1.5;
+  border-radius: 0.5rem;
+  flex-basis: 40%;
+  width: 100%;
+}
+
+.mpProductName {
+  flex-grow: 0.25;
+  font-size: 0.9rem;
+}
+
+.mpButton {
+  flex-grow: 0.25;
+  border: none;
+  background-color: var(--secondary);
+  color: var(--secondaryfontcolor);
+  border-radius: 0.3rem;
+  padding: 0.2rem 0.8rem;
+  box-shadow: -2px -2px 2px rgb(138, 66, 255), 2px 2px 2px rgb(92, 252, 255);
+}
+
+.categorieContainer {
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.categorieCard {
+  width: 100%;
+  height: 50vw;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.categorieTitle {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 50%;
+  background-color: #0008;
+  color: #fefefe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}

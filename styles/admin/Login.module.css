@@ -1,0 +1,33 @@
+.container {
+  padding: 1rem;
+  gap: 2rem;
+}
+
+.form {
+  background-color: var(--secondary);
+  color: var(--secondaryfontcolor);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  gap: 1rem;
+}
+
+.in {
+  border-radius: 0.3rem;
+  padding: 0.5rem;
+}
+
+.in:focus {
+  box-shadow: -2px -2px 2px rgb(138, 66, 255), 2px 2px 2px rgb(92, 252, 255);
+}
+
+.send {
+  background-color: var(--darkprimary);
+  align-self: center;
+  font-family: sans-serif;
+  background: linear-gradient(rgb(138, 66, 255), rgb(92, 252, 255));
+  color: #1b1b3b;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 800;
+}

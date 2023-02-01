@@ -1,0 +1,85 @@
+@font-face {
+  font-family: "Baskerville Normal";
+  font-style: normal;
+  font-weight: normal;
+  src: local("Baskerville Normal"), url("/baskvl.woff") format("woff");
+}
+
+:root {
+  --primary: #efefef;
+  --secondary: #1b1b3b;
+  --darkprimary: #f8f8f8;
+  --darksecondary: #1b1b0b;
+  --primaryfontcolor: #000;
+  --secondaryfontcolor: #fff;
+  --colorfullborder: -2px -2px 2px rgb(138, 66, 255), 2px 2px 2px rgb(92, 252, 255);
+}
+
+html {
+  font-family: "Baskerville Normal";
+  background-color: var(--primary);
+  color: var(--primaryfontcolor);
+}
+
+body {
+  min-width: 350px;
+  min-height: 350px;
+}
+
+.w100p {
+  width: 100%;
+}
+
+.df {
+  display: flex;
+}
+
+.fdc {
+  flex-direction: column;
+}
+
+.aic {
+  align-items: center;
+}
+
+.jcc {
+  justify-content: center;
+}
+
+.jcse {
+  justify-content: space-evenly;
+}
+
+.jcsb {
+  justify-content: space-between;
+}
+
+.fg1 {
+  flex-grow: 1;
+}
+
+.pr {
+  position: relative;
+}
+
+.pa {
+  position: absolute;
+}
+
+.cp {
+  cursor: pointer;
+}
+
+.resetLink {
+  text-decoration: none;
+  color: var(--primaryfontcolor);
+}
+
+.tac {
+  text-align: center;
+}
+
+.no-scroll {
+  max-height: 100vh;
+  overflow: hidden;
+}

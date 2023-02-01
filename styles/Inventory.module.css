@@ -1,0 +1,33 @@
+.product {
+  background-color: var(--secondary);
+  color: var(--primary);
+  padding: .7rem;
+  margin: 1rem;
+  border-radius: .3rem;
+  display: grid;
+  grid-template-columns: 100px 1fr minmax(min-content, max-content);
+  grid-template-rows: 20px repeat(2, 50px);
+  gap: .5rem;
+}
+
+.image {
+  grid-row: 1 / span 3;
+}
+
+.title {
+  grid-column: 2 / span 2;
+}
+
+.desc {
+  grid-row: 2 / span 2;
+  overflow-y: auto;
+}
+
+.stock,
+.precio {
+  align-self: flex-end;
+  padding: .2rem;
+  border-radius: .2rem;
+  background-color: var(--primary);
+  color: var(--secondary);
+}
