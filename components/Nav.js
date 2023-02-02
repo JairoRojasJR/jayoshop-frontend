@@ -4,12 +4,13 @@ import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { useIsAuthContext } from '@/context/isAuth';
+import Router from 'next/router';
 
 export default function Nav({ styles, changeTheme }) {
   const [statusMenu, setStatusMenu] = useState(0);
   const [windWidth, setWindWidth] = useState(0);
   const [changeResolution, setChangeResolution] = useState(false);
-  const { isAuthContext } = useIsAuthContext();
+  const { isAuthContext, setIsAuthContext } = useIsAuthContext();
 
   useEffect(() => {
     setWindWidth(window.innerWidth);
@@ -26,6 +27,24 @@ export default function Nav({ styles, changeTheme }) {
 
     if (!statusMenu) document.body.classList.add('no-scroll');
     else document.body.classList.remove('no-scroll');
+  };
+
+  const logout = () => {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/admin/logout`, {
+      credentials: 'include',
+    })
+      .then(res => res.json())
+      .then(res => {
+        console.log('--- Logout res ---');
+        console.log(res);
+        if (res.success) {
+          const authData = { ...isAuthContext };
+          authData.authenticated = false;
+          document.cookie = 'isauth=true; max-age=0; path=/;';
+          setIsAuthContext(authData);
+          Router.push('/admin/login');
+        }
+      });
   };
 
   return (
@@ -98,12 +117,12 @@ export default function Nav({ styles, changeTheme }) {
             ''
           )}
           {isAuthContext.authenticated ? (
-            <Link className={`${styles.menuIcon}`} href={`/admin/logout`}>
+            <div className={`${styles.menuIcon}`} onClick={() => logout()}>
               <FontAwesomeIcon
                 className={`${styles.icon}`}
                 icon={solid('arrow-right-from-bracket')}
               />
-            </Link>
+            </div>
           ) : (
             ''
           )}

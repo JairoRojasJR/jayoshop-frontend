@@ -23,10 +23,6 @@ export default function Inventory() {
       });
   }, []);
 
-  useEffect(() => {
-    if (isAuthContext.authenticated === false) Router.push('/admin/login');
-  }, [isAuthContext]);
-
   const addProduct = e => {
     e.preventDefault();
     const form = e.target;
