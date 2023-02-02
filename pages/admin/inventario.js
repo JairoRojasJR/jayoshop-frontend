@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import Layout from '@/components/Layout';
 import Ui from '@/components/admin/Ui';
 import { useIsAuthContext } from '@/context/isAuth';
-import Router from 'next/router';
 
 export default function Inventory() {
   const [products, setProducts] = useState([]);
@@ -17,8 +16,6 @@ export default function Inventory() {
     })
       .then(res => res.json())
       .then(res => {
-        console.log('--- Inventory res ---');
-        console.log(res);
         setProducts(res);
       });
   }, []);

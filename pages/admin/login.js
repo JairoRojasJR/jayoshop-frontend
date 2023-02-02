@@ -23,14 +23,12 @@ export default function Admin() {
       }
     );
     const data = await req.json();
-    console.log('--- Login data ---');
-    console.log(data);
 
     if (data.success) {
       const authData = { ...isAuthContext };
       authData.authenticated = true;
       setIsAuthContext(authData);
-      document.cookie = 'isauth=true; max-age=null; path=/;'
+      document.cookie = 'isauth=true; max-age=null; path=/; samesite=strict;'
       return Router.push('/admin/inventario');
     }
     console.log(data.msg);

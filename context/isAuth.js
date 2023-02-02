@@ -11,10 +11,8 @@ export function IsAuthContextProvider({ children }) {
     })
       .then(res => res.json())
       .then(res => {
-        console.log('--- Context ---');
-        console.log(res);
         if (!res.authenticated) {
-          document.cookie = 'isauth=false; max-age=0; path=/;';
+          document.cookie = 'isauth=false; max-age=0; path=/; samesite=strict;';
         }
         setIsAuthContext(res);
       })

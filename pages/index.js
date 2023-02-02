@@ -9,13 +9,9 @@ import Portal from '../components/home/Portal';
 import Mostpopular from '../components/home/Mostpopular';
 import Categories from '../components/home/Categories';
 import Ubication from '../components/home/Ubication';
-import { useIsAuthContext } from '@/context/isAuth';
 
 export default function Home() {
   const [vh, setVh] = useState('100vh');
-  const { isAuthContext, setIsAuthContext } = useIsAuthContext();
-  console.log('--- index isAuthContext ---')
-  console.log(isAuthContext);
 
   useEffect(() => {
     setVh(window.innerHeight);

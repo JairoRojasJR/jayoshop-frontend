@@ -35,8 +35,6 @@ export default function Nav({ styles, changeTheme }) {
     })
       .then(res => res.json())
       .then(res => {
-        console.log('--- Logout res ---');
-        console.log(res);
         if (res.success) {
           const authData = { ...isAuthContext };
           authData.authenticated = false;
