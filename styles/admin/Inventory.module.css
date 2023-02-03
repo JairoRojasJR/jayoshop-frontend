@@ -1,0 +1,91 @@
+.addNewProduct {
+  background-color: #7fffd4;
+  border-radius: .3rem;
+  padding: .5rem;
+  display: flex;
+  gap: .3rem;
+}
+
+.formAdd {
+  display: none;
+  margin-top: .5rem;
+  background-color: var(--primary);
+  padding: .5rem;
+  border-radius: .3rem;
+  overflow: hidden;
+  height: 0%;
+  transition: height .3s;
+}
+
+.formContent {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(5, minmax(min-content, max-content));
+  gap: .5rem;
+}
+
+.fieldName,
+.fieldDesc,
+.addNewProduct {
+  grid-column: 1 /span 2;
+}
+
+.formAdd label {
+  font-weight: 800;
+}
+
+.formAdd input,
+.formAdd textarea {
+  border-radius: .3rem;
+  padding: .3rem;
+  border: none;
+  outline: none;
+  width: 100%;
+}
+
+.formAdd textarea {
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100px;
+  max-height: 100px;
+  overflow-y: auto;
+}
+
+.productsContainer {
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.product {
+  background-color: var(--secondary);
+  color: var(--primary);
+  padding: .7rem;
+  border-radius: .3rem;
+  display: grid;
+  grid-template-columns: 100px 1fr minmax(min-content, max-content);
+  grid-template-rows: 20px repeat(2, 50px);
+  gap: .5rem;
+}
+
+.image {
+  grid-row: 1 / span 3;
+}
+
+.title {
+  grid-column: 2 / span 2;
+}
+
+.desc {
+  grid-row: 2 / span 2;
+  overflow-y: auto;
+}
+
+.stock,
+.precio {
+  align-self: flex-end;
+  padding: .2rem;
+  border-radius: .2rem;
+  background-color: var(--primary);
+  color: var(--secondary);
+}

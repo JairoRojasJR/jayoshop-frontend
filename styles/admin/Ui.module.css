@@ -1,5 +1,24 @@
+.uiContainer {
+  padding: 0 1.5rem;
+}
+
+.adminOptions {
+  position: fixed;
+  top: 0;
+  left: 1.5rem;
+  width: calc(100% - 3rem);
+  border-right: .3rem solid var(--darksecondary);
+  border-bottom: .3rem solid var(--darksecondary);
+  border-left: .3rem solid var(--darksecondary);
+  gap: 1rem;
+  padding: .5rem 0;
+  background-color: var(--darkprimary);
+  z-index: 100;
+  transition: top .3s;
+}
+
+
 .sectionsContainer {
-  padding: 1rem;
   gap: 1rem;
 }
 
@@ -8,5 +27,36 @@
   border-radius: .3rem;
   padding: .5rem;
   background-color: var(--darkprimary);
+  color: var(--darksecondary);
   box-shadow: var(--colorfullborder);
+}
+
+.currentSection {
+  background-color: var(--secondary);
+  color: var(--darkprimary);
+  box-shadow: var(--colorfullborder), 3px 3px 10px .1px var(--darksecondary);
+}
+
+.switchAdminOptions {
+  background-color: var(--darksecondary);
+  border-radius: 50%;
+  padding: .5rem;
+  color: var(--darkprimary);
+  position: absolute;
+  bottom: -1.5rem;
+  right: -1rem;
+}
+
+.open .switchAdminOptions {
+  transition: transform .3s;
+  transform: rotate(0deg);
+}
+
+.close .switchAdminOptions {
+  transition: transform .3s;
+  transform: rotate(180deg);
+}
+
+.open .main, .close .main {
+  transition: margin .3s;
 }

@@ -47,6 +47,7 @@ export default function Nav({ styles, changeTheme }) {
 
   return (
     <nav
+      id='navMain'
       className={`${styles.nav} ${
         statusMenu ? styles.menuOpen : styles.menuClosed
       }`}
