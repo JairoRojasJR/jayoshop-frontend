@@ -1,10 +1,9 @@
 import styles from '../../styles/admin/Ui.module.css';
 import { nanoid } from 'nanoid';
 import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { createRef, useEffect, useState } from 'react';
 import { openAdminOp, closeAdminOp } from '@/services/adminSubNav';
+import Image from 'next/image';
 
 export default function Adminui({ children, currentSection, AddProduct }) {
   const [statusAdminOp, setStatusAdminOp] = useState('open');
@@ -66,12 +65,17 @@ export default function Adminui({ children, currentSection, AddProduct }) {
         ) : (
           ''
         )}
-        <div
+        <Image
           className={`${styles.switchAdminOptions} cp`}
           onClick={() => switchAdminOptions()}
-        >
-          <FontAwesomeIcon icon={solid('arrow-up')} />
-        </div>
+          alt="circle up"
+          src={'/caret-circle-up.png'}
+          width={30}
+          height={30}
+          sizes="(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw"
+        />
       </section>
       <main ref={mainHtml} className={`${styles.main}`}>
         {children}

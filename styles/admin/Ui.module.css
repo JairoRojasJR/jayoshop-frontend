@@ -38,10 +38,8 @@
 }
 
 .switchAdminOptions {
-  background-color: var(--darksecondary);
+  background-color: #FAFAFA;
   border-radius: 50%;
-  padding: .5rem;
-  color: var(--darkprimary);
   position: absolute;
   bottom: -1.5rem;
   right: -1rem;
