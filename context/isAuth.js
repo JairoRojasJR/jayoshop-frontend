@@ -14,7 +14,10 @@ export function IsAuthContextProvider({ children }) {
         if (!res.authenticated) {
           document.cookie = 'isauth=false; max-age=0; path=/; samesite=strict;';
         }
-        setIsAuthContext(res);
+        else if(res.authenticated) {
+          document.cookie = 'isauth=true; path=/; samesite=strict;';
+        }
+        return setIsAuthContext(res);
       })
       .catch(err => {
         console.log(err);
