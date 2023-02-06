@@ -1,14 +1,19 @@
 import styles from '../../styles/admin/Ui.module.css';
-import { nanoid } from 'nanoid';
 import Link from 'next/link';
-import { createRef, useEffect, useState } from 'react';
-import { openAdminOp, closeAdminOp } from '@/services/adminSubNav';
 import Image from 'next/image';
+import { createRef, useEffect, useState } from 'react';
+import { nanoid } from 'nanoid';
+import { openAdminOp, closeAdminOp } from '@/services/adminSubNav';
 
-export default function Adminui({ children, currentSection, AddProduct }) {
+export default function Adminui({
+  children,
+  currentSection,
+  repositionSubnav,
+}) {
   const [statusAdminOp, setStatusAdminOp] = useState('open');
   const [initialHeightAdminOp, setInitialHeightAdminOp] = useState();
   const sections = ['inventario', 'vender'];
+  const therePlusOptions = children[0]?.props.plus;
 
   const uiContainerHtml = createRef();
   const adminOpHtml = createRef();
@@ -36,6 +41,18 @@ export default function Adminui({ children, currentSection, AddProduct }) {
     else closeAdminOp({ sourcesHtml });
   }, [statusAdminOp, initialHeightAdminOp]);
 
+  useEffect(() => {
+    const navMain = document.getElementById('navMain');
+    let newTopSubnav;
+    if (statusAdminOp === 'open') {
+      newTopSubnav = navMain.clientHeight + adminOpHtml.current.clientHeight;
+    }
+    else {
+      newTopSubnav = navMain.clientHeight;
+    }
+    if(repositionSubnav) repositionSubnav(newTopSubnav);
+  }, [statusAdminOp]);
+
   return (
     <div
       ref={uiContainerHtml}
@@ -58,13 +75,7 @@ export default function Adminui({ children, currentSection, AddProduct }) {
             </Link>
           ))}
         </nav>
-        {AddProduct ? (
-          <div style={{ width: '90%' }}>
-            <AddProduct statusAdminOp={statusAdminOp} />
-          </div>
-        ) : (
-          ''
-        )}
+        {therePlusOptions ? children[0] : ''}
         <Image
           className={`${styles.switchAdminOptions} cp`}
           onClick={() => switchAdminOptions()}
@@ -78,7 +89,7 @@ export default function Adminui({ children, currentSection, AddProduct }) {
         />
       </section>
       <main ref={mainHtml} className={`${styles.main}`}>
-        {children}
+        {therePlusOptions ? children.slice(1) : children}
       </main>
     </div>
   );

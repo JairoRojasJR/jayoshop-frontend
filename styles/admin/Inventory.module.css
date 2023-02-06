@@ -1,3 +1,7 @@
+.extraContainer {
+  width: 90%;
+}
+
 .addNewProduct {
   background-color: #7fffd4;
   border-radius: .3rem;
@@ -52,9 +56,29 @@
   overflow-y: auto;
 }
 
+.productsSections {
+  position: sticky;
+  top: 5rem;
+  background-color: var(--darkprimary);
+  border: .3rem solid var(--darksecondary);
+  border-radius: .3rem;
+  padding: .3rem;
+  min-height: 50px;
+  z-index: 1;
+  transition: top .3s;
+}
+
+.productsSection {
+  background-color: var(--primary);
+  align-items: center;
+  justify-content: center;
+  padding: 0 .3rem;
+  border-radius: .3rem;
+}
+
 .productsContainer {
-  gap: 1rem;
-  margin: 1.5rem 0;
+  gap: .5rem;
+  margin: .5rem 0;
 }
 
 .product {

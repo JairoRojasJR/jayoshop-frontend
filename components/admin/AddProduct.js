@@ -1,9 +1,9 @@
 import styles from '../../styles/admin/Inventory.module.css';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { openFormAdd, closeFormAdd } from '@/services/adminSubNav';
-import Image from 'next/image';
 
-export default function AddProduct() {
+export default function AddProduct({ reloadProducts }) {
   const [statusFormAdd, setStatusFormAdd] = useState('close');
 
   const switchFormAdd = () => {
@@ -17,6 +17,7 @@ export default function AddProduct() {
     const formData = Object.fromEntries(new FormData(form));
     formData.cuantity = parseInt(formData.cuantity);
     formData.barcode = parseInt(formData.barcode);
+    formData.section = formData.section.toLowerCase();
     fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/inventario`, {
       credentials: 'include',
       method: 'POST',
@@ -28,6 +29,7 @@ export default function AddProduct() {
       .then(res => res.json())
       .then(res => {
         console.log(res);
+        reloadProducts(res.product);
       });
   };
 
@@ -63,8 +65,8 @@ export default function AddProduct() {
               width={15}
               height={15}
               sizes="(max-width: 768px) 100vw,
-              (max-width: 1200px) 50vw,
-              33vw"
+                      (max-width: 1200px) 50vw,
+                      33vw"
             />
             Ocultar
           </>
