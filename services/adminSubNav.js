@@ -16,9 +16,9 @@ export const closeAdminOp = ({ sourcesHtml }) => {
   const navMainHtml = document.getElementById('navMain');
 
   adminOpHtml.current.style.top = `${
-    navMainHtml.clientHeight - adminOpHtml.current.clientHeight
+    navMainHtml.clientHeight - adminOpHtml.current.children[0].clientHeight
   }px`;
-  mainHtml.current.style.marginTop = `1rem`;
+  mainHtml.current.style.marginTop = `calc(${adminOpHtml.current.children[1].scrollHeight}px + 1.3rem)`;
   uiContainerHtml.current.classList.remove(stylesUi.open);
   uiContainerHtml.current.classList.add(stylesUi.close);
 };

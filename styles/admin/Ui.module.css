@@ -7,17 +7,44 @@
   top: 0;
   left: 1.5rem;
   width: calc(100% - 3rem);
+  z-index: 100;
+  transition: top .3s;
+}
+
+.adminOption:first-child {
   border-right: .3rem solid var(--darksecondary);
   border-bottom: .3rem solid var(--darksecondary);
   border-left: .3rem solid var(--darksecondary);
-  gap: 1rem;
-  padding: .5rem 0;
-  background-color: var(--darkprimary);
-  z-index: 100;
-  transition: top .3s;
+  background-color: var(--primary);
   border-radius: .3rem;
+  border-bottom-left-radius: 0%;
+  border-bottom-right-radius: 0%;
+  padding: .5rem 0;
+  gap: 1rem;
 }
 
+.productsSections {
+  position: sticky;
+  top: 5rem;
+  background-color: var(--darkprimary);
+  border: .3rem solid var(--darksecondary);
+  border-top: none;
+  border-radius: .3rem;
+  border-top-left-radius: 0%;
+  border-top-right-radius: 0%;
+  padding: .3rem;
+  min-height: 50px;
+  z-index: 1;
+  transition: top .3s;
+}
+
+.productsSection {
+  background-color: var(--primary);
+  align-items: center;
+  justify-content: center;
+  padding: 0 .3rem;
+  border-radius: .3rem;
+}
 
 .sectionsContainer {
   gap: 1rem;
@@ -56,6 +83,7 @@
   transform: rotate(180deg);
 }
 
-.open .main, .close .main {
+.open .main,
+.close .main {
   transition: margin .3s;
 }
