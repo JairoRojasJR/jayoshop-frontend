@@ -1,7 +1,8 @@
 import styles from '../../styles/admin/Inventory.module.css';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { openFormAdd, closeFormAdd } from '@/services/adminSubNav';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 export default function AddProduct({ reloadProducts }) {
   const [statusFormAdd, setStatusFormAdd] = useState('close');
@@ -46,28 +47,12 @@ export default function AddProduct({ reloadProducts }) {
       >
         {statusFormAdd === 'close' ? (
           <>
-            <Image
-              alt="plus"
-              src={'/plus.png'}
-              width={15}
-              height={15}
-              sizes="(max-width: 768px) 100vw,
-              (max-width: 1200px) 50vw,
-              33vw"
-            />
+            <FontAwesomeIcon icon={solid('plus')} />
             Agregar nuevo
           </>
         ) : (
           <>
-            <Image
-              alt="minus"
-              src={'/minus.png'}
-              width={15}
-              height={15}
-              sizes="(max-width: 768px) 100vw,
-                      (max-width: 1200px) 50vw,
-                      33vw"
-            />
+            <FontAwesomeIcon icon={solid('minus')} />
             Ocultar
           </>
         )}

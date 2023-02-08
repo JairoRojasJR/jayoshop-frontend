@@ -66,11 +66,16 @@
 }
 
 .switchAdminOptions {
-  background-color: #FAFAFA;
+  background-color: var(--darksecondary);
+  color: var(--darkprimary);
+  width: 1.3rem;
+  height: 1.3rem;
+  padding: .3rem;
   border-radius: 50%;
   position: absolute;
   bottom: -1.5rem;
   right: -1rem;
+  z-index: 500;
 }
 
 .open .switchAdminOptions {
