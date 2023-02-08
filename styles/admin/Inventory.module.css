@@ -56,6 +56,8 @@
   overflow-y: auto;
 }
 
+/* Products */
+
 .productsContainer {
   gap: .5rem;
   margin: .5rem 0;
@@ -64,32 +66,55 @@
 .product {
   background-color: var(--secondary);
   color: var(--primary);
-  padding: .7rem;
+  padding: .5rem;
   border-radius: .3rem;
   display: grid;
-  grid-template-columns: 100px 1fr minmax(min-content, max-content);
-  grid-template-rows: 20px repeat(2, 50px);
+  grid-template-columns: 100px 1fr;
+  grid-template-rows: minmax(min-content, max-content) calc(5rem * 1.25) minmax(min-content, max-content);
   gap: .5rem;
 }
 
 .image {
-  grid-row: 1 / span 3;
+  grid-row: 1 / span 2;
 }
 
-.title {
-  grid-column: 2 / span 2;
+.floatInfoProduct {
+  background-color: var(--secondary);
+  color: var(--darkprimary);
+  padding: .3rem;
+  border-radius: .3rem;
+  border-top-left-radius: 0%;
+  border-top-right-radius: 0%;
+  min-width: 75px;
+  z-index: 50;
 }
 
 .desc {
-  grid-row: 2 / span 2;
-  overflow-y: auto;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  overflow: hidden;
+  max-height: 8rem;
+  -webkit-line-clamp: 5;
+  display: flex;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  white-space: normal;
 }
 
+.infoProduct {
+  align-self: flex-end;
+  gap: .5rem;
+}
+
+.infoProduct, .barcode {
+  padding: .3rem 0;
+}
+
+.barcode,
 .stock,
 .precio {
-  align-self: flex-end;
-  padding: .2rem;
-  border-radius: .2rem;
-  background-color: var(--primary);
-  color: var(--secondary);
+  display: flex;
+  gap: .3rem;
 }

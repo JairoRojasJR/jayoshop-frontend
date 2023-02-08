@@ -54,6 +54,10 @@ body {
   justify-content: space-between;
 }
 
+.jcfe {
+  justify-content: flex-end;
+}
+
 .fg1 {
   flex-grow: 1;
 }
