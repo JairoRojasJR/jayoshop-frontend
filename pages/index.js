@@ -26,7 +26,6 @@ export default function Home() {
           content="Tienda del barrio, todo lo que puedas necesitar en la tienda del barrio San Francisco Machala"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
         <header className="df fdc pr" style={{ height: vh, top: '-5rem' }}>
