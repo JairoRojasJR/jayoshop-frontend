@@ -2,18 +2,10 @@
   width: 90%;
 }
 
-.addNewProduct {
-  background-color: #7fffd4;
-  border-radius: .3rem;
-  padding: .5rem;
-  display: flex;
-  gap: .3rem;
-}
-
 .formAdd {
   display: none;
   margin-top: .5rem;
-  background-color: var(--primary);
+  background-color: var(--darkprimary);
   padding: .5rem;
   border-radius: .3rem;
   overflow: hidden;
@@ -30,8 +22,17 @@
 
 .fieldName,
 .fieldDesc,
-.addNewProduct {
+.addNewProduct,
+.fieldGoal {
   grid-column: 1 /span 2;
+}
+
+.fieldGoal {
+  justify-self: center;
+}
+
+.fieldGoal input {
+  padding: .5rem 2rem;
 }
 
 .formAdd label {
@@ -56,11 +57,22 @@
   overflow-y: auto;
 }
 
+.goal {
+  background-color: #7fffd4;
+  border-radius: .3rem;
+  padding: .5rem;
+  gap: .3rem;
+}
+
 /* Products */
 
 .productsContainer {
   gap: .5rem;
   margin: .5rem 0;
+}
+
+.actionActivated:hover {
+  filter: contrast(1.5);
 }
 
 .product {
@@ -108,7 +120,8 @@
   gap: .5rem;
 }
 
-.infoProduct, .barcode {
+.infoProduct,
+.barcode {
   padding: .3rem 0;
 }
 
@@ -117,4 +130,108 @@
 .precio {
   display: flex;
   gap: .3rem;
+}
+
+/* Actions Admin */
+.actionsContainer {
+  position: fixed;
+  left: 1.5rem;
+  bottom: 0rem;
+  padding: .5rem;
+  border: .3rem solid var(--darksecondary);
+  border-bottom: none;
+  border-radius: .3rem;
+  background-color: var(--primary);
+  width: calc(100% - 3rem);
+  z-index: 100;
+}
+
+.action {
+  background-color: var(--secondary);
+  color: var(--darkprimary);
+  opacity: .7;
+  padding: .5rem;
+  border-radius: .3rem;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  padding: 1rem;
+  background-color: #1B1B3BDD;
+  opacity: 0;
+  transition: opacity .3s;
+  z-index: 1100;
+}
+
+.modal div {
+  overflow-y: auto;
+}
+
+.warningTrash {
+  background: var(--darkprimary);
+  padding: 1rem;
+  border-radius: .3rem;
+  gap: 1rem;
+}
+
+.warningOption {
+  padding: .8rem .8rem;
+  border-radius: .3rem;
+}
+
+.trashSelected {
+  background: #F91444;
+  filter: contrast(.5)
+}
+
+.trashSelected:hover {
+  filter: contrast(.9);
+}
+
+.btnRunMultipleCheck {
+  bottom: calc(100% + .3rem);
+  overflow: hidden;
+  height: 3rem;
+}
+
+.btnRunMultipleCheck .ready {
+  padding: .8rem 1rem;
+  border-radius: .3rem;
+  border: .3rem solid var(--secondary);
+  background-color: #F91444;
+  height: 100%;
+  top: 100%;
+  transition: top .3s;
+}
+
+.warnUnsaved {
+  top: 0;
+  background-color: #1B1B0B99;
+  border-radius: .3rem;
+  z-index: 1200;
+}
+
+.warnUnsaved section {
+  background-color: var(--primary);
+  border-radius: .3rem;
+  padding: 1rem;
+  width: 80%;
+}
+
+.warnUnsaved button {
+  padding: 1rem .8rem;
+  border-radius: .3rem;
+}
+
+.cancelUnsaved {
+  background-color: var(--darkprimary);
+}
+
+.closeUnsave {
+  background-color: #F91444;
 }

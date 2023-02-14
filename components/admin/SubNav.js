@@ -3,8 +3,9 @@ import Link from 'next/link';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 
-export default function SubNav({ productsSections }) {
+export default function SubNav() {
   const router = useRouter();
+  const productsSections = ['todo', 'alimentos', 'bebidas', 'golosinas'];
 
   return (
     <nav className={`${styles.productsSections} df jcse`}>

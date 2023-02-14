@@ -3,9 +3,21 @@ import { useEffect, useState } from 'react';
 import { openFormAdd, closeFormAdd } from '@/services/adminSubNav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import FormProduct from './FormProduct';
 
 export default function AddProduct({ reloadProducts }) {
   const [statusFormAdd, setStatusFormAdd] = useState('close');
+  const devDataProduct =
+    process.env.NEXT_PUBLIC_MODE === 'dev'
+      ? {
+          name: 'Galleta amor chocolate',
+          description: 'Disfruta de la deleciosa galleta amor chocolate, bla bla bla',
+          price: '1$',
+          cuantity: '5',
+          section: 'Golosinas',
+          barcode: 999,
+        }
+      : {};
 
   const switchFormAdd = () => {
     if (statusFormAdd === 'close') setStatusFormAdd('open');
@@ -42,7 +54,7 @@ export default function AddProduct({ reloadProducts }) {
   return (
     <section className={`${styles.extraContainer}`}>
       <button
-        className={`${styles.addNewProduct} cp`}
+        className={`${styles.goal} df jcc cp`}
         onClick={() => switchFormAdd()}
       >
         {statusFormAdd === 'close' ? (
@@ -57,46 +69,12 @@ export default function AddProduct({ reloadProducts }) {
           </>
         )}
       </button>
-      <form className={`${styles.formAdd}`} onSubmit={addProduct}>
-        <div className={`${styles.formContent}`}>
-          <section className={`${styles.fieldName}`}>
-            <label htmlFor="name">Nombre</label>
-            <input id="name" name="name" defaultValue={'Panchitos picantes'} />
-          </section>
-          <section className={`${styles.fieldDesc}`}>
-            <label htmlFor="description">Descripción</label>
-            <textarea
-              id="description"
-              name="description"
-              className={`${styles.description}`}
-              defaultValue={
-                'Deliciosos panchitos picantes natural... bla bla bla'
-              }
-            ></textarea>
-          </section>
-          <section className={`${styles.fieldPrice}`}>
-            <label htmlFor="price">Precio</label>
-            <input id="price" name="price" defaultValue={'0.35'} />
-          </section>
-          <section className={`${styles.fieldCuantity}`}>
-            <label htmlFor="cuantity">Cantidad</label>
-            <input id="cuantity" name="cuantity" defaultValue={'5'} />
-          </section>
-          <section className={`${styles.fieldSection}`}>
-            <label htmlFor="section">Sección</label>
-            <input id="section" name="section" defaultValue={'Alimentos'} />
-          </section>
-          <section className={`${styles.fieldBarcode}`}>
-            <label htmlFor="barcode">Código de barras</label>
-            <input id="barcode" name="barcode" defaultValue={'777'} />
-          </section>
-          <input
-            className={`${styles.addNewProduct} cp`}
-            value={'Añadir'}
-            type={'submit'}
-          />
-        </div>
-      </form>
+      <FormProduct
+        dataProduct={devDataProduct}
+        runSubmit={addProduct}
+        title={'Nuevo producto'}
+        goal={'Añadir'}
+      />
     </section>
   );
 }
