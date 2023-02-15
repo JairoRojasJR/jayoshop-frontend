@@ -24,31 +24,25 @@ export default function Inventory() {
   });
 
   const reloadProducts = product => {
-    if (
-      product.section === router.query?.section ||
-      JSON.stringify(router.query) === '{}'
-    )
+    const matchesSection = product.section === adminOp.section;
+    if (matchesSection || adminOp.section === 'todo')
       setProducts([...products, product]);
   };
 
   useEffect(() => {
-    const sectionQuery = router.query.section;
-
-    if (adminOp.section !== sectionQuery) {
+    if (router.isReady) {
+      const isQueryEmpty = Object.entries(router.query).length === 0;
+      const sectionQuery = router.query.section;
       const preAdminOp = { ...adminOp };
-      preAdminOp.section = sectionQuery;
-      getProducts(sectionQuery, setProducts);
-      setAdminOp({ ...preAdminOp });
-    } else if (JSON.stringify(router.query) === '{}' && !adminOp.section) {
-      getProducts(sectionQuery, setProducts);
-    }
-
-    if (adminOp.productInAction.length > 0) {
-      const preAdminOp = { ...adminOp };
+      preAdminOp.section = isQueryEmpty ? 'todo' : sectionQuery;
       preAdminOp.productInAction = [];
       setAdminOp(preAdminOp);
     }
   }, [router.query?.section]);
+
+  useEffect(() => {
+    if (adminOp.section) getProducts(adminOp.section, setProducts);
+  }, [adminOp.section]);
 
   return (
     <Layout>
