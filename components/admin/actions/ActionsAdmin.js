@@ -1,21 +1,35 @@
-import styles from '@/styles/admin/Inventory.module.css';
+import {
+  ready,
+  btnRunMultipleCheck,
+  actionsContainer,
+  action,
+} from '@/styles/admin/Inventory.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { nanoid } from 'nanoid';
 import { jtoast } from '@/components/jtoast';
-import getAdminActions from '.';
+import getAdminActions from './getActions';
 
-export default function ActionsAdmin({ adminOp, setAdminOp }) {
-  const actionsAdmin = getAdminActions({ adminOp, setAdminOp });
+export default function ActionsAdmin({
+  adminOp,
+  setAdminOp,
+  selecteds,
+  setSelecteds,
+}) {
+  const actionsAdmin = getAdminActions({
+    adminOp,
+    setAdminOp,
+    selecteds,
+  });
 
   const hiddeBtnReady = action => {
-    const btnReady = document.querySelector(`.${styles.ready}`);
-    const btnRunMultipleCheck = document.querySelector(
-      `.${styles.btnRunMultipleCheck}`
+    const btnReady = document.querySelector(`.${ready}`);
+    const runMultipleCheckHtml = document.querySelector(
+      `.${btnRunMultipleCheck}`
     );
     const timeAwait = 300;
 
     if (action === 'multipleCheck' && !adminOp.multipleCheck) {
-      btnRunMultipleCheck.style.display = 'block';
+      runMultipleCheckHtml.style.display = 'block';
       setTimeout(() => (btnReady.style.top = '0'), 1);
       return timeAwait;
     } else if (
@@ -23,7 +37,10 @@ export default function ActionsAdmin({ adminOp, setAdminOp }) {
       (action !== 'multipleCheck' && adminOp.multipleCheck)
     ) {
       btnReady.style.top = '100%';
-      setTimeout(() => (btnRunMultipleCheck.style.display = 'none'), timeAwait);
+      setTimeout(
+        () => (runMultipleCheckHtml.style.display = 'none'),
+        timeAwait
+      );
       return timeAwait;
     }
     return null;
@@ -63,28 +80,32 @@ export default function ActionsAdmin({ adminOp, setAdminOp }) {
     jtoast(notification, { duration: 3000 });
 
     const timeAwait = hiddeBtnReady(action);
-    if (timeAwait) return setTimeout(() => setAdminOp(preAdminOp), timeAwait);
-    return setAdminOp(preAdminOp);
+    if (timeAwait)
+      return setTimeout(() => {
+        setAdminOp(preAdminOp);
+        setSelecteds({});
+      }, timeAwait);
+    return setAdminOp(preAdminOp), setSelecteds({});
   };
 
   return (
-    <section className={`${styles.actionsContainer} df jcse`}>
-      {actionsAdmin.map(action => {
+    <section className={`${actionsContainer} df jcse`}>
+      {actionsAdmin.map(actionAdmin => {
         return (
           <article
             key={nanoid(10)}
-            className={`${styles.action} df jcc cp pr`}
-            onClick={() => setActionAdmin(action.name)}
+            className={`${action} df jcc cp pr`}
+            onClick={() => setActionAdmin(actionAdmin.name)}
             style={{
               opacity:
-                adminOp.action[0] === action.name ||
-                adminOp[action.name] === true
+                adminOp.action[0] === actionAdmin.name ||
+                adminOp[actionAdmin.name] === true
                   ? '1'
                   : '0.8',
             }}
           >
-            {action.children ? action.children : ''}
-            {action.icon.map(icon => (
+            {actionAdmin.children ? actionAdmin.children : ''}
+            {actionAdmin.icon.map(icon => (
               <FontAwesomeIcon key={nanoid(10)} icon={icon} />
             ))}
           </article>

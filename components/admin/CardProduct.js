@@ -1,44 +1,43 @@
-import styles from '../../styles/admin/Inventory.module.css';
-import { useRouter } from 'next/router';
+import styles from '@/styles/admin/CardProduct.module.css';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { copyToClipboard } from '@/services/copyToClipboard';
 import { openModal } from '@/services/openModalActions';
 
-export default function CardProduct({ product, adminOp, setAdminOp }) {
-  const router = useRouter();
-
+export default function CardProduct({
+  product,
+  adminOp,
+  setAdminOp,
+  selecteds,
+  setSelecteds,
+}) {
   const selectProduct = () => {
-    const preAdminOp = { ...adminOp };
-    const productIndex = preAdminOp.productInAction.findIndex(
-      element => element === product
-    );
-    if (productIndex >= 0) preAdminOp.productInAction.splice(productIndex, 1);
-    else preAdminOp.productInAction.push(product);
-    setAdminOp(preAdminOp);
+    const preSelecteds = { ...selecteds };
+    if (!selecteds[product._id]) preSelecteds[product._id] = true;
+    else delete preSelecteds[product._id];
+    setSelecteds(preSelecteds);
   };
 
   const runCard = e => {
-    if (adminOp?.action[0] && !adminOp.multipleCheck)
-      return openModal(e, adminOp, setAdminOp, product);
-    else if (adminOp?.multipleCheck && adminOp?.action[0] === 'trash')
-      return selectProduct(product._id);
+    e.stopPropagation();
+    if (adminOp?.action[0]) {
+      if (!adminOp.multipleCheck) openModal({ adminOp, setAdminOp, product });
+      else selectProduct();
+    }
   };
-
-  const productIndex = adminOp?.productInAction.findIndex(
-    element => element === product
-  );
 
   let classNames = `${styles.product} w100p`;
   if (adminOp?.action[0]) classNames += ` ${styles.actionActivated} cp`;
-  if (productIndex >= 0 && adminOp.multipleCheck)
-    classNames += ` ${styles.trashSelected}`;
+  if (adminOp) {
+    if (selecteds[product._id])
+      classNames += ` ${styles.trashSelected} productSelected`;
+  }
 
   return (
     <article id={product._id} className={classNames} onClick={e => runCard(e)}>
       <span className={`${styles.productComponent} ${styles.image} df jcc pr`}>
-        {JSON.stringify(router.query) === '{}' ? (
+        {adminOp?.section === 'todo' || !adminOp ? (
           <div
             className={`${styles.floatInfoProduct} ${styles.section} tac pa`}
           >

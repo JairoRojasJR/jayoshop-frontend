@@ -1,18 +1,29 @@
-import CardProduct from '../CardProduct';
 import {
   warningTrash,
   warningOption,
   switchModal,
-} from '@//styles/admin/Inventory.module.css';
+  cardsContainer,
+} from '@/styles/admin/Inventory.module.css';
+import CardProduct from '../CardProduct';
+import { nanoid } from 'nanoid';
 import { closeModal } from '@/services/closeModal';
 
-export default function Trashing({ props }) {
-  const { adminOp, setAdminOp } = props;
-  const { productInAction } = adminOp;
+export default function MultipleTrashing({ props }) {
+  const { adminOp, setAdminOp, selecteds, products } = props;
+  const outputProducts = [];
 
-  const sendDeleteProduct = () => {
-    console.log('Eliminando el producto...');
-    console.log(productInAction[0]);
+  for (let selected in selecteds) {
+    for (let product of products) {
+      if (product._id == selected) {
+        outputProducts.push(product);
+        break;
+      }
+    }
+  }
+
+  const sendDeleteProducts = async () => {
+    console.log('Eliminando los productos...');
+    console.log(outputProducts);
   };
 
   return (
@@ -25,14 +36,18 @@ export default function Trashing({ props }) {
         style={{ maxHeight: '90%' }}
         onClick={e => e.stopPropagation()}
       >
-        <CardProduct product={productInAction[0]} />
-        <article
+        <section className={`${cardsContainer} df fdc`}>
+          {outputProducts.map(product => (
+            <CardProduct key={nanoid(10)} product={product} />
+          ))}
+        </section>
+        <section
           className={`${warningTrash} df fdc`}
-          onClick={e => e.stopPropagation()}
+          style={{ flexGrow: '.5' }}
         >
           <p>
-            Seguro que desea eliminar este producto del inventario, esta acción
-            es irreversible.
+            Seguro que desea eliminar todos estos productos del inventario, esta
+            acción es irreversible.
           </p>
           <div className={`df jcc`} style={{ gap: '1rem' }}>
             <button
@@ -48,12 +63,12 @@ export default function Trashing({ props }) {
             <button
               className={`${warningOption} cp`}
               style={{ background: '#F91444' }}
-              onClick={() => sendDeleteProduct()}
+              onClick={() => sendDeleteProducts()}
             >
               Si, eliminar
             </button>
           </div>
-        </article>
+        </section>
       </div>
     </article>
   );

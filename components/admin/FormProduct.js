@@ -8,12 +8,13 @@ export default function FormProduct({
   goal,
   setChange,
 }) {
-  const { name, description, price, cuantity, section, barcode } = dataProduct
+  const { _id, name, description, price, cuantity, section, barcode } = dataProduct
     ? dataProduct
     : {};
 
   return (
     <form
+      id={_id ? `formProduct${_id}` : ''}
       className={`${styles.formAdd}`}
       style={extraStyles ? extraStyles : {}}
       onClick={e => e.stopPropagation()}
@@ -33,7 +34,8 @@ export default function FormProduct({
         ) : (
           ''
         )}
-        <input name="id" defaultValue={dataProduct._id} type={'hidden'} />
+        <input name="_id" defaultValue={dataProduct._id} type={'hidden'} />
+        <input name="__v" defaultValue={dataProduct.__v} type={'hidden'} />
         <section className={`${styles.fieldName}`}>
           <label htmlFor="name">Nombre</label>
           <input
