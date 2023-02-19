@@ -7,9 +7,11 @@ import {
 import CardProduct from '../CardProduct';
 import { nanoid } from 'nanoid';
 import { closeModal } from '@/services/closeModal';
+import { getProducts, deleteProducts } from '@/services/products';
+import { jtoast } from '@/components/jtoast';
 
 export default function MultipleTrashing({ props }) {
-  const { adminOp, setAdminOp, selecteds, products } = props;
+  const { adminOp, setAdminOp, selecteds, products, setProducts } = props;
   const outputProducts = [];
 
   for (let selected in selecteds) {
@@ -22,9 +24,13 @@ export default function MultipleTrashing({ props }) {
   }
 
   const sendDeleteProducts = async () => {
-    console.log('Eliminando los productos...');
-    console.log(outputProducts);
-  };
+    const res = await deleteProducts(outputProducts);
+    if (res.status === 'ok') {
+      getProducts(adminOp.section, setProducts);
+    }
+    jtoast(res.msg, { duration: 3000 });
+    closeModal(adminOp, setAdminOp);
+  }
 
   return (
     <article

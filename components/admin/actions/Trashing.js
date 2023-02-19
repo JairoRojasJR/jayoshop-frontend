@@ -5,14 +5,20 @@ import {
   switchModal,
 } from '@//styles/admin/Inventory.module.css';
 import { closeModal } from '@/services/closeModal';
+import { deleteProducts, getProducts } from '@/services/products';
+import { jtoast } from '@/components/jtoast';
 
 export default function Trashing({ props }) {
-  const { adminOp, setAdminOp } = props;
+  const { adminOp, setAdminOp, setProducts } = props;
   const { productInAction } = adminOp;
 
-  const sendDeleteProduct = () => {
-    console.log('Eliminando el producto...');
-    console.log(productInAction[0]);
+  const sendDeleteProduct = async () => {
+    const res = await deleteProducts(productInAction);
+    if (res.status === 'ok') {
+      getProducts(adminOp.section, setProducts);
+    }
+    jtoast(res.msg, { duration: 3000 });
+    closeModal(adminOp, setAdminOp);
   };
 
   return (

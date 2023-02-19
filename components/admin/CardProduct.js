@@ -11,6 +11,7 @@ export default function CardProduct({
   setAdminOp,
   selecteds,
   setSelecteds,
+  updated,
 }) {
   const selectProduct = () => {
     const preSelecteds = { ...selecteds };
@@ -34,12 +35,20 @@ export default function CardProduct({
       classNames += ` ${styles.trashSelected} productSelected`;
   }
 
+  const getStyleUpdated = field => {
+    if (updated) {
+      if (updated[field]) return { color: '#7fffd4' };
+    }
+    return {};
+  };
+
   return (
     <article id={product._id} className={classNames} onClick={e => runCard(e)}>
       <span className={`${styles.productComponent} ${styles.image} df jcc pr`}>
         {adminOp?.section === 'todo' || !adminOp ? (
           <div
             className={`${styles.floatInfoProduct} ${styles.section} tac pa`}
+            style={getStyleUpdated('section')}
           >
             {product.section[0].toUpperCase() + product.section.slice(1)}
           </div>
@@ -56,13 +65,19 @@ export default function CardProduct({
                                 33vw"
         />
       </span>
-      <h3 className={`${styles.productComponent} ${styles.title}`}>
+      <h3
+        className={`${styles.productComponent} ${styles.title}`}
+        style={getStyleUpdated('name')}
+      >
         {product.name}
       </h3>
-      <div className={`${styles.productComponent} ${styles.desc}`}>
+      <div
+        className={`${styles.productComponent} ${styles.desc}`}
+        style={getStyleUpdated('description')}
+      >
         {product.description}
       </div>
-      <span className={`${styles.barcode} df jcc`}>
+      <span className={`${styles.barcode} df jcc`} style={getStyleUpdated('barcode')}>
         <span className={`cp`} onClick={() => copyToClipboard(product.barcode)}>
           <FontAwesomeIcon icon={solid('barcode')} />
           <FontAwesomeIcon icon={solid('barcode')} />
@@ -71,10 +86,10 @@ export default function CardProduct({
       <div
         className={`${styles.productComponent} ${styles.infoProduct} df jcfe`}
       >
-        <span className={`${styles.productComponent} ${styles.stock}`}>
+        <span className={`${styles.productComponent} ${styles.stock}`} style={getStyleUpdated('cuantity')}>
           <FontAwesomeIcon icon={solid('layer-group')} />x{product.cuantity}
         </span>
-        <span className={`${styles.productComponent} ${styles.precio}`}>
+        <span className={`${styles.productComponent} ${styles.precio}`} style={getStyleUpdated('price')}>
           <FontAwesomeIcon icon={solid('money-bill')} />
           {product.price}$
         </span>

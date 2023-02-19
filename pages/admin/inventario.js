@@ -26,7 +26,7 @@ export default function Inventory() {
     productInAction: [],
     unsaved: false,
   });
-  const [selecteds, setSelecteds] = useState({});
+  const [selecteds, setSelecteds] = useState([]);
 
   const reloadProducts = product => {
     const matchesSection = product.section === adminOp.section;
@@ -40,17 +40,17 @@ export default function Inventory() {
     {
       ready: action[0] === 'edit' && productInAction[0],
       Component: Editing,
-      props: { adminOp, setAdminOp },
+      props: { adminOp, setAdminOp, setProducts },
     },
     {
       ready: action[0] === 'trash' && productInAction[0],
       Component: Trashing,
-      props: { adminOp, setAdminOp },
+      props: { adminOp, setAdminOp, setProducts },
     },
     {
       ready: Object.entries(selecteds).length > 0 && modalStatus === 'open',
       Component: MultipleTrashing,
-      props: { adminOp, setAdminOp, selecteds, products },
+      props: { adminOp, setAdminOp, selecteds, products, setProducts },
     },
   ];
 
@@ -83,6 +83,10 @@ export default function Inventory() {
     if (router.isReady && adminOp.section)
       getProducts(adminOp.section, setProducts);
   }, [adminOp.section]);
+
+  useEffect(() => {
+    setSelecteds([]);
+  }, [products]);
 
   return (
     <Layout>

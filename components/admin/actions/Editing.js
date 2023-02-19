@@ -8,17 +8,38 @@ import { useState } from 'react';
 import FormProduct from '@/components/admin/FormProduct';
 import CardProduct from '../CardProduct';
 import { closeModal } from '@/services/closeModal';
+import { getProducts, updateProducts } from '@/services/products';
+import { jtoast } from '@/components/jtoast';
 
 export default function Editing({ props }) {
-  const { adminOp, setAdminOp } = props;
+  const { adminOp, setAdminOp, setProducts } = props;
   const productInAction = adminOp.productInAction[0];
   const [previewProduct, setPreviewProduct] = useState(productInAction);
   const [unsaved, setUnsaved] = useState(false);
+  const [updated, setUpdated] = useState({
+    name: false,
+    description: false,
+    price: false,
+    cuantity: false,
+    section: false,
+    barcode: false,
+  });
 
   const updateProduct = e => {
     const inputHtml = e.target;
     const prePreviewProduct = { ...previewProduct };
     prePreviewProduct[inputHtml.name] = inputHtml.value;
+
+    const preUpdated = { ...updated };
+    for (let info in preUpdated) {
+      const matchInfo = prePreviewProduct[info];
+      if (matchInfo) {
+        const thereDiferent = productInAction[info] !== prePreviewProduct[info];
+        if (thereDiferent) preUpdated[info] = true;
+        else preUpdated[info] = false;
+      }
+    }
+    setUpdated(preUpdated);
     setPreviewProduct(prePreviewProduct);
   };
 
@@ -30,11 +51,21 @@ export default function Editing({ props }) {
     closeModal(adminOp, setAdminOp);
   };
 
-  const sendUpdatedProduct = e => {
+  const sendUpdatedProduct = async e => {
     e.preventDefault();
-    console.log('Actualizando la informacion del producto...');
-    console.log(previewProduct);
-  }
+    const infoToSend = { _id: previewProduct._id };
+    for (let info in updated) {
+      const isInfoUpdated = updated[info];
+      if (isInfoUpdated) infoToSend[info] = previewProduct[info];
+    }
+
+    const res = await updateProducts([infoToSend]);
+    if (res.status === 'ok') {
+      getProducts(adminOp.section, setProducts);
+    }
+    jtoast(res.msg, { duration: 3000 });
+    closeModal(adminOp, setAdminOp);
+  };
 
   return (
     <article
@@ -46,14 +77,14 @@ export default function Editing({ props }) {
         style={{ maxHeight: '90%' }}
         onClick={e => e.stopPropagation()}
       >
-        <CardProduct product={previewProduct} />
+        <CardProduct product={previewProduct} updated={updated} />
         <FormProduct
           extraStyles={{
             display: 'block',
             height: 'auto',
             padding: '1rem',
             marginTop: '0',
-            overflowY: 'auto'
+            overflowY: 'auto',
           }}
           runSubmit={sendUpdatedProduct}
           dataProduct={productInAction}
