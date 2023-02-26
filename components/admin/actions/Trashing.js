@@ -1,23 +1,26 @@
 import CardProduct from '../CardProduct';
+import { closeModal } from '@/services/closeModal';
+import { deleteProduct, getProducts } from '@/services/products';
+import { jtoast } from '@/components/jtoast';
+
 import {
   warningTrash,
   warningOption,
   switchModal,
 } from '@//styles/admin/Inventory.module.css';
-import { closeModal } from '@/services/closeModal';
-import { deleteProducts, getProducts } from '@/services/products';
-import { jtoast } from '@/components/jtoast';
 
 export default function Trashing({ props }) {
   const { adminOp, setAdminOp, setProducts } = props;
   const { productInAction } = adminOp;
 
   const sendDeleteProduct = async () => {
-    const res = await deleteProducts(productInAction);
-    if (res.status === 'ok') {
+    const res = await deleteProduct(productInAction);
+    if (!res.error) {
+      jtoast(res.message, { duration: 3000 });
       getProducts(adminOp.section, setProducts);
+    } else {
+      jtoast(res.error, { duration: 3000 });
     }
-    jtoast(res.msg, { duration: 3000 });
     closeModal(adminOp, setAdminOp);
   };
 

@@ -8,14 +8,14 @@ export default function FormProduct({
   goal,
   setChange,
 }) {
-  const { _id, name, description, price, cuantity, section, barcode } = dataProduct
-    ? dataProduct
-    : {};
+  const { _id, name, description, price, cuantity, section, barcode } =
+    dataProduct ? dataProduct : {};
 
   return (
     <form
       id={_id ? `formProduct${_id}` : ''}
       className={`${styles.formAdd}`}
+      encType={'multipart/form-data'}
       style={extraStyles ? extraStyles : {}}
       onClick={e => e.stopPropagation()}
       onSubmit={e => runSubmit(e)}
@@ -34,8 +34,11 @@ export default function FormProduct({
         ) : (
           ''
         )}
-        <input name="_id" defaultValue={dataProduct._id} type={'hidden'} />
-        <input name="__v" defaultValue={dataProduct.__v} type={'hidden'} />
+        {_id ? (
+          <input name="_id" defaultValue={dataProduct._id} type={'hidden'} />
+        ) : (
+          ''
+        )}
         <section className={`${styles.fieldName}`}>
           <label htmlFor="name">Nombre</label>
           <input
@@ -54,6 +57,10 @@ export default function FormProduct({
             defaultValue={dataProduct ? description : ''}
             onChange={setChange}
           ></textarea>
+        </section>
+        <section className={`${styles.fieldName}`}>
+          <label htmlFor="image">Imagen</label>
+          <input id="image" name="image" type={'file'} onChange={setChange} />
         </section>
         <section className={`${styles.fieldPrice}`}>
           <label htmlFor="price">Precio</label>

@@ -27,13 +27,6 @@ export default function Inventory() {
     unsaved: false,
   });
   const [selecteds, setSelecteds] = useState([]);
-
-  const reloadProducts = product => {
-    const matchesSection = product.section === adminOp.section;
-    if (matchesSection || adminOp.section === 'todo')
-      setProducts([...products, product]);
-  };
-
   const { action, productInAction, modalStatus } = adminOp;
 
   const actionsInModal = [
@@ -67,21 +60,21 @@ export default function Inventory() {
         setSelecteds({});
       };
 
-      if (adminOp.section === null) {
-        resetProducts(sectionQuery, isQueryEmpty);
-      } else {
-        const changeToSectionTodo = isQueryEmpty && adminOp.section !== 'todo';
-        const changeToOtherSection =
-          !isQueryEmpty && adminOp.section !== sectionQuery;
-        if (changeToSectionTodo || changeToOtherSection)
+      const currentSection = adminOp.section;
+      if (currentSection === null) resetProducts(sectionQuery, isQueryEmpty);
+      else {
+        const toSectionTodo = isQueryEmpty && currentSection !== 'todo';
+        const toOtherSection = !isQueryEmpty && currentSection !== sectionQuery;
+        if (toSectionTodo || toOtherSection) {
           resetProducts(sectionQuery, isQueryEmpty);
+        }
       }
     }
   }, [router.query?.section]);
 
   useEffect(() => {
-    if (router.isReady && adminOp.section)
-      getProducts(adminOp.section, setProducts);
+    const isSectionChanged = router.isReady && adminOp.section;
+    if (isSectionChanged) getProducts(adminOp.section, setProducts);
   }, [adminOp.section]);
 
   useEffect(() => {
@@ -92,7 +85,11 @@ export default function Inventory() {
     <Layout>
       <Ui currentSection="inventario">
         <PlusOption style={{ width: '90%' }} plus={true}>
-          <AddProduct position={'in'} reloadProducts={reloadProducts} />
+          <AddProduct
+            position={'in'}
+            section={adminOp.section}
+            setProducts={setProducts}
+          />
           <SubNav position={'out'} />
         </PlusOption>
         <section className={`${productsContainer} df fdc`}>

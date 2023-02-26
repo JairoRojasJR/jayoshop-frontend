@@ -1,14 +1,15 @@
+import CardProduct from '../CardProduct';
+import { nanoid } from 'nanoid';
+import { closeModal } from '@/services/closeModal';
+import { deleteProduct, getProducts } from '@/services/products';
+import { jtoast } from '@/components/jtoast';
+
 import {
   warningTrash,
   warningOption,
   switchModal,
   cardsContainer,
 } from '@/styles/admin/Inventory.module.css';
-import CardProduct from '../CardProduct';
-import { nanoid } from 'nanoid';
-import { closeModal } from '@/services/closeModal';
-import { getProducts, deleteProducts } from '@/services/products';
-import { jtoast } from '@/components/jtoast';
 
 export default function MultipleTrashing({ props }) {
   const { adminOp, setAdminOp, selecteds, products, setProducts } = props;
@@ -24,13 +25,15 @@ export default function MultipleTrashing({ props }) {
   }
 
   const sendDeleteProducts = async () => {
-    const res = await deleteProducts(outputProducts);
-    if (res.status === 'ok') {
+    const res = await deleteProduct(outputProducts);
+    if (!res.error) {
+      jtoast(res.message, { duration: 3000 });
       getProducts(adminOp.section, setProducts);
+    } else {
+      jtoast(res.error, { duration: 3000 });
     }
-    jtoast(res.msg, { duration: 3000 });
     closeModal(adminOp, setAdminOp);
-  }
+  };
 
   return (
     <article
