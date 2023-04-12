@@ -1,0 +1,36 @@
+.adminHeader {
+  padding: 0 var(--remLX);
+  z-index: 900;
+  transition: top var(--timeFlash);
+  min-width: var(--minWDisplay);
+}
+
+.adminNav {
+  border: var(--remS) solid var(--darksecondary);
+  border-top: none;
+}
+
+.linkPage {
+  transition: box-shadow var(--timeFlash);
+  box-shadow: 0 0 0.3rem var(--sky-violet), 0 0 0.3rem var(--sky-blue);
+}
+
+.linkPage:hover {
+  box-shadow: -0.3rem -0.3rem 0.3rem var(--sky-violet),
+    0.3rem 0.3rem 0.3rem var(--sky-blue);
+}
+
+.linkPageSelected {
+  box-shadow: -0.1rem -0.1rem 0.3rem var(--sky-blue),
+    0.1rem 0.1rem 0.3rem var(--sky-blue);
+}
+
+.switchAdminNav {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  right: -1.4rem;
+  bottom: -1.7rem;
+  font-size: 1.25rem;
+  transition: transform var(--timeFlash);
+}

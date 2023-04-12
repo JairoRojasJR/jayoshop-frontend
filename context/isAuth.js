@@ -1,35 +1,41 @@
-'use client';
-import { createContext, useContext, useEffect, useState } from 'react';
+'use client'
+import PropTypes from 'prop-types'
+import { createContext, useContext, useState, useEffect } from 'react'
+import { jtoast } from '@/packages/jtoast/Jtoast'
 
-const IsAuthContext = createContext();
+const IsAuthContext = createContext()
 
 export function IsAuthContextProvider({ children }) {
-  const [isAuthContext, setIsAuthContext] = useState(false);
+  const [isAuthContext, setIsAuthContext] = useState(false)
+
+  let finished = false
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/admin/login`, {
-      credentials: 'include',
-    })
-      .then(res => res.json())
-      .then(res => {
-        if (!res.authenticated) {
-          document.cookie = 'isauth=false; max-age=0; path=/; samesite=strict;';
-        }
-        else if(res.authenticated) {
-          document.cookie = 'isauth=true; path=/; samesite=strict;';
-        }
-        return setIsAuthContext(res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }, []);
+    if (!finished) {
+      const url = `${globalThis.backendUrl}/api/auth/check`
+      fetch(url, { credentials: 'include' })
+        .then(res => res.json())
+        .then(authData => {
+          jtoast('AuthData obtained')
+          return setIsAuthContext(authData)
+        })
+        .catch(error => {
+          jtoast(error.message)
+        })
+      finished = true
+    }
+  }, [])
+
   return (
     <IsAuthContext.Provider value={{ isAuthContext, setIsAuthContext }}>
       {children}
     </IsAuthContext.Provider>
-  );
+  )
 }
 
 export function useIsAuthContext() {
-  return useContext(IsAuthContext);
+  return useContext(IsAuthContext)
+}
+
+IsAuthContextProvider.propTypes = {
+  children: PropTypes.array.isRequired
 }

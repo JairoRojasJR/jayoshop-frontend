@@ -1,5 +1,4 @@
-import Layout from '../components/Layout';
-import styles from '../styles/Home.module.css';
+import Layout from '@/components/global/Layout'
 
 export default function productos() {
   return (
@@ -10,5 +9,5 @@ export default function productos() {
         </main>
       </Layout>
     </>
-  );
+  )
 }

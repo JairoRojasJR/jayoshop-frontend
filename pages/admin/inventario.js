@@ -1,130 +1,130 @@
-import { productsContainer, modal } from '@/styles/admin/Inventory.module.css';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { nanoid } from 'nanoid';
-import { getProducts } from '@/services/products';
-import Layout from '@/components/Layout';
-import Ui from '@/components/admin/Ui';
-import AddProduct from '@/components/admin/AddProduct';
-import PlusOption from '@/components/admin/PlusOptions';
-import SubNav from '@/components/admin/SubNav';
-import CardProduct from '@/components/admin/CardProduct';
-import ActionsAdmin from '@/components/admin/actions/ActionsAdmin';
-
-import Editing from '@/components/admin/actions/Editing';
-import Trashing from '@/components/admin/actions/Trashing';
-import MultipleTrashing from '@/components/admin/actions/MultipleTrash';
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
+import Head from 'next/head'
+import Layout from '@/components/global/Layout'
+import Adminlayout from '@/components/admin/main/AdminLayout'
+import PlusNavLayout from '@/components/admin/main/PlusNavLayout'
+import NewProduct from '@/components/admin/main/NewProduct'
+import Sections from '@/components/admin/main/Sections'
+import SubNav from '@/components/admin/utils/SubNav'
+import CardProduct from '@/components/utils/CardProduct'
+import Actions from '@/components/admin/main/Actions'
+import { MultiTrash, runMultiTrash } from '@/components/admin/main/Trash'
+import { getSections, getProducts } from '@/services/publicInventory'
+import { deleteProduct } from '@/services/adminInventory'
 
 export default function Inventory() {
-  const router = useRouter();
-  const [products, setProducts] = useState([]);
-  const [adminOp, setAdminOp] = useState({
-    section: null,
-    action: [],
-    multipleCheck: false,
-    modalStatus: 'close',
-    productInAction: [],
-    unsaved: false,
-  });
-  const [selecteds, setSelecteds] = useState([]);
-  const { action, productInAction, modalStatus } = adminOp;
+  const [sections, setSections] = useState([])
+  const [products, setProducts] = useState([])
+  const [currentSection, setCurrentSection] = useState('')
+  const [plusInAction, setPlusInAction] = useState('')
+  const [action, setAction] = useState('')
+  const [selecteds, setSelecteds] = useState([])
+  const router = useRouter()
 
-  const actionsInModal = [
-    {
-      ready: action[0] === 'edit' && productInAction[0],
-      Component: Editing,
-      props: { adminOp, setAdminOp, setProducts },
-    },
-    {
-      ready: action[0] === 'trash' && productInAction[0],
-      Component: Trashing,
-      props: { adminOp, setAdminOp, setProducts },
-    },
-    {
-      ready: Object.entries(selecteds).length > 0 && modalStatus === 'open',
-      Component: MultipleTrashing,
-      props: { adminOp, setAdminOp, selecteds, products, setProducts },
-    },
-  ];
+  const reloadSections = () => getSections(setSections)
+  const reloadProducts = () => getProducts(currentSection, setProducts)
 
-  useEffect(() => {
-    if (router.isReady) {
-      const isQueryEmpty = Object.entries(router.query).length === 0;
-      const sectionQuery = router.query.section;
+  const updateActionSelected = (updated, resetSelecteds) => {
+    setAction(updated)
+    if (resetSelecteds) setSelecteds([])
+  }
 
-      const resetProducts = (sectionQuery, isQueryEmpty) => {
-        const preAdminOp = { ...adminOp };
-        preAdminOp.section = isQueryEmpty ? 'todo' : sectionQuery;
-        preAdminOp.productInAction = [];
-        setAdminOp(preAdminOp);
-        setSelecteds({});
-      };
-
-      const currentSection = adminOp.section;
-      if (currentSection === null) resetProducts(sectionQuery, isQueryEmpty);
-      else {
-        const toSectionTodo = isQueryEmpty && currentSection !== 'todo';
-        const toOtherSection = !isQueryEmpty && currentSection !== sectionQuery;
-        if (toSectionTodo || toOtherSection) {
-          resetProducts(sectionQuery, isQueryEmpty);
-        }
-      }
+  const runMultiTrashProducts = () => {
+    const reset = () => {
+      reloadProducts()
+      setSelecteds([])
     }
-  }, [router.query?.section]);
 
-  useEffect(() => {
-    const isSectionChanged = router.isReady && adminOp.section;
-    if (isSectionChanged) getProducts(adminOp.section, setProducts);
-  }, [adminOp.section]);
+    const Component = (
+      <MultiTrash
+        Card={CardProduct}
+        items={selecteds}
+        wish='eliminar estos productos'
+        target='product'
+        send={deleteProduct}
+        onSuccess={reset}
+      />
+    )
 
+    runMultiTrash(selecteds.length > 1, Component)
+  }
+
+  let finishedRouter = false
   useEffect(() => {
-    setSelecteds([]);
-  }, [products]);
+    if (finishedRouter) return
+    const section = router.query.section
+    if (selecteds.length > 1) setSelecteds([])
+    setCurrentSection(section || 'Todo')
+    getSections(setSections)
+    getProducts(section, setProducts)
+    finishedRouter = true
+  }, [router])
+
+  // Html content required
+  const plusIn = () => {
+    const options = ['Nuevo producto', 'Secciones']
+    return (
+      <PlusNavLayout
+        options={options}
+        plusInAction={plusInAction}
+        setPlusInAction={setPlusInAction}
+      >
+        {plusInAction === options[0] ? (
+          <NewProduct products={products} reloadProducts={reloadProducts} />
+        ) : null}
+        {plusInAction === options[1] ? (
+          <Sections
+            sections={sections}
+            reloadSections={reloadSections}
+            reloadProducts={reloadProducts}
+          />
+        ) : null}
+      </PlusNavLayout>
+    )
+  }
+
+  const plusOut = () => <SubNav sections={sections} />
 
   return (
-    <Layout>
-      <Ui currentSection="inventario">
-        <PlusOption style={{ width: '90%' }} plus={true}>
-          <AddProduct
-            position={'in'}
-            section={adminOp.section}
-            setProducts={setProducts}
-          />
-          <SubNav position={'out'} />
-        </PlusOption>
-        <section className={`${productsContainer} df fdc`}>
-          {Array.isArray(products)
-            ? products.map(product => {
-                return (
-                  <CardProduct
-                    key={nanoid(10)}
-                    product={product}
-                    adminOp={adminOp}
-                    setAdminOp={setAdminOp}
-                    selecteds={selecteds}
-                    setSelecteds={setSelecteds}
-                  />
-                );
-              })
-            : ''}
-        </section>
-        <section id={'modalInventario'} className={`${modal}`}>
-          {actionsInModal.map(action => {
-            const { ready, Component, props } = action;
-            if (ready) return <Component key={nanoid(10)} props={props} />;
-          })}
-        </section>
-        {products.length > 0 ? (
-          <ActionsAdmin
-            adminOp={adminOp}
-            setAdminOp={setAdminOp}
-            selecteds={selecteds}
-            setSelecteds={setSelecteds}
-          />
-        ) : (
-          ''
-        )}
-      </Ui>
-    </Layout>
-  );
+    <>
+      <Head>
+        <title>Admin - Inventario</title>
+      </Head>
+      <Layout>
+        <Adminlayout plusIn={plusIn()} plusOut={plusOut()}>
+          <section className='df fdc gpM'>
+            {products.map(product => (
+              <CardProduct
+                key={`inventarioCardProduct-${product._id}`}
+                data={product}
+                action={action}
+                selecteds={selecteds}
+                setSelecteds={setSelecteds}
+                reloadProducts={reloadProducts}
+                showSection={currentSection === 'Todo'}
+              />
+            ))}
+          </section>
+          {products.length > 0 ? (
+            <section
+              className='actions w100p pf lf0 bm0'
+              style={{
+                minWidth: 'var(--minWDisplay)',
+                padding: '0 var(--remLX)',
+                zIndex: 50
+              }}
+            >
+              <Actions
+                selected={action}
+                updateSelected={updateActionSelected}
+                isMultiTrashReady={selecteds.length > 1}
+                runMultiTrash={runMultiTrashProducts}
+              />
+            </section>
+          ) : null}
+        </Adminlayout>
+      </Layout>
+    </>
+  )
 }

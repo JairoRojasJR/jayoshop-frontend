@@ -1,10 +1,10 @@
-import Layout from '@/components/Layout';
-import Ui from 'components/admin/Ui';
+import Layout from '@/components/global/Layout'
+import Ui from '@/components/admin/main/AdminLayout'
 
 export default function Vender() {
-  return(
+  return (
     <Layout>
-      <Ui currentSection={'vender'}>
+      <Ui currentSection='vender'>
         <span>Section vender</span>
       </Ui>
     </Layout>

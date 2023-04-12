@@ -1,7 +1,11 @@
+import Layout from '@/components/global/Layout'
+
 export default function carrito() {
   return (
     <>
-      <h1>carrito</h1>
+      <Layout>
+        <h1>carrito</h1>
+      </Layout>
     </>
-  );
+  )
 }
