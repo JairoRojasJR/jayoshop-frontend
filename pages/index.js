@@ -86,7 +86,7 @@ export default function Home() {
                   Todos los productos que necesitas y/o deseas aqui en tu tienda
                   del barrio La veci
                 </p>
-                <Link href='/products'>
+                <Link href='/productos'>
                   <button className={`${styles.coverCta} pgL brM crDp cp fwB`}>
                     EMPEZAR A COMPRAR
                   </button>

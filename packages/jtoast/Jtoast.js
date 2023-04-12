@@ -11,7 +11,7 @@ export const jtoast = (msg, options = {}) => {
 
   const jtoastPanel = document.getElementById('JToast')
   const jtoastItem = document.createElement('span')
-  jtoastItem.classList.add(jtoastItemCSS, 'pgL', 'brM', 'tac', 'bcD')
+  jtoastItem.classList.add(jtoastItemCSS, 'pgL', 'brM', 'tac', 'bcD', 'crL')
   jtoastItem.textContent = msg
 
   jtoastPanel.appendChild(jtoastItem)

@@ -4,7 +4,7 @@ export default function carrito() {
   return (
     <>
       <Layout>
-        <h1>carrito</h1>
+        <h1>Carrito...</h1>
       </Layout>
     </>
   )

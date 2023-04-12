@@ -5,7 +5,7 @@ export default function productos() {
     <>
       <Layout>
         <main>
-          <h1>Hola mundo</h1>
+          <h1>Productos...</h1>
         </main>
       </Layout>
     </>
