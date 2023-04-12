@@ -7,7 +7,7 @@ import SectionCard from '@/components/utils/CardSection'
 import {
   getSections,
   getMostPopularsProducts
-} from '@/services/publicInventory'
+} from '@/services/public/inventory'
 import { jtoast } from '@/packages/jtoast/Jtoast'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'

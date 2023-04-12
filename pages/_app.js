@@ -5,10 +5,10 @@ import JToast from '@/packages/jtoast/Jtoast'
 import '@/styles/globals.css'
 import '@/styles/normalize.css'
 
-export default function App({ Component, pageProps }) {
-  globalThis.mode = process.env.NEXT_PUBLIC_MODE
-  globalThis.backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
+globalThis.isProdMode = process.env.NEXT_PUBLIC_MODE === 'prod'
+globalThis.backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
 
+export default function App({ Component, pageProps }) {
   return (
     <IsAuthContextProvider>
       <JToast />

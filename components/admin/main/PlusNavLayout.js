@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { useEffect, useRef, useState } from 'react'
-import { runTransition } from '@/services/utils/transition'
+import { runTransition } from '@/services/public/utils/transition'
 import { nanoid } from 'nanoid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'

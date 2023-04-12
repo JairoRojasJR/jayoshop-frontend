@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { useRef } from 'react'
-import { runTransition } from '@/services/utils/transition'
+import { runTransition } from '@/services/public/utils/transition'
 import { jtoast } from '@/packages/jtoast/Jtoast'
 import { nanoid } from 'nanoid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

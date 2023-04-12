@@ -12,7 +12,7 @@ import {
   addSection,
   updateSection,
   deleteSection
-} from '@/services/adminInventory'
+} from '@/services/admin/inventory'
 import { jtoast } from '@/packages/jtoast/Jtoast'
 import { nanoid } from 'nanoid'
 
@@ -32,7 +32,7 @@ export default function Sections({ sections, reloadSections, reloadProducts }) {
     const formData = new FormData(form)
     const res = await addSection(formData)
     if (res.error) return jtoast(res.error)
-    form.reset()
+    if (globalThis.isProdMode) form.reset()
     jtoast(res.message)
     reloadSections()
   }
@@ -145,7 +145,7 @@ export default function Sections({ sections, reloadSections, reloadProducts }) {
         }}
       >
         <FieldsSection
-          data={{ name: globalThis.mode === 'dev' ? 'Lacteos' : null }}
+          data={{ name: !globalThis.isProdMode ? 'Lacteos' : null }}
         />
       </CustomForm>
       <div style={{ marginTop: 'var(--remL)' }}>

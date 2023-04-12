@@ -10,8 +10,8 @@ import SubNav from '@/components/admin/utils/SubNav'
 import CardProduct from '@/components/utils/CardProduct'
 import Actions from '@/components/admin/main/Actions'
 import { MultiTrash, runMultiTrash } from '@/components/admin/main/Trash'
-import { getSections, getProducts } from '@/services/publicInventory'
-import { deleteProduct } from '@/services/adminInventory'
+import { getSections, getProducts } from '@/services/public/inventory'
+import { deleteProduct } from '@/services/admin/inventory'
 
 export default function Inventory() {
   const [sections, setSections] = useState([])

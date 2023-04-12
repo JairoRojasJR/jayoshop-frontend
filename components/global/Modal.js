@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
-import { runTransition } from '@/services/utils/transition'
+import { runTransition } from '@/services/public/utils/transition'
 
 let modalRoot = null
 let modalHTML = null

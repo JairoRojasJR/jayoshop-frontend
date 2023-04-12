@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types'
 import CustomForm from '@/components/utils/CustomForm'
 import FieldsProduct from '@/components/admin/utils/FieldsProduct'
-import { getDevDataProduct } from '@/services/publicInventory'
-import { addProduct } from '@/services/adminInventory'
+import { getDevDataProduct, addProduct } from '@/services/admin/inventory'
 import { jtoast } from '@/packages/jtoast/Jtoast'
 
 export default function NewProduct({ reloadProducts }) {
@@ -12,7 +11,7 @@ export default function NewProduct({ reloadProducts }) {
     const formData = new FormData(form)
     const res = await addProduct(formData)
     if (res.error) return jtoast(res.error)
-    form.reset()
+    if (globalThis.isProdMode) form.reset()
     jtoast(res.message)
     reloadProducts()
   }
@@ -25,7 +24,9 @@ export default function NewProduct({ reloadProducts }) {
         goal: 'Agregar producto'
       }}
     >
-      <FieldsProduct data={getDevDataProduct()} />
+      <FieldsProduct
+        data={!globalThis.isProdMode ? getDevDataProduct() : null}
+      />
     </CustomForm>
   )
 }

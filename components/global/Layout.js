@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Nav from '@/components/global/Nav'
-import { getThemeSaved } from '@/services/utils/themes'
+import { getThemeSaved } from '@/services/public/utils/themes'
 
 export default function Layout({ children }) {
   const [vh, setVh] = useState(0)
