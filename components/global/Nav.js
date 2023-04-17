@@ -66,7 +66,15 @@ export default function Nav() {
     const res = await req.json()
 
     if (res.error) return jtoast(res.error)
-    Cookies.remove('isauth', { sameSite: 'strict' })
+    const { authData } = res
+    const { rol, isAuthenticated } = authData
+    const expires = 365 * 100
+
+    Cookies.set('auth', `${rol}-${isAuthenticated}`, {
+      sameSite: 'strict',
+      expires
+    })
+
     setIsAuthContext(res.authData)
     jtoast(res.message)
     return Router.push('/login')
@@ -219,11 +227,13 @@ export default function Nav() {
               {isAdminAuthenticated ? (
                 <NavOption href='/admin/inventario' icon={solid('boxes')} />
               ) : null}
-              <NavOption
-                icon={solid('arrow-right-from-bracket')}
-                isButton={true}
-                run={logout}
-              />
+              {isAuthenticated ? (
+                <NavOption
+                  icon={solid('arrow-right-from-bracket')}
+                  isButton={true}
+                  run={logout}
+                />
+              ) : null}
               <NavOption
                 icon={solid('star-half-stroke')}
                 isButton={true}

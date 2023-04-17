@@ -14,13 +14,13 @@ import { getSections, getProducts } from '@/services/public/inventory'
 import { deleteProduct } from '@/services/admin/inventory'
 
 export default function Inventory() {
+  const router = useRouter()
   const [sections, setSections] = useState([])
   const [products, setProducts] = useState([])
   const [currentSection, setCurrentSection] = useState('')
   const [plusInAction, setPlusInAction] = useState('')
   const [action, setAction] = useState('')
   const [selecteds, setSelecteds] = useState([])
-  const router = useRouter()
 
   const reloadSections = () => getSections(setSections)
   const reloadProducts = () => getProducts(currentSection, setProducts)
@@ -127,4 +127,23 @@ export default function Inventory() {
       </Layout>
     </>
   )
+}
+
+export async function getServerSideProps(context) {
+  const cookies = context.req.headers.cookie
+  const auth = cookies
+    .split('; ')
+    .find(row => row.startsWith('auth'))
+    .split('=')[1]
+
+  if (auth === 'admin-false' || auth === 'client-false') {
+    context.res.writeHead(302, { Location: '/login' })
+    context.res.end()
+  }
+
+  return {
+    props: {
+      isAuthenticated: true
+    }
+  }
 }

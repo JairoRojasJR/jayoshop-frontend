@@ -5,6 +5,8 @@ import { useIsAuthContext } from '@/context/isAuth'
 import Layout from '@/components/global/Layout'
 import { jtoast } from '@/packages/jtoast/Jtoast'
 import { nanoid } from 'nanoid'
+import { useEffect } from 'react'
+import Cookies from 'js-cookie'
 
 function SectionForm({ label, name, type, placeholder }) {
   return (
@@ -33,9 +35,6 @@ SectionForm.propTypes = {
 export default function Login() {
   const { isAuthContext, setIsAuthContext } = useIsAuthContext()
   const { isAdminAuthenticated, isAuthenticated } = isAuthContext
-
-  if (isAdminAuthenticated) Router.push('/admin/inventario')
-  else if (isAuthenticated) Router.push('/')
   const redirecting = isAdminAuthenticated || isAuthenticated
 
   const login = async e => {
@@ -52,23 +51,33 @@ export default function Login() {
     })
 
     const res = await req.json()
-
     if (res.error) return jtoast(res.error)
-    setIsAuthContext(res.authData)
-    jtoast(res.message)
 
-    if (res.isAdminAuthenticated) return Router.push('/admin/inventario')
-    return Router.push('/')
+    const { authData } = res
+    const { rol, isAuthenticated } = authData
+    const expires = 365 * 100
+
+    Cookies.set('auth', `${rol}-${isAuthenticated}`, {
+      sameSite: 'strict',
+      expires
+    })
+
+    setIsAuthContext(authData)
+    jtoast(res.message)
   }
 
-  if (redirecting) return <></>
+  useEffect(() => {
+    if (isAdminAuthenticated) Router.push('/admin/inventario')
+    else if (isAuthenticated) Router.push('/')
+  }, [isAuthContext])
+
   return (
     <>
       <Head>
         <title>Login - La Veci</title>
       </Head>
       <Layout>
-        {isAuthContext ? (
+        {isAuthContext && !redirecting ? (
           <>
             <div className='df fdc gpLX pgLX'>
               <h1>Login</h1>
@@ -115,4 +124,28 @@ export default function Login() {
       </Layout>
     </>
   )
+}
+
+export async function getServerSideProps(context) {
+  const cookies = context.req.headers.cookie
+  const auth = cookies
+    .split('; ')
+    .find(row => row.startsWith('auth'))
+    .split('=')[1]
+
+  if (auth === 'admin-true') {
+    context.res.writeHead(302, { Location: '/admin/inventario' })
+    context.res.end()
+  } else if (auth === 'client-true') {
+    if (auth === 'admin-true') {
+      context.res.writeHead(302, { Location: '/' })
+      context.res.end()
+    }
+  }
+
+  return {
+    props: {
+      isAuthenticated: false
+    }
+  }
 }
