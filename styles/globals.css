@@ -278,6 +278,10 @@ body {
   text-align: center;
 }
 
+.tar {
+  text-align: right;
+}
+
 .toe {
   text-overflow: ellipsis;
 }

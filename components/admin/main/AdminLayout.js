@@ -8,7 +8,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import styles from '@/styles/AdminLayout.module.css'
 
-export default function AdminLayout({ children, plusIn, plusOut }) {
+export default function AdminLayout({
+  children,
+  plusIn,
+  plusOut,
+  onChangeSubNavTop
+}) {
   const [initialHeightHeader, setInitialHeightHeader] = useState(0)
   const [statusAdminNav, setStatusAdminNav] = useState('open')
   const [currentAdminPage, setCurrentAdminPage] = useState('')
@@ -39,6 +44,9 @@ export default function AdminLayout({ children, plusIn, plusOut }) {
 
     headerHTML.style.top = `${newTopHeader}px`
     mainHTML.style.marginTop = `${newMarginTopMain}px`
+    if (onChangeSubNavTop) {
+      onChangeSubNavTop(newTopHeader, headerHTML.clientHeight)
+    }
   }
 
   const switchAdminNav = () => {
@@ -88,8 +96,8 @@ export default function AdminLayout({ children, plusIn, plusOut }) {
                   if (isCurrentPage) className += ` ${styles.linkPageSelected}`
 
                   return (
-                    <li key={nanoid(10)} className={className}>
-                      <Link href={`/admin/${page}`}>
+                    <li key={nanoid(10)} className='df'>
+                      <Link href={`/admin/${page}`} className={className}>
                         {page.charAt(0).toUpperCase() + page.slice(1)}
                       </Link>
                     </li>
@@ -112,7 +120,7 @@ export default function AdminLayout({ children, plusIn, plusOut }) {
       </header>
       <main
         ref={mainRef}
-        className='pgLX'
+        className='pgLX df fdc gpLX'
         style={{ transition: 'margin var(--timeFlash)' }}
       >
         {children}
@@ -124,5 +132,6 @@ export default function AdminLayout({ children, plusIn, plusOut }) {
 AdminLayout.propTypes = {
   children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
   plusIn: PropTypes.element,
-  plusOut: PropTypes.element
+  plusOut: PropTypes.element,
+  onChangeSubNavTop: PropTypes.func
 }

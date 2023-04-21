@@ -7,6 +7,7 @@ import '@/styles/normalize.css'
 
 globalThis.isProdMode = process.env.NEXT_PUBLIC_MODE === 'prod'
 globalThis.backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
+globalThis.streamImage = `${globalThis.backendUrl}/api/stream/image`
 
 export default function App({ Component, pageProps }) {
   return (

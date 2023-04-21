@@ -11,7 +11,7 @@ import CardProduct from '@/components/utils/CardProduct'
 import Actions from '@/components/admin/main/Actions'
 import { MultiTrash, runMultiTrash } from '@/components/admin/main/Trash'
 import { getSections, getProducts } from '@/services/public/inventory'
-import { deleteProduct } from '@/services/admin/inventory'
+import { checkAuth, deleteProduct } from '@/services/admin/inventory'
 
 export default function Inventory() {
   const router = useRouter()
@@ -23,7 +23,9 @@ export default function Inventory() {
   const [selecteds, setSelecteds] = useState([])
 
   const reloadSections = () => getSections(setSections)
-  const reloadProducts = () => getProducts(currentSection, setProducts)
+  const reloadProducts = () => {
+    getProducts({ section: currentSection }, setProducts)
+  }
 
   const updateActionSelected = (updated, resetSelecteds) => {
     setAction(updated)
@@ -53,11 +55,12 @@ export default function Inventory() {
   let finishedRouter = false
   useEffect(() => {
     if (finishedRouter) return
-    const section = router.query.section
+    const query = router.query
+    const section = query.section !== undefined ? query.section : 'Todo'
     if (selecteds.length > 1) setSelecteds([])
     setCurrentSection(section || 'Todo')
     getSections(setSections)
-    getProducts(section, setProducts)
+    getProducts({ section }, setProducts)
     finishedRouter = true
   }, [router])
 
@@ -87,63 +90,46 @@ export default function Inventory() {
   const plusOut = () => <SubNav sections={sections} />
 
   return (
-    <>
+    <Layout>
       <Head>
         <title>Admin - Inventario</title>
       </Head>
-      <Layout>
-        <Adminlayout plusIn={plusIn()} plusOut={plusOut()}>
-          <section className='df fdc gpM'>
-            {products.map(product => (
-              <CardProduct
-                key={`inventarioCardProduct-${product._id}`}
-                data={product}
-                action={action}
-                selecteds={selecteds}
-                setSelecteds={setSelecteds}
-                reloadProducts={reloadProducts}
-                showSection={currentSection === 'Todo'}
-              />
-            ))}
+      <Adminlayout plusIn={plusIn()} plusOut={plusOut()}>
+        <section className='df fdc gpM'>
+          {products.map(product => (
+            <CardProduct
+              key={`inventarioCardProduct-${product._id}`}
+              data={product}
+              action={action}
+              selecteds={selecteds}
+              setSelecteds={setSelecteds}
+              reloadProducts={reloadProducts}
+              showSection={currentSection === 'Todo'}
+            />
+          ))}
+        </section>
+        {products.length > 0 ? (
+          <section
+            className='actions w100p pf lf0 bm0'
+            style={{
+              minWidth: 'var(--minWDisplay)',
+              padding: '0 var(--remLX)',
+              zIndex: 50
+            }}
+          >
+            <Actions
+              selected={action}
+              updateSelected={updateActionSelected}
+              isMultiTrashReady={selecteds.length > 1}
+              runMultiTrash={runMultiTrashProducts}
+            />
           </section>
-          {products.length > 0 ? (
-            <section
-              className='actions w100p pf lf0 bm0'
-              style={{
-                minWidth: 'var(--minWDisplay)',
-                padding: '0 var(--remLX)',
-                zIndex: 50
-              }}
-            >
-              <Actions
-                selected={action}
-                updateSelected={updateActionSelected}
-                isMultiTrashReady={selecteds.length > 1}
-                runMultiTrash={runMultiTrashProducts}
-              />
-            </section>
-          ) : null}
-        </Adminlayout>
-      </Layout>
-    </>
+        ) : null}
+      </Adminlayout>
+    </Layout>
   )
 }
 
 export async function getServerSideProps(context) {
-  const cookies = context.req.headers.cookie
-  const auth = cookies
-    .split('; ')
-    .find(row => row.startsWith('auth'))
-    .split('=')[1]
-
-  if (auth === 'admin-false' || auth === 'client-false') {
-    context.res.writeHead(302, { Location: '/login' })
-    context.res.end()
-  }
-
-  return {
-    props: {
-      isAuthenticated: true
-    }
-  }
+  return checkAuth(context)
 }

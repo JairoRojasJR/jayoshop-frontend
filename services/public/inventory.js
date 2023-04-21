@@ -14,9 +14,14 @@ export const getMostPopularsProducts = async () => {
   return req.json()
 }
 
-export const getProducts = async (section, setState) => {
+export const getProducts = async (query, setState) => {
   let url = `${pathInventory}/products`
-  if (section) url += `?section=${section}`
+  if (query) {
+    url += '?'
+    for (const index in query) {
+      url += `${index}=${query[index]}`
+    }
+  }
   const req = await fetch(url)
   const products = await req.json()
   if (setState) return setState(products)

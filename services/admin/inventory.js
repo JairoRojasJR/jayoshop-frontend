@@ -70,3 +70,33 @@ export const deleteProduct = async product => {
   const req = await fetch(pathProducts, options)
   return await req.json()
 }
+
+export const invoiceProduct = async products => {
+  const url = `${pathInventory}/seller`
+  const options = { ...optionsFetching }
+  options.method = 'PUT'
+  options.headers = { 'Content-Type': 'application/json' }
+  options.body = JSON.stringify(products)
+  const req = await fetch(url, options)
+  return await req.json()
+}
+
+// Check Authentication
+export const checkAuth = context => {
+  const cookies = context.req.headers.cookie
+  const auth = cookies
+    .split('; ')
+    .find(row => row.startsWith('auth'))
+    .split('=')[1]
+
+  if (auth === 'admin-false' || auth === 'client-false') {
+    context.res.writeHead(302, { Location: '/login' })
+    context.res.end()
+  }
+
+  return {
+    props: {
+      isAuthenticated: true
+    }
+  }
+}
