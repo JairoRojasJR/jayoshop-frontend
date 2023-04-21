@@ -87,7 +87,9 @@ export default function Inventory() {
     )
   }
 
-  const plusOut = () => <SubNav sections={sections} />
+  const plusOut = () => (
+    <SubNav sections={sections} pathBrowsing='/admin/inventario' />
+  )
 
   return (
     <Layout>

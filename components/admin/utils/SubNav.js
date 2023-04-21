@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { nanoid } from 'nanoid'
 
-export default function SubNav({ sections }) {
+export default function SubNav({ sections, pathBrowsing }) {
   const router = useRouter()
   const outputSections = [{ name: 'Todo' }, ...sections]
   const linksContainerRef = useRef(null)
@@ -21,10 +21,10 @@ export default function SubNav({ sections }) {
 
   return (
     <nav className='bcP'>
-      <ul ref={linksContainerRef} className='w100p df jcse pgS owA'>
+      <ul ref={linksContainerRef} className='w100p df jcse gpS pgS owA'>
         {outputSections.map(section => {
           const { name } = section
-          let href = '/admin/inventario'
+          let href = pathBrowsing
           if (name !== 'Todo') href += `?section=${section.name}`
 
           let className = 'bcDp lsn pgM brS'
@@ -36,8 +36,10 @@ export default function SubNav({ sections }) {
           if (isCurrentSection) className += ' bcTurq crD'
 
           return (
-            <li key={nanoid(10)} className={className}>
-              <Link href={href}>{name}</Link>
+            <li key={nanoid(10)} className='df'>
+              <Link href={href} className={className}>
+                {name}
+              </Link>
             </li>
           )
         })}
@@ -55,5 +57,6 @@ export default function SubNav({ sections }) {
 }
 
 SubNav.propTypes = {
-  sections: PropTypes.array.isRequired
+  sections: PropTypes.array.isRequired,
+  pathBrowsing: PropTypes.string.isRequired
 }
