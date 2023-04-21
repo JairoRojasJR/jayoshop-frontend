@@ -21,7 +21,7 @@ export default function Vender() {
     e.preventDefault()
     const form = e.target
     const data = Object.fromEntries(new FormData(form))
-    if (!globalThis.isProdMode) form.reset()
+    if (globalThis.isProdMode) form.reset()
 
     const product = await getProducts({ barcode: data.barcode })
 
