@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
 import Router from 'next/router'
 import Head from 'next/head'
+import { useEffect } from 'react'
 import { useIsAuthContext } from '@/context/isAuth'
 import Layout from '@/components/global/Layout'
+import { login } from '@/services/public/auth'
 import { jtoast } from '@/packages/jtoast/Jtoast'
 import { nanoid } from 'nanoid'
-import { useEffect } from 'react'
-import Cookies from 'js-cookie'
 
 function SectionForm({ label, name, type, placeholder }) {
   return (
@@ -37,33 +37,21 @@ export default function Login() {
   const { isAdminAuthenticated, isAuthenticated } = isAuthContext
   const redirecting = isAdminAuthenticated || isAuthenticated
 
-  const login = async e => {
+  const handleSubmit = async e => {
     e.preventDefault()
-    const url = `${globalThis.backendUrl}/api/auth/login`
     const form = e.target
     const formData = Object.fromEntries(new FormData(form))
 
-    const req = await fetch(url, {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData)
+    const runLogin = async () => {
+      const authData = await login(formData)
+      setIsAuthContext(authData)
+    }
+
+    jtoast('Iniciando sesión', {
+      isAsync: true,
+      callback: runLogin,
+      onSuccess: 'Sesión iniciada'
     })
-
-    const res = await req.json()
-    if (res.error) return jtoast(res.error)
-
-    const { authData } = res
-    const { rol, isAuthenticated } = authData
-    const expires = 365 * 100
-
-    Cookies.set('auth', `${rol}-${isAuthenticated}`, {
-      sameSite: 'strict',
-      expires
-    })
-
-    setIsAuthContext(authData)
-    jtoast(res.message)
   }
 
   useEffect(() => {
@@ -81,7 +69,10 @@ export default function Login() {
           <>
             <div className='df fdc gpLX pgLX'>
               <h1>Login</h1>
-              <form className='df fdc aic pgL brM gpL bcS crP' onSubmit={login}>
+              <form
+                className='df fdc aic pgL brM gpL bcS crP'
+                onSubmit={handleSubmit}
+              >
                 <SectionForm
                   label='Usuario'
                   name='username'

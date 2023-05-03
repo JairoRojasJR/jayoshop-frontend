@@ -6,9 +6,9 @@ import Image from 'next/image'
 import { useIsAuthContext } from '@/context/isAuth'
 import { runTransition } from '@/services/public/utils/transition'
 import { switchTheme } from '@/services/public/utils/themes'
+import { logout } from '@/services/public/auth'
 import { jtoast } from '@/packages/jtoast/Jtoast'
 import { debounce } from 'lodash'
-import Cookies from 'js-cookie'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
@@ -59,25 +59,18 @@ export default function Nav() {
     runTransition(transitions, toggle).then(() => setStatusMenu(newStatus))
   }
 
-  const logout = async () => {
-    const backend = process.env.NEXT_PUBLIC_BACKEND_URL
-    const url = `${backend}/api/auth/logout`
-    const req = await fetch(url, { credentials: 'include' })
-    const res = await req.json()
+  const handleClickLogoutBtn = async () => {
+    const runLogout = async () => {
+      const authData = await logout()
+      setIsAuthContext(authData)
+      return Router.push('/login')
+    }
 
-    if (res.error) return jtoast(res.error)
-    const { authData } = res
-    const { rol, isAuthenticated } = authData
-    const expires = 365 * 100
-
-    Cookies.set('auth', `${rol}-${isAuthenticated}`, {
-      sameSite: 'strict',
-      expires
+    jtoast('Cerrando sesión', {
+      isAsync: true,
+      callback: runLogout,
+      onSuccess: 'Sesión cerrada'
     })
-
-    setIsAuthContext(res.authData)
-    jtoast(res.message)
-    return Router.push('/login')
   }
 
   const handleWindowResize = debounce(() => {
@@ -231,7 +224,7 @@ export default function Nav() {
                 <NavOption
                   icon={solid('arrow-right-from-bracket')}
                   isButton={true}
-                  run={logout}
+                  run={handleClickLogoutBtn}
                 />
               ) : null}
               <NavOption

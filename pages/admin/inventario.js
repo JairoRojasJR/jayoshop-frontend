@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import { useIsAuthContext } from '@/context/isAuth'
 import Layout from '@/components/global/Layout'
 import Adminlayout from '@/components/admin/main/AdminLayout'
 import PlusNavLayout from '@/components/admin/main/PlusNavLayout'
@@ -15,6 +16,7 @@ import { checkAuth, deleteProduct } from '@/services/admin/inventory'
 
 export default function Inventory() {
   const router = useRouter()
+  const { isAuthContext } = useIsAuthContext()
   const [sections, setSections] = useState([])
   const [products, setProducts] = useState([])
   const [currentSection, setCurrentSection] = useState('')
@@ -58,11 +60,13 @@ export default function Inventory() {
     const query = router.query
     const section = query.section !== undefined ? query.section : 'Todo'
     if (selecteds.length > 1) setSelecteds([])
-    setCurrentSection(section || 'Todo')
-    getSections(setSections)
-    getProducts({ section }, setProducts)
+    if (isAuthContext !== false) {
+      setCurrentSection(section || 'Todo')
+      getSections(setSections)
+      getProducts({ section }, setProducts)
+    }
     finishedRouter = true
-  }, [router])
+  }, [router, isAuthContext])
 
   // Html content required
   const plusIn = () => {
@@ -96,38 +100,40 @@ export default function Inventory() {
       <Head>
         <title>Admin - Inventario</title>
       </Head>
-      <Adminlayout plusIn={plusIn()} plusOut={plusOut()}>
-        <section className='df fdc gpM'>
-          {products.map(product => (
-            <CardProduct
-              key={`inventarioCardProduct-${product._id}`}
-              data={product}
-              action={action}
-              selecteds={selecteds}
-              setSelecteds={setSelecteds}
-              reloadProducts={reloadProducts}
-              showSection={currentSection === 'Todo'}
-            />
-          ))}
-        </section>
-        {products.length > 0 ? (
-          <section
-            className='actions w100p pf lf0 bm0'
-            style={{
-              minWidth: 'var(--minWDisplay)',
-              padding: '0 var(--remLX)',
-              zIndex: 50
-            }}
-          >
-            <Actions
-              selected={action}
-              updateSelected={updateActionSelected}
-              isMultiTrashReady={selecteds.length > 1}
-              runMultiTrash={runMultiTrashProducts}
-            />
+      {isAuthContext !== false && isAuthContext.isAdminAuthenticated ? (
+        <Adminlayout plusIn={plusIn()} plusOut={plusOut()}>
+          <section className='df fdc gpM'>
+            {products.map(product => (
+              <CardProduct
+                key={`inventarioCardProduct-${product._id}`}
+                data={product}
+                action={action}
+                selecteds={selecteds}
+                setSelecteds={setSelecteds}
+                reloadProducts={reloadProducts}
+                showSection={currentSection === 'Todo'}
+              />
+            ))}
           </section>
-        ) : null}
-      </Adminlayout>
+          {products.length > 0 ? (
+            <section
+              className='actions w100p pf lf0 bm0'
+              style={{
+                minWidth: 'var(--minWDisplay)',
+                padding: '0 var(--remLX)',
+                zIndex: 50
+              }}
+            >
+              <Actions
+                selected={action}
+                updateSelected={updateActionSelected}
+                isMultiTrashReady={selecteds.length > 1}
+                runMultiTrash={runMultiTrashProducts}
+              />
+            </section>
+          ) : null}
+        </Adminlayout>
+      ) : null}
     </Layout>
   )
 }

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useIsAuthContext } from '@/context/isAuth'
 import Layout from '@/components/global/Layout'
 import SectionCard from '@/components/utils/CardSection'
 import {
@@ -9,12 +10,13 @@ import {
   getMostPopularsProducts
 } from '@/services/public/inventory'
 import { jtoast } from '@/packages/jtoast/Jtoast'
+import { nanoid } from 'nanoid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
-import { nanoid } from 'nanoid'
 import styles from '@/styles/Home.module.css'
 
 export default function Home() {
+  const { isAuthContext } = useIsAuthContext()
   const [vh, setVh] = useState(0)
   const [heightNav, setHeightNav] = useState(0)
   const [mostPopulars, setMostPopulars] = useState([])
@@ -25,18 +27,26 @@ export default function Home() {
     return jtoast(msg, { duration: 8000 })
   }
 
+  let finished = false
   useEffect(() => {
-    const navHTML = globalThis.navMainHTML
-    setHeightNav(navHTML.clientHeight)
-    setVh(window.innerHeight)
-
-    getMostPopularsProducts()
-      .then(products => setMostPopulars(products))
-      .catch(error => runNotificationOnError(error, 'los productos'))
-    getSections()
-      .then(sections => setSections(sections))
-      .catch(error => runNotificationOnError(error, 'las secciones'))
+    if (finished === false) {
+      const navHTML = globalThis.navMainHTML
+      setHeightNav(navHTML.clientHeight)
+      setVh(window.innerHeight)
+      finished = true
+    }
   }, [])
+
+  useEffect(() => {
+    if (isAuthContext !== false) {
+      getMostPopularsProducts()
+        .then(products => setMostPopulars(products))
+        .catch(error => runNotificationOnError(error, 'los productos'))
+      getSections()
+        .then(sections => setSections(sections))
+        .catch(error => runNotificationOnError(error, 'las secciones'))
+    }
+  }, [isAuthContext])
 
   return (
     <>
