@@ -62,7 +62,7 @@ export default function Login() {
   return (
     <>
       <Head>
-        <title>Login - La Veci</title>
+        <title>Login - JayoShop</title>
       </Head>
       <Layout>
         {isAuthContext && !redirecting ? (

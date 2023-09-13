@@ -160,9 +160,9 @@ export default function Nav() {
             src='/tienda.png'
             width={50}
             height={50}
-            alt='tienda del barrio la veci'
+            alt='JayoShop'
           />
-          <span className='fwB fsI'>LA VECI</span>
+          <span className='fwB fsI'>JayoShop</span>
         </Link>
       </section>
       {menuAvailable ? (

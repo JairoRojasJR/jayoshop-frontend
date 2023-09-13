@@ -51,7 +51,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Tienda del Barrio La veci</title>
+        <title>JayoShop</title>
         <meta
           name='description'
           content='Tienda del barrio, todo lo que puedas necesitar en la tienda del barrio San Francisco Machala'
@@ -63,7 +63,7 @@ export default function Home() {
             <section style={{ paddingRight: 'var(--remX)' }}>
               <h1 style={{ fontSize: '2.5rem' }}>
                 Tienda del barrio San Francisco{' '}
-                <span className={`${styles.title} tsCF`}>La veci</span>
+                <span className={`${styles.title} tsCF`}>JayoShop</span>
               </h1>
             </section>
             <section className='pr fg1'>
@@ -93,8 +93,7 @@ export default function Home() {
                 style={{ paddingRight: 'var(--remX)', zIndex: '150' }}
               >
                 <p className={`${styles.coverDesc} bcDp crDs pgL brM`}>
-                  Todos los productos que necesitas y/o deseas aqui en tu tienda
-                  del barrio La veci
+                  Todos los productos que necesitas y/o deseas aqui en JayoShop
                 </p>
                 <Link href='/productos'>
                   <button className={`${styles.coverCta} pgL brM crDp cp fwB`}>
