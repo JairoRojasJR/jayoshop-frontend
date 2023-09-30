@@ -16,6 +16,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  color: var(--darksecondary);
 }
 
 .customForm input,
@@ -24,6 +25,11 @@
   padding: var(--remS);
   border: none;
   outline: none;
+  color: var(--dark);
+}
+
+.customForm input[type='file'] {
+  color: var(--darksecondary);
 }
 
 .customForm textarea {
