@@ -27,3 +27,6 @@
 
 # vercel
 .vercel
+
+# typescript
+tsconfig.tsbuildinfo
