@@ -61,7 +61,7 @@ export default function Home(): JSX.Element {
         <title>JayoShop</title>
         <meta
           name='description'
-          content='Tienda del barrio, todo lo que puedas necesitar en la tienda del barrio San Francisco Machala'
+          content='Tienda del barrio, todo lo que puedas necesitar en la tienda del barrio Machala'
         />
       </Head>
       <Layout>
@@ -73,7 +73,7 @@ export default function Home(): JSX.Element {
               }}
             >
               <h1 style={{ fontSize: '2.5rem' }}>
-                Tienda del barrio San Francisco{' '}
+                Tienda del barrio{' '}
                 <span className={`${styles.title} tsCF`}>JayoShop</span>
               </h1>
             </section>
@@ -202,26 +202,6 @@ export default function Home(): JSX.Element {
                 <SectionCard key={nanoid(5)} data={section} />
               ))}
             </div>
-          </section>
-          <section>
-            <article className='df aic fdc gpL'>
-              <h3 className='tac'>Ubicación</h3>
-              <p>
-                Estamos ubicados al sur de Machala, barrio San Francisco.
-                Referencia: desde la casa comunal de San Francisco 2 cuadras,
-                casi en toda la esquina llegando a la camaronera. El nombre del
-                local es (...)
-              </p>
-              {/* <div className='w100p brM owH'>
-                <iframe
-                  className={`${styles.mapge} w100p`}
-                  src='/maps.html'
-                  loading='lazy'
-                  allowFullScreen
-                  referrerPolicy='no-referrer-when-downgrade'
-                />
-              </div> */}
-            </article>
           </section>
         </main>
       </Layout>
