@@ -117,38 +117,35 @@ export default function Vender(): JSX.Element {
       </Head>
       {isAuthContext.serverStatus === 'connected' ? (
         <AdminLayout onChangeSubNavTop={fixTopStickyHeadTable}>
-          <div
-            className='brS df fdc gpLX'
-            style={{ border: 'var(--remS) solid var(--darkprimary)' }}
-          >
+          <div className='mx-auto flex w-full max-w-[400px] flex-col rounded-md border-4 border-solid border-dark-300'>
             <form
               id='billing'
-              className='df fdc gpM bcDp brS pgM aic'
+              className='flex flex-col items-center gap-2 border-b-2 border-dark-300 bg-light-200 p-2 dark:bg-dark-200'
               onSubmit={e => {
                 addToInvoice(e).catch((e: Error) => {
                   console.log(e.message)
                 })
               }}
             >
-              <label className='cp' htmlFor='barcode'>
+              <label className='cursor-pointer' htmlFor='barcode'>
                 Código de barras
               </label>
               <input
                 id='barcode'
-                className='pgM brS crD'
+                className='rounded-md bg-dark-200 p-2 text-light-200 focus:shadow-skyblue focus:outline-none dark:bg-light-200 dark:text-dark-200'
                 name='barcode'
                 placeholder='Click aquí y escanear'
                 type='number'
               />
             </form>
             {productsBilling.length === 0 ? (
-              <section className='bcDp df fdc aic gpM pgM'>
+              <section className='flex flex-col items-center gap-2 bg-light-200 p-2 dark:bg-dark-200'>
                 <span>
                   👆Haga clic en la entrada anterior y escaneé el código de
                   barras de un producto para agregarlo a la facturación
                 </span>
                 <Image
-                  className='brS'
+                  className='rounded-md'
                   alt='lector de codigo de barras'
                   src='/lector-de-codigo-de-barras.jpg'
                   width={100}
@@ -156,131 +153,102 @@ export default function Vender(): JSX.Element {
                 />
               </section>
             ) : (
-              <table cellSpacing={0} className='bcDp pgM brS'>
-                <thead
-                  className='bcDp psy brS'
-                  style={{
-                    top: `${topStickyHeadTable}px`,
-                    transition: 'top var(--timeFlash)',
-                    zIndex: 50
-                  }}
+              <>
+                <table
+                  cellSpacing={0}
+                  className='rounded-md bg-light-200 p-4 dark:bg-dark-200'
                 >
-                  <tr>
-                    <th colSpan={2} />
-                    <th className='lineTable'>Precio</th>
-                    <th className='lineTable'>Cant.</th>
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {productsBilling.map(product => {
-                    const { _id, name, image, price } = product.data
-                    const { cuantity } = product
-                    const streamProductImage = `${globalThis.streamImage}/${image}`
+                  <thead
+                    className='sticky z-50 rounded-md bg-light-200 transition-all duration-300 dark:bg-dark-200'
+                    style={{
+                      top: `${topStickyHeadTable}px`
+                    }}
+                  >
+                    <tr>
+                      <th colSpan={2} />
+                      <th>Precio</th>
+                      <th>Cant.</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {productsBilling.map(product => {
+                      const { _id, name, image, price } = product.data
+                      const { cuantity } = product
+                      const streamProductImage = `${globalThis.streamImage}/${image}`
 
-                    return (
-                      <Fragment key={`venderFragment-${_id}`}>
-                        <tr style={{ textAlign: 'left' }}>
-                          <td colSpan={5}>
-                            <div className='bcP h100p df aic gpM pgM brS'>
-                              <span className='productImageContainer pr'>
-                                <Image
-                                  className='brS owH ofCr'
-                                  alt={name}
-                                  loader={data =>
-                                    `${streamProductImage}?width=${data.width}`
-                                  }
-                                  src={streamProductImage}
-                                  fill
-                                  sizes={`
+                      return (
+                        <Fragment key={`venderFragment-${_id}`}>
+                          <tr>
+                            <td className='px-2' colSpan={5}>
+                              <div className='grid aspect-[12/5] w-full grid-cols-[30%_1fr] items-center gap-2 rounded-md bg-dark-300 p-2'>
+                                <div className='relative size-full'>
+                                  <Image
+                                    className='rounded-md object-cover'
+                                    alt={name}
+                                    loader={data =>
+                                      `${streamProductImage}?width=${data.width}`
+                                    }
+                                    src={streamProductImage}
+                                    fill
+                                    sizes={`
                                   (max-width: 768px) 100vw,
                                   (max-width: 1200px) 50vw,
                                   33vw
                                 `}
-                                />
-                              </span>
-                              <span>{name}</span>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td colSpan={2} style={{ width: '30%' }} />
-                          <td className='lineTable'>{price}$</td>
-                          <td className='lineTable'>
-                            x{cuantity} / {product.data.cuantity}
-                          </td>
-                          <td>{(price * cuantity).toFixed(2)}$</td>
-                        </tr>
-                      </Fragment>
-                    )
-                  })}
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <td colSpan={5} style={{ paddingTop: 'var(--remM)' }}>
-                      <div className='bcP pgM df aic jcfe'>
-                        <span
-                          className='pgM brS'
-                          style={{
-                            border: 'var(--remS) solid var(--darkprimary)'
-                          }}
-                        >
-                          Total a pagar
-                        </span>
-                        <span className='bcDp pgM brS'>
-                          {totalPayable.toFixed(2)}$
-                        </span>
-                      </div>
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
+                                  />
+                                </div>
+                                <span className='text-light-200'>{name}</span>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr className='text-right'>
+                            <td colSpan={2} style={{ width: '30%' }} />
+                            <td>{price}$</td>
+                            <td className='border-l-4 border-dark-300'>
+                              x{cuantity} / {product.data.cuantity}
+                            </td>
+                            <td className='border-l-4 border-dark-300 pr-2'>
+                              {(price * cuantity).toFixed(2)}$
+                            </td>
+                          </tr>
+                        </Fragment>
+                      )
+                    })}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td className='bg-dark-300 p-2' colSpan={5}>
+                        <div className='flex items-center justify-end bg-dark-300'>
+                          <div className='rounded-md bg-dark-200 px-4 py-2 text-light-200'>
+                            <span className='rounded-md p-2'>
+                              Total a pagar:
+                            </span>
+                            <span className='rounded-md text-turquoise'>
+                              {totalPayable.toFixed(2)}$
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+                <section className='rounded-md bg-light-200 p-2 text-center dark:bg-dark-200'>
+                  <button
+                    type='submit'
+                    className='cursor-pointer rounded-md bg-turquoise px-4 py-2 text-dark-200 transition duration-300 hover:scale-105 hover:shadow-skyviolet'
+                    onClick={e => {
+                      sendToInvoice(e).catch((e: Error) => {
+                        console.log(e.message)
+                      })
+                    }}
+                  >
+                    Facturar
+                  </button>
+                </section>
+              </>
             )}
-            <section className='bcDp brS pgM tac'>
-              <button
-                type='submit'
-                className='bcTurq brS crDp cp'
-                style={{ padding: 'var(--remM) var(--remL)' }}
-                onClick={e => {
-                  sendToInvoice(e).catch((e: Error) => {
-                    console.log(e.message)
-                  })
-                }}
-              >
-                Facturar
-              </button>
-            </section>
           </div>
-          <style jsx>{`
-            input:focus {
-              box-shadow:
-                -0.1rem -0.1rem 0.3rem var(--sky-blue),
-                0.1rem 0.1rem 0.3rem var(--sky-blue);
-            }
-
-            th {
-              padding: var(--remM) var(--remS);
-            }
-
-            td {
-              padding: 0 var(--remS);
-            }
-
-            .lineTable {
-              border-right: var(--remS) solid var(--primary);
-            }
-
-            th,
-            tr {
-              text-align: right;
-            }
-
-            .productImageContainer {
-              minwidth: calc(var(--ar16) / 3);
-              width: calc(var(--ar16) / 3);
-              height: calc(var(--ar9) / 3);
-            }
-          `}</style>
         </AdminLayout>
       ) : null}
     </Layout>

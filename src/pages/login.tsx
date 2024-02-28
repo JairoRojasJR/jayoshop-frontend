@@ -23,12 +23,15 @@ function SectionForm({
   placeholder
 }: PropsSectionForm): JSX.Element {
   return (
-    <section key={nanoid(5)} className='w100p df fdc gpM'>
-      <label className='cp pgS bcDs crDp brM' htmlFor='username'>
+    <section key={nanoid(5)} className='flex w-full flex-col gap-2'>
+      <label
+        className='cursor-pointer rounded-lg p-1 text-light-200 dark:text-dark-200'
+        htmlFor='username'
+      >
         {label}
       </label>
       <input
-        className='pgM brM crD'
+        className='rounded-lg p-2 text-dark-100 focus:shadow-skyviolet focus:outline-none'
         id={name}
         name={name}
         type={type}
@@ -84,10 +87,12 @@ export default function Login(): JSX.Element {
       <Layout>
         {isAuthContext.serverStatus !== 'connecting' && !redirecting ? (
           <>
-            <div className='df fdc gpLX pgLX'>
-              <h1>Login</h1>
+            <div className='flex flex-col gap-8 p-8'>
+              <h1 className='mx-auto text-3xl uppercase drop-shadow-skyblue'>
+                Login
+              </h1>
               <form
-                className='df fdc aic pgL brM gpL bcS'
+                className='mx-auto flex w-full max-w-[500px] flex-col gap-4 rounded-lg bg-dark-100 p-4 dark:bg-light-100'
                 onSubmit={handleSubmit}
               >
                 <SectionForm
@@ -102,31 +107,12 @@ export default function Login(): JSX.Element {
                   placeholder='Introduzca su contraseña'
                 />
                 <input
-                  className='brS bcDp crDs cp'
-                  style={{ padding: 'var(--remM) var(--remL)' }}
+                  className='cursor-pointer self-start rounded-md bg-light-200 px-16 py-2 text-dark-200 transition duration-300 ease-in-out hover:shadow-skyblue dark:bg-dark-200 dark:text-light-200'
                   type='submit'
                   value='Entrar'
                 />
               </form>
             </div>
-            <style jsx>{`
-              input:focus {
-                outline: var(--remS) solid var(--darkprimary);
-              }
-
-              input[type='submit'] {
-                transition: box-shadow var(--timeFlash);
-                box-shadow:
-                  -0.1rem -0.1rem 0.1rem var(--sky-violet),
-                  0.1rem 0.1rem 0.1rem var(--sky-blue);
-              }
-
-              input[type='submit']:hover {
-                box-shadow:
-                  -0.2rem -0.2rem 0.2rem var(--sky-violet),
-                  0.2rem 0.2rem 0.2rem var(--sky-blue);
-              }
-            `}</style>
           </>
         ) : (
           <></>

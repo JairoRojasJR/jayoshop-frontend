@@ -2,7 +2,6 @@ import { IsAuthContextProvider } from '@/context/isAuth'
 import Modal from '@/components/global/Modal'
 import JToast from '@/packages/jtoast/Jtoast'
 import '@/styles/globals.css'
-import '@/styles/normalize.css'
 import type { AppProps } from 'next/app'
 
 globalThis.isProdMode = process.env.NEXT_PUBLIC_MODE === 'prod'

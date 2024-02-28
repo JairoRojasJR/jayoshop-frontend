@@ -1,6 +1,5 @@
 import { nanoid } from 'nanoid'
 import type { Product } from '@/types'
-import type { CSSProperties } from 'react'
 
 type Props = {
   data?: Product
@@ -27,20 +26,28 @@ export default function FieldsProducts({
     type
   }: FieldProps): JSX.Element => {
     const id = name + nanoid(5)
-    const style: CSSProperties = span === true ? { gridColumn: 'span 2' } : {}
     const defaultAvailable = data !== undefined && type !== 'file'
     const defaultValue = defaultAvailable ? data[name] : undefined
 
     return (
-      <section className='df fdc' style={style}>
-        <label className='cp' htmlFor={id}>
+      <section
+        className={`flex flex-col gap-1 p-1 ${
+          span === true ? 'col-span-2' : ''
+        }`}
+      >
+        <label
+          className='line-clamp-1 cursor-pointer rounded-md bg-skyblue px-2 py-1 font-bold text-dark-200'
+          htmlFor={id}
+        >
           {label}
         </label>
         {isTextArea !== true ? (
           <input
             id={id}
             name={name}
-            className='crD'
+            className={`rounded-md px-2 py-1 text-dark-200 ${
+              type === 'file' ? 'bg-light-200' : ''
+            }`}
             type={type}
             defaultValue={defaultValue}
             onChange={setChange}
@@ -49,7 +56,7 @@ export default function FieldsProducts({
           <textarea
             id={id}
             name={name}
-            className='crD'
+            className='rounded-md px-2 py-1 text-dark-200'
             defaultValue={defaultValue}
             onChange={setChange}
           ></textarea>

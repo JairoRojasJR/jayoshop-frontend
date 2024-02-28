@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { runTransition } from '@/services/public/utils/transition'
 import { nanoid } from 'nanoid'
 import ArrowUp from '@/svg/Arrow-up'
-import styles from '@/styles/AdminLayout.module.css'
 import type { Toggle, Transitions } from '@/types'
 
 type Props = {
@@ -117,22 +116,27 @@ export default function AdminLayout({
     <>
       <header
         ref={headerAdminRef}
-        className={`${styles.adminHeader} w100p pf lf0 df fdc`}
+        className='fixed left-0 z-[900] flex w-full min-w-[350px] flex-col px-8 transition-all duration-300'
       >
-        <div className='pr'>
+        <div className='relative m-auto w-full max-w-[600px]'>
           <section
             ref={adminNavRef}
-            className={`${styles.adminNav} df fdc aic pgM pr bcP gpL`}
+            className='relative flex flex-col items-center rounded-b-none border-4 border-t-0 border-solid border-dark-300 bg-light-200 dark:bg-dark-200'
           >
-            <nav className='w100p bcP'>
-              <ul className='df jcc gpL lsn'>
+            <nav className='w-full p-2'>
+              <ul className='flex list-none justify-center gap-4'>
                 {pages.map(page => {
-                  let className = `${styles.linkPage} brS pgM tac cp bcD crL`
+                  let className = `rounded-md p-2 text-center cursor-pointer transition duration-300`
                   const isCurrentPage = currentAdminPage === page
-                  if (isCurrentPage) className += ` ${styles.linkPageSelected}`
+                  if (isCurrentPage) {
+                    className += ` bg-gradient-to-r from-skyviolet to-skyblue text-dark-200`
+                  } else {
+                    className +=
+                      ' bg-dark-100 text-light-200 hover:bg-skyviolet transition duration-300 hover:scale-105'
+                  }
 
                   return (
-                    <li key={nanoid(10)} className='df'>
+                    <li key={nanoid(10)} className='flex'>
                       <Link href={`/admin/${page}`} className={className}>
                         {page.charAt(0).toUpperCase() + page.slice(1)}
                       </Link>
@@ -144,28 +148,23 @@ export default function AdminLayout({
             {plusIn}
             <button
               ref={switchAdminNavRef}
-              className={`${styles.switchAdminNav} df aic jcc pa cp`}
-              style={{
-                border: 'var(--remS) solid var(--darksecondary)',
-                background: 'var(--darkprimary)'
-              }}
+              className='absolute -bottom-5 -right-5 flex size-10 cursor-pointer items-center justify-center rounded-full border-4 border-solid border-dark-300 bg-light-100 text-sm transition duration-300 dark:bg-dark-100'
               onClick={() => {
                 switchAdminNav()
               }}
             >
-              <ArrowUp stroke='var(--darksecondary)' />
+              <ArrowUp className='stroke-dark-200 stroke-[4] dark:stroke-light-200' />
             </button>
           </section>
           <section>{plusOut}</section>
         </div>
       </header>
-      <main
+      <section
         ref={mainRef}
-        className='pgLX df fdc gpLX'
-        style={{ transition: 'margin var(--timeFlash)' }}
+        className='flex flex-col gap-8 p-8 transition-all duration-300'
       >
         {children}
-      </main>
+      </section>
     </>
   )
 }

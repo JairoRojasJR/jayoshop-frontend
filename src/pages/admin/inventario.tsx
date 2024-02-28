@@ -134,7 +134,7 @@ export default function Inventory(): JSX.Element {
       {isAuthContext.serverStatus === 'connected' &&
       isAuthContext.isAdminAuthenticated ? (
         <Adminlayout plusIn={plusIn()} plusOut={plusOut()}>
-          <section className='df fdc gpM'>
+          <section className='flex flex-col gap-2 min-[500px]:grid min-[500px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
             {products.map(product => (
               <CardProduct
                 key={`inventarioCardProduct-${product._id}`}
@@ -148,14 +148,7 @@ export default function Inventory(): JSX.Element {
             ))}
           </section>
           {products.length > 0 ? (
-            <section
-              className='actions w100p pf lf0 bm0'
-              style={{
-                minWidth: 'var(--minWDisplay)',
-                padding: '0 var(--remLX)',
-                zIndex: 50
-              }}
-            >
+            <section className='fixed bottom-0 left-0 z-50 w-full min-w-[350px] px-8'>
               <Actions
                 selected={action}
                 updateSelected={updateActionSelected}

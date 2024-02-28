@@ -66,7 +66,7 @@ export default function Nav(): React.ReactElement {
         element: menu,
         properties: {
           from: { transform: 'translateX(100vw)' },
-          to: { transform: 'translateX(0)' }
+          to: { transform: 'translateX(0vw)' }
         }
       }
     ]
@@ -110,7 +110,7 @@ export default function Nav(): React.ReactElement {
   }, [])
 
   useEffect(() => {
-    const maxWidthToMenu = 500
+    const maxWidthToMenu = 750
     const turnOff = windowWidth > maxWidthToMenu && statusMenu === 'open'
     const turnOn = windowWidth < maxWidthToMenu && statusMenu === 'unavailable'
 
@@ -121,18 +121,20 @@ export default function Nav(): React.ReactElement {
 
   // Html content required
   const menuContainerClassName = (): string => {
-    const onMenuAvailable = 'pf tp0 lf0 w100p h100p owxA menuContainer'
-    return `df gpM lsN ${menuAvailable ? onMenuAvailable : ''}`
+    const onMenuAvailable =
+      'fixed top-0 left-0 w-full h-full overflow-x-auto translate-x-full transition duration-500'
+    return `df gap-2 list-none ${menuAvailable ? onMenuAvailable : ''}`
   }
 
   const divMenuContainerClassName = (): string => {
-    const onMenuAvailable = 'w100p h100p df jcfe minWD'
-    return `df gpM lsN ${menuAvailable ? onMenuAvailable : ''}`
+    const onMenuAvailable = 'w-full h-full flex justify-end min-w-[350px]'
+    return `flex gap-2 list-none ${menuAvailable ? onMenuAvailable : ''}`
   }
 
   const menuClassName = (): string => {
-    const onMenuAvailable = 'fdc h100p tp0 rt0 bcBgp owA crL menu'
-    return `df gpM lsN ${menuAvailable ? onMenuAvailable : ''}`
+    const onMenuAvailable =
+      'flex-col h-full top-0 right-0 bg-dark-300 dark:bg-dark-100 overflow-auto text-light-100 w-[60vw] z-40 min-w-[200px]'
+    return `flex gap-2 list-none ${menuAvailable ? onMenuAvailable : ''}`
   }
 
   const hrefUser = (): string => {
@@ -143,7 +145,7 @@ export default function Nav(): React.ReactElement {
 
   // Component required
   type NavOptionsProps = {
-    children: string
+    children?: string
     Icon: React.JSX.ElementType
     href?: string
     isButton?: boolean
@@ -157,13 +159,13 @@ export default function Nav(): React.ReactElement {
     isButton,
     run
   }: NavOptionsProps): JSX.Element {
-    let classNames = 'df aic cp gpM'
+    let classNames = 'flex items-center cursor-pointer gap-2'
     const optionStyles: React.CSSProperties = {
-      fontSize: '1.5rem',
+      fontSize: '1.1rem',
       padding: '.5rem'
     }
     if (menuAvailable) {
-      classNames += ' bcBgs'
+      classNames += ' dark:bg-dark-300 bg-dark-100'
       optionStyles.height = '50px'
     }
 
@@ -185,32 +187,34 @@ export default function Nav(): React.ReactElement {
   }
 
   return (
-    <nav ref={navRef} className='pf w100p df aic jcsb bcDp pgM'>
-      <section
-        className='bcP pgyML pgxL brM'
-        style={{ fontSize: '1.7rem', padding: 'var(--remM) var(--remL)' }}
-      >
-        <Link href='/' className='df aic cp gpM'>
+    <nav
+      ref={navRef}
+      className='fixed z-[1000] flex h-[90px] w-full min-w-[350px] items-center justify-between bg-light-200 p-2 transition duration-300 dark:bg-dark-200'
+    >
+      <section className='rounded-lg bg-light-100 px-5 py-3 text-2xl dark:bg-dark-100'>
+        <Link href='/' className='flex cursor-pointer items-center gap-2'>
           <Image src='/tienda.png' width={50} height={50} alt='JayoShop' />
-          <span className='fwB fsI'>JayoShop</span>
+          <span className='font-bold italic text-dark-200 dark:text-light-200'>
+            JayoShop
+          </span>
         </Link>
       </section>
       {menuAvailable ? (
         <section>
           <button
-            className='cp bcT pgM crS'
+            className='cursor-pointer bg-transparent p-2 text-dark-100 dark:text-light-100'
             style={{ fontSize: '2rem' }}
             onClick={switchMenu}
           >
-            <Bars stroke='var(--darksecondary)' />
+            <Bars />
           </button>
         </section>
       ) : null}
-      <section className={menuAvailable ? 'pf' : ''}>
+      <section className={menuAvailable ? 'fixed' : ''}>
         {menuAvailable ? (
           <article
             ref={menuBackgroundRef}
-            className='pf w100p h100p tp0 lf0 menuBackground invisible'
+            className='invisible fixed left-0 top-0 size-full bg-dark-300 opacity-0 transition duration-500'
           />
         ) : null}
         <article
@@ -223,19 +227,19 @@ export default function Nav(): React.ReactElement {
         >
           <div className={divMenuContainerClassName()}>
             {menuAvailable ? (
-              <section>
-                <button
-                  className='pa w100p h100p tp0 lf0 bcT'
-                  onClick={statusMenu !== 'running' ? switchMenu : () => {}}
-                />
-              </section>
+              <button
+                className='absolute left-0 top-0 size-full bg-transparent'
+                onClick={statusMenu !== 'running' ? switchMenu : () => {}}
+              />
             ) : null}
             <ul className={menuClassName()}>
               {menuAvailable ? (
-                <li className='df aic bcBgs' style={{ height: '90px' }}>
+                <li
+                  className='flex items-center bg-dark-100 dark:bg-dark-300'
+                  style={{ height: '90px' }}
+                >
                   <button
-                    className='cp bcT pgM crS crL'
-                    style={{ fontSize: '2rem', marginLeft: 'var(--remM)' }}
+                    className='ml-2 cursor-pointer bg-transparent p-2 text-4xl text-light-100 dark:text-light-100'
                     onClick={
                       statusMenu !== 'running' && menuAvailable
                         ? switchMenu
@@ -252,12 +256,6 @@ export default function Nav(): React.ReactElement {
               <NavOption href='/productos' Icon={Basket}>
                 Productos
               </NavOption>
-              <NavOption href='/carrito' Icon={ShoppingCar}>
-                Carrito
-              </NavOption>
-              <NavOption href={hrefUser()} Icon={User}>
-                User
-              </NavOption>
               {isAdminAuthenticated ? (
                 <NavOption href='/admin/inventario' Icon={Packages}>
                   Inventario
@@ -268,41 +266,15 @@ export default function Nav(): React.ReactElement {
                   Icon={Logout}
                   isButton={true}
                   run={handleClickLogoutBtn}
-                >
-                  Cerrar sesión
-                </NavOption>
+                />
               ) : null}
-              <NavOption Icon={Sun} isButton={true} run={switchTheme}>
-                Tema
-              </NavOption>
+              <NavOption href={hrefUser()} Icon={User} />
+              <NavOption href='/carrito' Icon={ShoppingCar} />
+              <NavOption Icon={Sun} isButton={true} run={switchTheme} />
             </ul>
           </div>
         </article>
       </section>
-      <style jsx>{`
-        nav {
-          height: 90px;
-          z-index: 1000;
-          min-width: var(--minWDisplay);
-        }
-
-        .menuBackground {
-          background: #000b;
-          opacity: 0;
-          transition: opacity 0.5s;
-        }
-
-        .menuContainer {
-          transform: translateX(100vw);
-          transition: transform 0.5s;
-        }
-
-        .menu {
-          width: 60vw;
-          z-index: 950;
-          min-width: 200px;
-        }
-      `}</style>
     </nav>
   )
 }

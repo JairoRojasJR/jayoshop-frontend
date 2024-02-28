@@ -11,7 +11,6 @@ import {
 } from '@/services/public/inventory'
 import { jtoast } from '@/packages/jtoast/Jtoast'
 import { nanoid } from 'nanoid'
-import styles from '@/styles/Home.module.css'
 import type { Products, Sections } from '@/types'
 import BuildingStore from '@/svg/BuildingStore'
 
@@ -66,31 +65,19 @@ export default function Home(): JSX.Element {
       </Head>
       <Layout>
         <header style={{ height: `${vh - heightNav}px` }}>
-          <div className='df fdc h100p pgLX pr'>
-            <section
-              style={{
-                paddingRight: 'var(--remX)'
-              }}
-            >
-              <h1 style={{ fontSize: '2.5rem' }}>
-                Tienda del barrio{' '}
-                <span className={`${styles.title} tsCF`}>JayoShop</span>
+          <div className='relative flex h-full flex-col p-8'>
+            <section className='pr-12'>
+              <h1 className='text-4xl'>
+                Tienda del barrio <span className='shadow-title'>JayoShop</span>
               </h1>
             </section>
-            <section className='pr fg1'>
-              <article className={`${styles.coverContainer} pa tp0`}>
-                <div className={`${styles.coverDiv} pa h100p`}>
-                  <BuildingStore
-                    stroke='var(--darksecondary)'
-                    className='pa h100p'
-                    style={{
-                      left: '-30vw',
-                      filter: 'drop-shadow(0 0 5px var(--sky-blue))'
-                    }}
-                  />
+            <section className='relative grow'>
+              <article className='absolute top-0 size-full'>
+                <div className='absolute size-full text-sm'>
+                  <BuildingStore className='size-full stroke-dark-200 drop-shadow-skyblue dark:stroke-light-200' />
                   <Image
-                    className={`${styles.coverCEO} ofCn`}
-                    alt='empresaria'
+                    className='object-contain drop-shadow-skyviolet'
+                    alt='empresario'
                     src='/businessmen.png'
                     fill
                     sizes='
@@ -102,61 +89,53 @@ export default function Home(): JSX.Element {
                 </div>
               </article>
             </section>
-            <section className='pr lf0 bm0'>
-              <article
-                className='pa bm0'
-                style={{ paddingRight: 'var(--remX)', zIndex: '150' }}
-              >
-                <p
-                  className={`${styles.coverDesc} bcDp crDs pgL brM`}
-                  style={{
-                    background: 'var(--primary-trans)',
-                    backdropFilter: 'blur(.5rem)'
-                  }}
-                >
-                  Todos los productos que necesitas y/o deseas aqui en JayoShop
+            <section className='relative bottom-0 left-0'>
+              <article className='absolute bottom-0'>
+                <p className='relative  z-20 overflow-hidden rounded-lg p-4  text-lg text-dark-200 backdrop-blur-sm dark:text-light-200'>
+                  <span className='absolute left-0 top-0 size-full bg-light-200 opacity-95 dark:bg-dark-200' />
+                  <span className='relative z-10'>
+                    Todos los productos que necesitas y/o deseas aqui en
+                    JayoShop
+                  </span>
                 </p>
-                <Link href='/productos'>
-                  <button className={`${styles.coverCta} pgL brM crD cp fwB`}>
-                    EMPEZAR A COMPRAR
-                  </button>
+                <Link
+                  className='inline-block cursor-pointer rounded-lg bg-gradient-to-r from-skyviolet to-skyblue p-4 text-xl font-bold text-dark-200 drop-shadow-skyblue transition duration-300 hover:scale-105 hover:drop-shadow-skyviolet'
+                  href='/productos'
+                >
+                  Empezar a comprar
                 </Link>
               </article>
             </section>
           </div>
         </header>
-        <main className='df fdc gpLX pgLX'>
-          <section>
-            <div className='pr df jcc'>
+        <main className='mt-16 flex flex-col gap-16 p-8 md:gap-32'>
+          <section className='flex flex-col gap-16 sm:items-center'>
+            <div className='relative flex justify-center'>
               <Image
-                className='brM'
+                className='rounded-lg'
                 alt='estanteria de productos'
                 src='/estanteria-de-productos.png'
                 width={200}
                 height={200}
               />
-              <h3
-                className='pa crDp rounded-sm p-1'
-                style={{
-                  top: '90%',
-                  left: '30%',
-                  background: 'var(--secondary-trans)',
-                  backdropFilter: '.8rem'
-                }}
-              >
-                Tu portal a cientos de productos
-              </h3>
+              <div className='absolute left-[30%] top-[90%] overflow-hidden rounded-md p-2 text-light-200 backdrop-blur-sm'>
+                <span className='absolute left-0 top-0 size-full bg-dark-200 opacity-60' />
+                <h3 className='relative z-10'>
+                  Tu portal a cientos de productos
+                </h3>
+              </div>
             </div>
-            <p style={{ marginTop: 'var(--remX)' }}>
+            <p className='overflow-hidden rounded-md p-4 text-light-200 backdrop-blur-sm sm:max-w-[80ch]'>
+              <span className='absolute left-0 top-0 -z-10 size-full bg-dark-200 opacity-60' />
               Acceda a toda amplia variedad de productos de todo tipo, productos
               relacionados a la alimentacion (...), la higiene, la limpieza, los
               electrodomesticos, muchas variedades de golosinas, entre muchos
               otros.
             </p>
           </section>
-          <section>
-            <h3 className='tac'>Más populares</h3>
-            <div className={`${styles.mpContainer} dg gpL jcc`}>
+          <section className='flex flex-col gap-3'>
+            <h3 className='shadow-title text-center text-3xl'>Más populares</h3>
+            <div className='grid grid-cols-2 justify-center gap-4 sm:grid-cols-3 md:grid-cols-4'>
               {mostPopulars.map(product => {
                 const { name, image } = product
                 const urlImage = `${globalThis.backendUrl}/api/stream/image/${image}`
@@ -164,13 +143,11 @@ export default function Home(): JSX.Element {
                 return (
                   <article
                     key={nanoid(5)}
-                    className={`${styles.mpCard} df fdc aic gpM`}
+                    className={`flex flex-col items-center gap-2 p-3 `}
                   >
-                    <div
-                      className={`${styles.mpImgContainer} w100p pr brM owH`}
-                    >
+                    <div className='relative aspect-square w-full overflow-hidden rounded-lg shadow-skyBlueViolet'>
                       <Image
-                        className='ofCr'
+                        className='object-cover'
                         alt={name}
                         src={urlImage}
                         loader={data => `${urlImage}?width=${data.width}`}
@@ -182,24 +159,22 @@ export default function Home(): JSX.Element {
                         `}
                       />
                     </div>
-                    <span
-                      className={`${styles.mpProductName} w100p pgS tac toe wsNW owH`}
-                    >
+                    <span className='w-full truncate p-1 text-center'>
                       {product.name}
                     </span>
-                    <button className={`${styles.mpBtnCTA} brS crP bcS cp`}>
-                      COMPRAR
+                    <button className='inline-block cursor-pointer rounded-lg bg-gradient-to-r from-skyviolet to-skyblue p-4 text-xl font-bold text-dark-200 drop-shadow-skyblue transition duration-300 hover:scale-105 hover:drop-shadow-skyviolet'>
+                      Comprar
                     </button>
                   </article>
                 )
               })}
             </div>
           </section>
-          <section>
-            <h3 className='tac'>Secciones</h3>
-            <div className='df fdc gpL'>
+          <section className='flex flex-col gap-3'>
+            <h3 className='shadow-title text-center text-3xl'>Secciones</h3>
+            <div className='flex flex-col gap-8 min-[500px]:grid min-[500px]:grid-cols-2 lg:grid-cols-3'>
               {sections.map(section => (
-                <SectionCard key={nanoid(5)} data={section} />
+                <SectionCard key={nanoid(5)} data={section} link={true} />
               ))}
             </div>
           </section>

@@ -1,70 +1,68 @@
 import type { Section, UpdatingSection } from '@/types'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 type Props = {
   data: Section
   updated?: UpdatingSection
   color?: 'dark' | 'light'
+  link?: boolean
 }
 
 export default function SectionCard({
   data,
   updated,
-  color
+  color,
+  link
 }: Props): JSX.Element {
   const { name, image } = data
+  const router = link === true ? useRouter() : false
 
   const urlImage = (): string => {
     if (image.includes('blob:http')) return image
     else return `${globalThis.backendUrl}/api/stream/image/${image}`
   }
 
-  const styleFieldUpdated = (
-    field: 'name' | 'image'
-  ): React.CSSProperties | undefined => {
-    if (updated === undefined) return
-    const isImageUpdated = field === 'image' && updated[field]
-    if (isImageUpdated) return { outline: 'var(--remS) solid var(--turquoise)' }
-    else if (updated[field]) return { color: 'var(--turquoise)' }
-    return undefined
-  }
-
   return (
-    <article className='pr brL owH cp' style={styleFieldUpdated('image')}>
+    <article
+      className={`relative aspect-video w-full cursor-pointer overflow-hidden rounded-lg transition duration-300 hover:scale-105 ${
+        updated !== undefined && updated.image
+          ? 'outline outline-turquoise'
+          : ''
+      }`}
+      // style={styleFieldUpdated('image')}
+      onClick={() => {
+        if (typeof router !== 'boolean')
+          router.push(`/productos?section=${name}`).catch(e => {
+            console.log(e.message)
+          })
+      }}
+    >
       <Image
-        className='ofCr'
+        className='object-cover'
         alt={name}
         src={urlImage()}
         loader={data => `${urlImage()}?with=${data.width}`}
         fill
       />
       <div
-        className='pa w100p df fFC crDs bm0'
-        style={{
-          color: color === 'dark' ? 'var(--light)' : undefined,
-          ...styleFieldUpdated('name')
-        }}
+        className={`absolute bottom-0 flex h-1/2 w-full items-center justify-center text-dark-200 dark:text-light-200 ${
+          color === 'dark' ? 'bg-dark-200' : ''
+        }`}
       >
         <span
-          className='pa w100p h100p bcDp'
-          style={{
-            background: color === 'dark' ? 'var(--dark)' : undefined,
-            opacity: 0.8
-          }}
+          className={`absolute size-full bg-light-200 opacity-80 dark:bg-dark-200 ${
+            color === 'dark' ? 'bg-dark-200' : ''
+          }`}
         />
-        <span style={{ zIndex: '100' }}>{name}</span>
+        <span
+          className={`z-10 text-3xl ${
+            updated !== undefined && updated.name ? 'text-turquoise' : ''
+          }`}
+        >
+          {name}
+        </span>
       </div>
-      <style jsx>{`
-        article {
-          height: calc(100vw - (var(--ar9) * 1.5));
-          min-height: calc(var(--ar9) * 1.3);
-        }
-
-        div {
-          height: 50%;
-          font-size: var(--remLX);
-        }
-      `}</style>
     </article>
   )
 }

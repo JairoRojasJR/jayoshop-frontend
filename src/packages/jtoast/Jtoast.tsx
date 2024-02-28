@@ -44,7 +44,10 @@ export default function JToast(): JSX.Element {
   }, [])
 
   return (
-    <div id='JToast' className={`${styles.jtoastPanelCSS} df fdc aic pf gpL`} />
+    <div
+      id='JToast'
+      className={`${styles.jtoastPanelCSS} gpL fixed flex flex-col items-center`}
+    />
   )
 }
 
@@ -115,7 +118,7 @@ function JtoastItem({
       {active ? (
         <span
           ref={jtoastItemRef}
-          className={`${styles.jtoastItemCSS} df gpM aic pgL brM tac bcD crL`}
+          className={`${styles.jtoastItemCSS} flex items-center gap-2 rounded-lg bg-dark-100 p-4 text-center text-light-100`}
         >
           {onAsyncEvents?.isAsync === true && pending ? (
             <DotWave size={30} speed={1} color='white' />

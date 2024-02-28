@@ -85,57 +85,43 @@ export default function Actions({
     name,
     notification
   }: ActionProps): JSX.Element => {
-    const style: React.CSSProperties = { opacity: 0.5 }
-
     const match = name === selected
     const trashSelected = selected === 'eliminar'
     const multiTrashSelected = selected === 'multieliminar'
     const isActionTrashActive = trashSelected || multiTrashSelected
     const isActionActive = match || (name === 'eliminar' && isActionTrashActive)
 
-    if (isActionActive) {
-      style.opacity = 1
-      style.outline = 'var(--remS) solid var(--darksecondary)'
-    }
-
     return (
       <article
-        className='bcTurq crD pgM brS df jcc cp pr'
+        className={`relative flex cursor-pointer justify-center rounded-md bg-turquoise p-2 text-dark-100 transition duration-300 hover:bg-skyviolet ${
+          isActionActive ? 'opacity-100 outline outline-dark-300' : 'opacity-50'
+        }`}
         onClick={() => {
           updateAction(name, notification)
         }}
-        style={style}
       >
         {children}
       </article>
     )
   }
 
-  // Html content required
-  const btnRunMultiTrashStyle = (): React.CSSProperties => {
-    const style: React.CSSProperties = {
-      border: '0.3rem solid var(--secondary)'
-    }
-    if (!isMultiTrashReady) style.filter = 'grayScale(.6)'
-    return style
-  }
-
   return (
-    <section className='pgM bcP df jcse brS'>
+    <section className='m-auto flex max-w-[600px] justify-evenly rounded-md rounded-b-none border-4 border-b-0 border-solid border-dark-300 bg-light-100 p-2 dark:bg-dark-100'>
       <Action name='editar' notification='🖊 Seleccione un item para editarlo'>
         <Edit />
       </Action>
-      <article className='pr df jcc'>
+      <article className='relative flex justify-center'>
         <div
           ref={btnRunMultiTrash}
-          className='pa tp0'
+          className='absolute top-0 -z-10 transition-all duration-300'
           onClick={e => {
             e.stopPropagation()
           }}
         >
           <button
-            className={`${isMultiTrashReady ? 'cp' : ''} pr pgM brS bcDr`}
-            style={btnRunMultiTrashStyle()}
+            className={`relative rounded-md border-4 border-solid border-dark-300 bg-danger p-2 ${
+              isMultiTrashReady ? 'cursor-pointer' : 'grayscale-[0.6]'
+            }`}
             onClick={runMultiTrash}
           >
             Eliminar
@@ -154,18 +140,6 @@ export default function Actions({
       >
         <ListCheck />
       </Action>
-      <style jsx>{`
-        section {
-          border: var(--remS) solid var(--darksecondary);
-          border-bottom-left-radius: 0;
-          border-bottom-right-radius: 0;
-        }
-
-        div {
-          z-index: -1;
-          transition: top var(--timeFlash);
-        }
-      `}</style>
     </section>
   )
 }

@@ -102,9 +102,14 @@ export default function PlusNavLayout({
       }
     ]
 
-    runTransition(transitions, toggle).catch((e: Error) => {
-      console.log(e.message)
-    })
+    runTransition(transitions, toggle)
+      .then(() => {
+        if (toggle === 1) $optionInAction.style.overflowY = 'auto'
+        else $optionInAction.style.overflowY = 'hidden'
+      })
+      .catch((e: Error) => {
+        console.log(e.message)
+      })
   }
 
   useEffect(() => {
@@ -138,9 +143,10 @@ export default function PlusNavLayout({
 
   function Option({ name }: OptionProps): JSX.Element {
     const className = (): string => {
-      const className = 'pgM brS df jcc gpM cp crD'
-      if (plusInAction === name) return `${className} bcDr`
-      return `${className} bcTurq`
+      const className =
+        'p-2 rounded-md flex justify-center gap-2 cursor-pointer text-dark-100 hover:bg-skyviolet transition duration-300'
+      if (plusInAction === name) return `${className} bg-skyviolet`
+      return `${className} bg-skyblue`
     }
 
     const index = optionsMinWidth.findIndex(option => option.name === name)
@@ -153,7 +159,6 @@ export default function PlusNavLayout({
       <button
         className={className()}
         style={{ minWidth }}
-        // style={{ minWidth: optionsMinWidth[name] }}
         onClick={() => {
           switchPlusOption(name)
         }}
@@ -166,20 +171,16 @@ export default function PlusNavLayout({
   }
 
   return (
-    <article className='w100p df fdc gpL'>
-      <header ref={buttonsContainerRef} className='df gpM overflow-auto'>
+    <article className='flex w-full flex-col gap-4 border-t-4 border-dark-300 p-2'>
+      <header ref={buttonsContainerRef} className='flex gap-2 overflow-auto'>
         {options.map(option => (
           <Option key={nanoid(5)} name={option.name} />
         ))}
       </header>
       <main
         ref={optionInActionRef}
-        className='optionInAction fdc owyA invisible'
-        style={{
-          height: 0,
-          transition: 'height var(--timeFlash)',
-          maxHeight: '60vh'
-        }}
+        className='invisible h-0 max-h-[60vh] flex-col transition-all duration-300'
+        style={{ scrollbarWidth: 'thin' }}
       >
         {children}
       </main>

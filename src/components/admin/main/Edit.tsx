@@ -123,7 +123,7 @@ export default function Edit({
 
   return (
     <Modaldiv beforeClose={verifyUnsaved}>
-      <div className='df fdc h100p'>
+      <div className='mx-auto flex h-full max-w-[350px] flex-col'>
         <section>
           <Card
             data={preview}
@@ -132,7 +132,7 @@ export default function Edit({
             color='dark'
           />
         </section>
-        <section className='owyA'>
+        <section>
           <CustomForm
             formSources={{
               title: 'Edición',
@@ -140,6 +140,7 @@ export default function Edit({
               goal: 'Confirmar cambios',
               runSubmit: sendUpdated
             }}
+            color='secondary'
           >
             <Fields data={data} setChange={setChange} />
           </CustomForm>

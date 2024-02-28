@@ -43,16 +43,14 @@ export function Modaldiv({
   beforeClose
 }: ModalDivProps): JSX.Element {
   return (
-    <div className='h100p w100p owA' style={{ minWidth: 'var(--minWDisplay)' }}>
-      <main className='pr h100p w100p df fdc jcc aic pgLX'>
+    <div className='size-full min-w-[350px] overflow-auto'>
+      <main className='relative flex size-full flex-col items-center justify-center p-8'>
         <div
-          className='pa w100p h100p tp0 lf0'
-          style={{ background: '#01010B', opacity: 0.9 }}
+          className='absolute left-0 top-0 size-full bg-[#01010B] opacity-90'
           onClick={beforeClose ?? closeModal}
         />
         <div
-          className='pr w100p'
-          style={{ maxHeight: '100%' }}
+          className='relative h-full'
           onClick={e => {
             e.stopPropagation()
           }}
@@ -76,7 +74,7 @@ export default function Modal(): JSX.Element {
   return (
     <dialog
       id='globalModal'
-      className='w100p h100p pf owA bcT invisible'
+      className='invisible fixed size-full overflow-auto bg-transparent'
       style={{
         border: 'none',
         zIndex: 5000

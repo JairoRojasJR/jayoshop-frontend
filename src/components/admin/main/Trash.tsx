@@ -35,12 +35,12 @@ export default function Trash({
   return (
     <Modaldiv>
       <main
-        className='df fdc'
+        className='flex flex-col'
         onClick={e => {
           e.stopPropagation()
         }}
       >
-        <Card data={data} />
+        <Card data={data} color='dark' />
         <WarnDelete wish={wish} runDelete={sendToDelete} />
       </main>
     </Modaldiv>
@@ -101,9 +101,9 @@ export function MultiTrash({
 
   return (
     <Modaldiv>
-      <div className='df fdc' style={{ maxHeight: '100%' }}>
+      <div className='flex flex-col' style={{ maxHeight: '100%' }}>
         <section
-          className='df fdc bcS pgS gpM'
+          className='flex flex-col gap-2 bg-dark-300 p-2'
           style={{
             borderTopLeftRadius: '0.3rem',
             borderTopRightRadius: '0.3rem',
@@ -111,7 +111,7 @@ export function MultiTrash({
           }}
         >
           {items.map(data => (
-            <Card key={nanoid(10)} data={data} />
+            <Card key={nanoid(10)} data={data} color='dark' />
           ))}
         </section>
         <WarnDelete wish={wish} runDelete={sendToDelete} />

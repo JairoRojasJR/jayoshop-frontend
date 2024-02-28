@@ -141,18 +141,13 @@ export default function Sections({
 
   function SwitchSection({ section }: SwitchSectionProps): JSX.Element {
     const { _id, name } = section
-
-    let className = 'w100p df bcDs crDp pgM brS owH jcc'
-    let style
-    if (action.length > 0) className += ' cp'
-
     const index = selecteds.findIndex(selected => selected._id === _id)
-    if (index !== -1) style = { background: 'var(--danger)' }
 
     return (
       <button
-        className={className}
-        style={style}
+        className={`flex w-full justify-center overflow-hidden rounded-md p-2 text-light-200 ${
+          action.length > 0 ? 'cursor-pointer' : 'cursor-default'
+        } ${index !== -1 ? 'bg-danger' : 'bg-dark-200'}`}
         onClick={e => {
           runSwitchSection(e, section)
         }}
@@ -163,7 +158,7 @@ export default function Sections({
   }
 
   return (
-    <div className='df fdc gpM'>
+    <div className='flex flex-col gap-8'>
       <CustomForm
         formSources={{
           title: 'Nueva Sección',
@@ -175,29 +170,30 @@ export default function Sections({
           data={{ name: !globalThis.isProdMode ? 'Lacteos' : undefined }}
         />
       </CustomForm>
-      <div style={{ marginTop: 'var(--remL)' }}>
-        <section className='pr spanC2' style={{ zIndex: 100 }}>
-          <Actions
-            selected={action}
-            updateSelected={updateActionSelected}
-            isMultiTrashReady={selecteds.length > 1}
-            runMultiTrash={runMultiTrashAction}
-          />
+      <div className='pb-12'>
+        <section
+          className='absolute bottom-0 col-span-2 flex w-full justify-center'
+          style={{ zIndex: 100 }}
+        >
+          <div className='w-[50%]'>
+            <Actions
+              selected={action}
+              updateSelected={updateActionSelected}
+              isMultiTrashReady={selecteds.length > 1}
+              runMultiTrash={runMultiTrashAction}
+            />
+          </div>
         </section>
-        <CustomForm formSources={{ title: 'Secciones' }}>
-          <section className='sectionsContianer dg gpM'>
-            {sections.map(section => (
-              <SwitchSection key={nanoid(5)} section={section} />
-            ))}
-          </section>
-        </CustomForm>
+        <div className='relative'>
+          <CustomForm formSources={{ title: 'Secciones' }}>
+            <section className='col-span-2 grid grid-cols-2 gap-2'>
+              {sections.map(section => (
+                <SwitchSection key={nanoid(5)} section={section} />
+              ))}
+            </section>
+          </CustomForm>
+        </div>
       </div>
-      <style jsx>{`
-        .sectionsContianer {
-          grid-column: span 2;
-          grid-template-columns: repeat(2, 1fr);
-        }
-      `}</style>
     </div>
   )
 }

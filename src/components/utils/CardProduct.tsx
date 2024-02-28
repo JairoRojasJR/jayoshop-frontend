@@ -6,7 +6,6 @@ import FieldsProducts from '@/components/admin/utils/FieldsProduct'
 import { openModal } from '@/components/global/Modal'
 import { updateProduct, deleteProduct } from '@/services/admin/inventory'
 import { copyToClipboard } from '@/services/public/utils/copyToClipboard'
-import styles from '@/styles/utils/CardProduct.module.css'
 import type {
   AdminAction,
   Product,
@@ -43,7 +42,6 @@ export default function CardProduct({
   const { price, cuantity, section, barcode } = data
 
   const [isCardSelected, setIsCardSelected] = useState(false)
-  const [maxHeightDescription, setMaxHeightDescription] = useState(0)
 
   type DescriptionRef = React.MutableRefObject<HTMLSpanElement | null>
   const descriptionRef: DescriptionRef = useRef(null)
@@ -110,35 +108,16 @@ export default function CardProduct({
     }
   }, [selecteds])
 
-  // Limiting description hight
-  useEffect(() => {
-    const descriptionHTML = descriptionRef.current
-    if (descriptionHTML === null) return
-    const cumputedStyle = window.getComputedStyle(descriptionHTML)
-    const lineHeight = parseFloat(cumputedStyle.lineHeight)
-    const lineClamp = parseInt(cumputedStyle.webkitLineClamp)
-
-    const heightToTheSuspensivePoints = lineHeight * lineClamp + lineHeight / 2
-    setMaxHeightDescription(heightToTheSuspensivePoints)
-  }, [])
-
   // Html content required
   const cardClassName = (): string => {
-    const className = `${styles.card} bcDs crDp w100p pgM brS dg`
-    if (action !== '') return `${className} ${styles.actionActivated} cp`
+    const className = `grid-cols-[35%_1fr] grid-rows-[30%_50%_20%] w-full p-2 rounded-md grid aspect-[8/5]`
+    if (action !== '') return `${className} hover:contrast-150 cursor-pointer`
     return className
   }
 
   const styleCard = (): React.CSSProperties => {
-    const style: React.CSSProperties = {
-      height: '45vw',
-      minHeight: 'var(--ar9)'
-    }
+    const style: React.CSSProperties = {}
     if (isCardSelected) style.background = 'var(--danger)'
-    if (color === 'dark') {
-      style.background = 'var(--dark)'
-      style.color = 'var(--light)'
-    }
     return style
   }
 
@@ -156,22 +135,26 @@ export default function CardProduct({
     else return `${globalThis.backendUrl}/api/stream/image/${image}`
   }
 
+  console.log(color)
+
   return (
     <article
-      className={cardClassName()}
+      className={`${cardClassName()} ${
+        color === 'dark'
+          ? 'bg-dark-100 text-light-200'
+          : 'bg-dark-200 text-light-200 dark:bg-light-200 dark:text-dark-200'
+      }`}
       style={styleCard()}
       onClick={action !== undefined ? runCard : undefined}
     >
       <div
-        className={`${styles.imgContainer} df jcc pr brS owH`}
+        className='relative row-span-2 flex justify-center overflow-hidden rounded-md p-2'
         style={styleFieldUpdated('image')}
       >
         {showSection !== undefined ? (
           <span
-            className={`${styles.section} pa tp0 bcDs crDp pgS brS tac toe wsNW owH`}
+            className='absolute top-0 z-50 w-[85%] truncate rounded-b-md bg-dark-200 p-1 text-center text-light-200 dark:bg-light-200 dark:text-dark-200'
             style={{
-              background: color === 'dark' ? 'var(--dark)' : undefined,
-              color: color === 'dark' ? 'var(--light)' : undefined,
               ...styleFieldUpdated('section')
             }}
           >
@@ -179,7 +162,7 @@ export default function CardProduct({
           </span>
         ) : null}
         <Image
-          className='ofCr'
+          className='object-cover'
           alt={name}
           src={urlImage()}
           loader={data => `${urlImage()}?width=${data.width}`}
@@ -192,22 +175,22 @@ export default function CardProduct({
           `}
         />
       </div>
-      <div className='owH'>
+      <div className='overflow-hidden p-2'>
         <h3
-          className={`${styles.title} w100p toe wsNW owH`}
+          className='w-full truncate border-b-4 border-light-100 dark:border-dark-100'
           style={styleFieldUpdated('name')}
         >
           {name}
         </h3>
       </div>
-      <div className='pgS' style={styleFieldUpdated('description')}>
-        <span ref={descriptionRef} className='description'>
+      <div className='p-2' style={styleFieldUpdated('description')}>
+        <span ref={descriptionRef} className='line-clamp-3'>
           {description}
         </span>
       </div>
-      <div className='df aic jcc'>
+      <div className='flex items-center justify-center p-2'>
         <span
-          className='cp'
+          className='cursor-pointer'
           onClick={e => {
             e.stopPropagation()
             copyToClipboard(barcode.toString()).catch(() => {})
@@ -217,30 +200,16 @@ export default function CardProduct({
           <BarCode />
         </span>
       </div>
-      <div className='df jcfe gpM'>
-        <span className='df gpS' style={styleFieldUpdated('cuantity')}>
+      <div className='flex justify-end gap-2 p-2'>
+        <span className='flex gap-1' style={styleFieldUpdated('cuantity')}>
           <BoxMultiple />
           {`x${cuantity}`}
         </span>
-        <span className='df gpS' style={styleFieldUpdated('price')}>
+        <span className='flex gap-1' style={styleFieldUpdated('price')}>
           <CashBanknote />
           {`${price}$`}
         </span>
       </div>
-      <style jsx>{`
-        div {
-          padding: var(--remM);
-        }
-
-        .description {
-          display: -webkit-box;
-          overflow: hidden;
-          max-height: ${maxHeightDescription};
-          text-overflow: ellipsis;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 3;
-        }
-      `}</style>
     </article>
   )
 }

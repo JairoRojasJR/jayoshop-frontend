@@ -42,14 +42,13 @@ export default function Productos(): JSX.Element {
 
   return (
     <Layout>
-      <header
-        ref={headerRef}
-        className='pf lf0 w100p'
-        style={{ padding: '0 var(--remLX)', zIndex: 900 }}
-      >
+      <header ref={headerRef} className='fixed left-0 z-[900] w-full px-4'>
         <SubNav sections={sections} pathBrowsing='/productos' />
       </header>
-      <main ref={mainRef} className='pgLX df fdc gpM'>
+      <section
+        ref={mainRef}
+        className='flex flex-col gap-2 p-8 min-[500px]:grid min-[500px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+      >
         {products?.map(product => {
           const { _id } = product
           return (
@@ -60,7 +59,7 @@ export default function Productos(): JSX.Element {
             />
           )
         })}
-      </main>
+      </section>
     </Layout>
   )
 }

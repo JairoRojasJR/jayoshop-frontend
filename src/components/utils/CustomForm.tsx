@@ -1,42 +1,50 @@
-import styles from '@/styles/utils/CustomForm.module.css'
 import type { FormSources } from '@/types'
 
 type Props = {
   children: React.ReactNode
   formSources: FormSources
+  color?: 'primary' | 'secondary'
 }
 
 export default function CustomForm({
   children,
-  formSources
+  formSources,
+  color
 }: Props): JSX.Element {
   const { hiddenId, title, goal, runSubmit } = formSources ?? {}
 
   return (
     <form
-      className={styles.customForm}
       encType='multipart/form-data'
       onClick={e => {
         e.stopPropagation()
       }}
       onSubmit={runSubmit}
     >
-      <div className={`${styles.customFormDiv} dg bcDp pgM brS`}>
+      <div
+        className={`grid max-h-[350px] grid-cols-2 gap-y-2 overflow-y-auto rounded-md ${
+          color === 'primary' || color === undefined
+            ? 'bg-light-100 p-2 dark:bg-dark-100'
+            : 'bg-light-200 p-2 dark:bg-dark-200'
+        }`}
+        style={{ scrollbarWidth: 'thin' }}
+      >
         {hiddenId !== undefined ? (
           <input name='_id' hidden={true} defaultValue={hiddenId} />
         ) : null}
-        <section className={`${styles.gcS2} df jcfe`}>
-          <h3
-            className='crDs'
-            style={{ borderBottom: 'var(--remS) solid var(--turquoise)' }}
-          >
+        <section className='col-span-2 flex justify-end px-1'>
+          <h3 className='border-b-2 border-solid border-turquoise text-dark-200 dark:text-light-200'>
             {title}
           </h3>
         </section>
         {children}
         {goal !== undefined ? (
-          <section className={`${styles.gcS2} df jcc`}>
-            <input className='cp bcTurq crDp crD' type='submit' value={goal} />
+          <section className='col-span-2 flex justify-center px-1'>
+            <input
+              className='cursor-pointer rounded-md bg-turquoise p-2 text-dark-200'
+              type='submit'
+              value={goal}
+            />
           </section>
         ) : null}
       </div>

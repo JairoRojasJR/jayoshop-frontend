@@ -24,18 +24,23 @@ export default function Layout({ children }: Props): JSX.Element {
 
   return (
     <>
-      <div className='df fdc jcsb' style={{ minHeight: vh }}>
+      <div className='flex flex-col justify-between' style={{ minHeight: vh }}>
         <Nav />
         <main style={{ marginTop: heightNav, flexGrow: 1 }}>{children}</main>
-        <footer className='df jcse fwW pgL crL bcBgs'>
-          <section className='df fdc gpM'>
-            <h5 className='fsI'>Nosotros</h5>
-            <Link href='./acerca-de'>Acerca de</Link>
+        <footer className='flex flex-wrap gap-12 bg-light-200 p-8 text-dark-100 transition duration-300 dark:bg-dark-200 dark:text-light-100'>
+          <section className='flex flex-col gap-2'>
+            <h5 className='font-bold italic text-skyviolet dark:text-skyblue'>
+              Nosotros
+            </h5>
+            <Link href='/about'>Acerca de</Link>
           </section>
-          <section className='df fdc gpM'>
-            <h5 className='fsI'>Desarrollador de este sitio</h5>
-            <Link href='./desarrollador-web'>Acerca de</Link>
-            <Link href='https://www.jayoweb.com'>Sitio web</Link>
+          <section className='flex flex-col gap-2'>
+            <h5 className='font-bold italic text-skyviolet dark:text-skyblue'>
+              Desarrollador de este sitio
+            </h5>
+            <Link href='https://www.jayoweb.dev' target='_blank'>
+              Visitar sitio web
+            </Link>
           </section>
         </footer>
       </div>
