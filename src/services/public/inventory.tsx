@@ -14,7 +14,7 @@ export const getSections = async (
 ): Promise<Sections> => {
   const url = `${pathInventory}/sections`
   const req = await fetch(url)
-  const sections = await req.json()
+  const sections = (await req.json()) as Sections
   if (setState !== null && typeof setState === 'function') {
     setState(sections)
     return sections
@@ -31,7 +31,7 @@ export const getMostPopularsProducts = async (): Promise<Products> => {
 export const getProducts = async (
   query?: GetProductServer<Product>,
   setState?: React.Dispatch<React.SetStateAction<Products>>
-): Promise<Product | []> => {
+): Promise<Product | Product[]> => {
   let url = `${pathInventory}/products`
 
   if (query !== undefined) {
@@ -45,7 +45,7 @@ export const getProducts = async (
   }
 
   const req = await fetch(url)
-  const products = await req.json()
+  const products = (await req.json()) as Products
   if (setState !== undefined) {
     setState(products)
     return products

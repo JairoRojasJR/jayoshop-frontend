@@ -67,7 +67,9 @@ export function Modaldiv({
 export default function Modal(): JSX.Element {
   useEffect(() => {
     if (globalThis.MODAL_ROOT_CREATED) return
-    const modalHtml = document.getElementById('globalModal') as HTMLElement
+    const modalHtml = document.getElementById(
+      'globalModal'
+    ) as unknown as HTMLElement
     globalThis.MODAL_HTML = modalHtml
     globalThis.MODAL_ROOT = createRoot(globalThis.MODAL_HTML)
     globalThis.MODAL_ROOT_CREATED = true

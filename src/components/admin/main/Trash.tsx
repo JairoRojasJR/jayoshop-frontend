@@ -93,7 +93,7 @@ export function MultiTrash({
       if (res.deleting.count > 0) onSuccess()
       closeModal()
     } else if (res.message !== undefined) {
-      jtoast(res.message)
+      jtoast(res.message as string)
       onSuccess()
       closeModal()
     }

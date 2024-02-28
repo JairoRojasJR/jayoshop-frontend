@@ -46,14 +46,14 @@ export default function Home(): JSX.Element {
         setMostPopulars(products)
       })
       .catch(error => {
-        runNotificationOnError(error, 'los productos')
+        runNotificationOnError(error as Error, 'los productos')
       })
     getSections()
       .then(sections => {
         setSections(sections)
       })
       .catch(error => {
-        runNotificationOnError(error, 'las secciones')
+        runNotificationOnError(error as Error, 'las secciones')
       })
   }, [isAuthContext])
 

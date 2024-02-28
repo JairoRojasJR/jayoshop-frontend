@@ -4,10 +4,10 @@ import { type MutableRefObject, useEffect, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import type { Root } from 'react-dom/client'
 import styles from '@/packages/jtoast/JToast.module.css'
-import { DotWave } from '@uiball/loaders'
 import CircleCheck from '@/svg/Circle-check'
 import CircleX from '@/svg/Circle-x'
 import type { ErrorHandle } from '@/types'
+import { DotWaveLoader } from '@/components/DotWaveLoader'
 
 type options = {
   duration?: number
@@ -38,7 +38,9 @@ export default function JToast(): JSX.Element {
   let finished = false
   useEffect(() => {
     if (!finished) {
-      const jtoastHTML = document.getElementById('JToast') as HTMLElement
+      const jtoastHTML = document.getElementById(
+        'JToast'
+      ) as unknown as HTMLElement
       jtoastRoot = createRoot(jtoastHTML)
       finished = true
     }
@@ -122,7 +124,7 @@ function JtoastItem({
           className={`${styles.jtoastItemCSS} flex items-center gap-2 rounded-lg bg-dark-100 p-4 text-center text-light-100`}
         >
           {onAsyncEvents?.isAsync === true && pending ? (
-            <DotWave size={30} speed={1} color='white' />
+            <DotWaveLoader size={30} speed={1} color='white' />
           ) : null}
           {!pending &&
           error.length === 0 &&

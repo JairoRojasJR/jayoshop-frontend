@@ -73,7 +73,7 @@ export default function Edit({
     } else Object.assign(preUpdated, { [field]: false })
 
     if (file !== null) {
-      const url = URL.createObjectURL(file)
+      const url = URL.createObjectURL(file as File)
       Object.assign(prePreview, { [field]: url })
     } else Object.assign(prePreview, { [field]: currentValue })
 
