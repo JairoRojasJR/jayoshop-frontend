@@ -1,4 +1,5 @@
 'use client'
+
 import { createContext, useContext, useState, useEffect } from 'react'
 import { getAuthData } from '@/services/public/auth'
 import { checkFetchFailed } from '@/services/public/utils/checkFetchFailed'

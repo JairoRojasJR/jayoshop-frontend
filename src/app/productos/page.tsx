@@ -1,5 +1,7 @@
+'use client'
+
 import { useEffect, useRef, useState } from 'react'
-import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import Layout from '@/components/global/Layout'
 import SubNav from '@/components/admin/utils/SubNav'
 import CardProduct from '@/components/utils/CardProduct'
@@ -7,7 +9,7 @@ import { getProducts, getSections } from '@/services/public/inventory'
 import type { Products, Sections } from '@/types'
 
 export default function Productos(): JSX.Element {
-  const router = useRouter()
+  const searchParams = useSearchParams()
   const [products, setProducts] = useState<Products>([])
   const [currentSection, setCurrentSection] = useState<string>('')
   const [sections, setSections] = useState<Sections>([])
@@ -28,8 +30,7 @@ export default function Productos(): JSX.Element {
   let finishedRouter = false
   useEffect(() => {
     if (finishedRouter) return
-    const query = router.query
-    const section = (query.section as string) ?? 'Todo'
+    const section = searchParams.get('section') ?? 'Todo'
     setCurrentSection(section)
     getSections(setSections).catch((e: Error) => {
       console.log(e.message)
@@ -38,7 +39,7 @@ export default function Productos(): JSX.Element {
       console.log(e)
     })
     finishedRouter = true
-  }, [router])
+  }, [searchParams])
 
   return (
     <Layout>

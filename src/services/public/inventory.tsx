@@ -1,3 +1,4 @@
+import { BACKEND_URL } from '@/app/consts'
 import type {
   GetProductServer,
   Product,
@@ -6,7 +7,7 @@ import type {
   Sections
 } from '@/types'
 
-const pathInventory = `${globalThis.backendUrl}/api/inventory`
+const pathInventory = `${BACKEND_URL}/api/inventory`
 
 export const getSections = async (
   setState?: React.Dispatch<React.SetStateAction<Sections>> | Section

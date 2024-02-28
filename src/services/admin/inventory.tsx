@@ -1,3 +1,4 @@
+import { BACKEND_URL } from '@/app/consts'
 import { closeModal } from '@/components/global/Modal'
 import { jtoast } from '@/packages/jtoast/Jtoast'
 import type {
@@ -12,7 +13,7 @@ import type {
 } from '@/types'
 import { type GetServerSidePropsContext } from 'next'
 
-const pathInventory = `${globalThis.backendUrl}/api/admin/inventory`
+const pathInventory = `${BACKEND_URL}/api/admin/inventory`
 const pathProducts = `${pathInventory}/products`
 const pathSections = `${pathInventory}/sections`
 

@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import { runTransition } from '@/services/public/utils/transition'

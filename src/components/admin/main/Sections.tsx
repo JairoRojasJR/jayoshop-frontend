@@ -1,5 +1,7 @@
+'use client'
+
 import { useState } from 'react'
-import { useRouter } from 'next/router'
+import { useRouter, useSearchParams } from 'next/navigation'
 import CustomForm from '@/components/utils/CustomForm'
 import Actions from '@/components/admin/main/Actions'
 import Edit from '@/components/admin/main/Edit'
@@ -15,6 +17,7 @@ import {
 } from '@/services/admin/inventory'
 import { nanoid } from 'nanoid'
 import type { AdminAction, OnSuccesServer, Section, Toggle } from '@/types'
+import { IS_PROD_MODE } from '@/app/consts'
 
 type Props = {
   sections: Section[]
@@ -30,6 +33,7 @@ export default function Sections({
   const [action, setAction] = useState<AdminAction>('')
   const [selecteds, setSelecteds] = useState<Section[]>([])
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   const updateActionSelected = (
     updated: AdminAction,
@@ -46,7 +50,7 @@ export default function Sections({
     const formData = new FormData(form)
     const res = await addSection(formData)
     handleRes(res, () => {
-      if (globalThis.isProdMode) form.reset()
+      if (IS_PROD_MODE) form.reset()
       reloadSections()
     })
   }
@@ -54,7 +58,7 @@ export default function Sections({
   const runMultiTrashAction = (e: React.MouseEvent): void => {
     e.preventDefault()
     const reload = (): void => {
-      const currentSection = router.query?.section
+      const currentSection = searchParams.get('section')
       const requireUpdate = selecteds.find(
         section => currentSection === section.name
       )
@@ -62,11 +66,7 @@ export default function Sections({
       reloadProducts()
       reloadSections()
       setSelecteds([])
-      if (requireUpdate !== undefined) {
-        router.push('/admin/inventario').catch((e: Error) => {
-          console.log(e.message)
-        })
-      }
+      if (requireUpdate !== undefined) router.push('/admin/inventario')
     }
 
     const Component = (
@@ -99,13 +99,10 @@ export default function Sections({
   const runSwitchSection = (e: ClickEvent, section: Section): void => {
     e.preventDefault()
     const requireChangeSection = (): void => {
-      const currentSection = router.query?.section
+      const currentSection = searchParams.get('section')
       const requireUpdate = currentSection === section.name
       reloadSections()
-      if (requireUpdate)
-        router.push('/admin/inventario').catch((e: Error) => {
-          console.log(e.message)
-        })
+      if (requireUpdate) router.push('/admin/inventario')
     }
 
     let Component
@@ -166,9 +163,7 @@ export default function Sections({
           goal: 'Agregar sección'
         }}
       >
-        <FieldsSection
-          data={{ name: !globalThis.isProdMode ? 'Lacteos' : undefined }}
-        />
+        <FieldsSection data={{ name: !IS_PROD_MODE ? 'Lacteos' : undefined }} />
       </CustomForm>
       <div className='pb-12'>
         <section

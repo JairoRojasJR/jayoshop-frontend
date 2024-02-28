@@ -1,6 +1,9 @@
+'use client'
+
+import { BACKEND_URL } from '@/app/consts'
 import type { Section, UpdatingSection } from '@/types'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 type Props = {
   data: Section
@@ -20,7 +23,7 @@ export default function SectionCard({
 
   const urlImage = (): string => {
     if (image.includes('blob:http')) return image
-    else return `${globalThis.backendUrl}/api/stream/image/${image}`
+    else return `${BACKEND_URL}/api/stream/image/${image}`
   }
 
   return (
@@ -30,12 +33,9 @@ export default function SectionCard({
           ? 'outline outline-turquoise'
           : ''
       }`}
-      // style={styleFieldUpdated('image')}
       onClick={() => {
         if (typeof router !== 'boolean')
-          router.push(`/productos?section=${name}`).catch(e => {
-            console.log(e.message)
-          })
+          router.push(`/productos?section=${name}`)
       }}
     >
       <Image

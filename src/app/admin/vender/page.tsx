@@ -1,10 +1,12 @@
+'use client'
+
 import { useState, useEffect, Fragment } from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useIsAuthContext } from '@/context/isAuth'
 import Layout from '@/components/global/Layout'
 import AdminLayout from '@/components/admin/main/AdminLayout'
-import { checkAuth, invoiceProduct } from '@/services/admin/inventory'
+import { invoiceProduct } from '@/services/admin/inventory'
 import { getProducts } from '@/services/public/inventory'
 import { jtoast } from '@/packages/jtoast/Jtoast'
 import {
@@ -12,7 +14,8 @@ import {
   type GetProductServer,
   type Product
 } from '@/types'
-import { type GetServerSidePropsContext } from 'next'
+// import { type GetServerSidePropsContext } from 'next'
+import { IS_PROD_MODE, STREAM_IMAGE } from '@/app/consts'
 
 export default function Vender(): JSX.Element {
   const { isAuthContext } = useIsAuthContext()
@@ -37,7 +40,7 @@ export default function Vender(): JSX.Element {
     const form = e.target as HTMLFormElement
     const entries = Object.fromEntries(new FormData(form)) as unknown
     const data = entries as GetProductServer<Product>
-    if (globalThis.isProdMode) form.reset()
+    if (IS_PROD_MODE) form.reset()
 
     const barcode = data.barcode
     const noBarcode = barcode === undefined
@@ -175,7 +178,7 @@ export default function Vender(): JSX.Element {
                     {productsBilling.map(product => {
                       const { _id, name, image, price } = product.data
                       const { cuantity } = product
-                      const streamProductImage = `${globalThis.streamImage}/${image}`
+                      const streamProductImage = `${STREAM_IMAGE}/${image}`
 
                       return (
                         <Fragment key={`venderFragment-${_id}`}>
@@ -255,14 +258,14 @@ export default function Vender(): JSX.Element {
   )
 }
 
-type ServerSideProps = {
-  props: {
-    isAuthenticated: boolean
-  }
-}
+// type ServerSideProps = {
+//   props: {
+//     isAuthenticated: boolean
+//   }
+// }
 
-export async function getServerSideProps(
-  context: GetServerSidePropsContext
-): Promise<ServerSideProps> {
-  return await checkAuth(context)
-}
+// export async function getServerSideProps(
+//   context: GetServerSidePropsContext
+// ): Promise<ServerSideProps> {
+//   return await checkAuth(context)
+// }

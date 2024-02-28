@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import Edit from '@/components/admin/main/Edit'
@@ -16,6 +18,7 @@ import type {
 import BarCode from '@/svg/Bar-code'
 import BoxMultiple from '@/svg/Box-multiple'
 import CashBanknote from '@/svg/Cash-banknote'
+import { BACKEND_URL } from '@/app/consts'
 
 type Props = {
   data: Product
@@ -132,10 +135,8 @@ export default function CardProduct({
 
   const urlImage = (): string => {
     if (data.image.includes('blob:http')) return image
-    else return `${globalThis.backendUrl}/api/stream/image/${image}`
+    else return `${BACKEND_URL}/api/stream/image/${image}`
   }
-
-  console.log(color)
 
   return (
     <article

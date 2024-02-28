@@ -1,5 +1,7 @@
+'use client'
+
 import { useRef } from 'react'
-import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { nanoid } from 'nanoid'
 import type { Sections } from '@/types'
@@ -10,7 +12,7 @@ type Props = {
 }
 
 export default function SubNav({ sections, pathBrowsing }: Props): JSX.Element {
-  const router = useRouter()
+  const searchParams = useSearchParams()
   const outputSections = [{ name: 'Todo' }, ...sections]
   const linksContainerRef: React.MutableRefObject<HTMLUListElement | null> =
     useRef(null)
@@ -28,8 +30,8 @@ export default function SubNav({ sections, pathBrowsing }: Props): JSX.Element {
           if (name !== 'Todo') href += `?section=${section.name}`
 
           let className = 'list-none p-2 rounded-md'
-          const isTheMainPage = Object.entries(router.query).length === 0
-          const match = name === router.query?.section
+          const isTheMainPage = searchParams.size === 0
+          const match = name === searchParams.get('section')
           const matchWithSectionTodo = isTheMainPage && name === 'Todo'
           const isCurrentSection = match || matchWithSectionTodo
 

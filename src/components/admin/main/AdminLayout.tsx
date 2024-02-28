@@ -1,5 +1,7 @@
+'use client'
+
 import { useState, useEffect, useRef } from 'react'
-import { useRouter } from 'next/router'
+import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { runTransition } from '@/services/public/utils/transition'
 import { nanoid } from 'nanoid'
@@ -27,7 +29,7 @@ export default function AdminLayout({
   type Ref = React.MutableRefObject<HTMLElement | null>
   type AdminNavRef = React.MutableRefObject<HTMLButtonElement | null>
 
-  const router = useRouter()
+  const pathname = usePathname()
   const headerAdminRef: Ref = useRef(null)
   const mainRef: Ref = useRef(null)
   const adminNavRef: AdminNavRef = useRef(null)
@@ -107,10 +109,10 @@ export default function AdminLayout({
   }, [initialTopHeader])
 
   useEffect(() => {
-    const routeSplit = router.route.split('/')
+    const routeSplit = pathname.split('/')
     const currentPage = routeSplit[routeSplit.length - 1]
     setCurrentAdminPage(currentPage)
-  }, [router])
+  }, [pathname])
 
   return (
     <>

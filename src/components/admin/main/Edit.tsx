@@ -1,3 +1,5 @@
+'use client'
+
 import { type ChangeEvent, useState } from 'react'
 import { Modaldiv, closeModal } from '@/components/global/Modal'
 import CustomForm from '@/components/utils/CustomForm'

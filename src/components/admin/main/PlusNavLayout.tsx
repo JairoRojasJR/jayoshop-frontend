@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useRef, useState } from 'react'
 import { runTransition } from '@/services/public/utils/transition'
 import { nanoid } from 'nanoid'

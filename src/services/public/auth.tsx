@@ -1,15 +1,16 @@
+import { BACKEND_URL } from '@/app/consts'
 import type { AuthData, Login, AuthenticatingServer } from '@/types'
 import Cookies from 'js-cookie'
 
 export const getAuthData = async (): Promise<AuthData> => {
-  const url = `${globalThis.backendUrl}/api/auth/check`
+  const url = `${BACKEND_URL}/api/auth/check`
   const req = await fetch(url, { credentials: 'include' })
   if (req.status === 200) return await req.json()
   throw new Error('Error interno en el servidor')
 }
 
 export const login = async (data: Login): Promise<AuthData> => {
-  const url = `${globalThis.backendUrl}/api/auth/login`
+  const url = `${BACKEND_URL}/api/auth/login`
   const req = await fetch(url, {
     method: 'POST',
     credentials: 'include',
@@ -33,7 +34,7 @@ export const login = async (data: Login): Promise<AuthData> => {
 }
 
 export const logout = async (): Promise<AuthData> => {
-  const url = `${globalThis.backendUrl}/api/auth/logout`
+  const url = `${BACKEND_URL}/api/auth/logout`
   const req = await fetch(url, { credentials: 'include' })
   const res = (await req.json()) as AuthenticatingServer
 

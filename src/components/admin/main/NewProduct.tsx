@@ -3,6 +3,7 @@ import FieldsProduct from '@/components/admin/utils/FieldsProduct'
 import { getDevDataProduct, addProduct } from '@/services/admin/inventory'
 import { jtoast } from '@/packages/jtoast/Jtoast'
 import { type OnSuccesServer } from '@/types'
+import { IS_PROD_MODE } from '@/app/consts'
 
 type Props = {
   reloadProducts: OnSuccesServer
@@ -19,7 +20,7 @@ export default function NewProduct({ reloadProducts }: Props): JSX.Element {
     if (res.error !== undefined) {
       jtoast(res.error)
     } else if (res.message !== undefined) {
-      if (globalThis.isProdMode) form.reset()
+      if (IS_PROD_MODE) form.reset()
       jtoast(res.message)
       reloadProducts()
     }
@@ -33,9 +34,7 @@ export default function NewProduct({ reloadProducts }: Props): JSX.Element {
         goal: 'Agregar producto'
       }}
     >
-      <FieldsProduct
-        data={!globalThis.isProdMode ? getDevDataProduct() : undefined}
-      />
+      <FieldsProduct data={!IS_PROD_MODE ? getDevDataProduct() : undefined} />
     </CustomForm>
   )
 }

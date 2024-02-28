@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
@@ -13,6 +15,7 @@ import { jtoast } from '@/packages/jtoast/Jtoast'
 import { nanoid } from 'nanoid'
 import type { Products, Sections } from '@/types'
 import BuildingStore from '@/svg/BuildingStore'
+import { BACKEND_URL } from './consts'
 
 export default function Home(): JSX.Element {
   const { isAuthContext } = useIsAuthContext()
@@ -138,7 +141,7 @@ export default function Home(): JSX.Element {
             <div className='grid grid-cols-2 justify-center gap-4 sm:grid-cols-3 md:grid-cols-4'>
               {mostPopulars.map(product => {
                 const { name, image } = product
-                const urlImage = `${globalThis.backendUrl}/api/stream/image/${image}`
+                const urlImage = `${BACKEND_URL}/api/stream/image/${image}`
 
                 return (
                   <article

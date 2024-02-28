@@ -1,5 +1,7 @@
+'use client'
+
 import React, { useEffect, useRef, useState } from 'react'
-import Router from 'next/router'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useIsAuthContext } from '@/context/isAuth'
@@ -23,6 +25,7 @@ export default function Nav(): React.ReactElement {
   const [statusMenu, setStatusMenu] = useState('close')
   const { isAuthContext, setIsAuthContext } = useIsAuthContext()
   const { isAdminAuthenticated, isAuthenticated } = isAuthContext
+  const router = useRouter()
 
   const navRef = useRef(null)
   const menuBackgroundRef = useRef(null)
@@ -84,7 +87,7 @@ export default function Nav(): React.ReactElement {
     const runLogout = async (): Promise<void> => {
       const authData = await logout()
       setIsAuthContext(authData)
-      await Router.push('/login')
+      router.push('/login')
     }
 
     jtoast('Cerrando sesión', {

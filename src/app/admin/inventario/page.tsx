@@ -1,5 +1,7 @@
+'use client'
+
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import Head from 'next/head'
 import { useIsAuthContext } from '@/context/isAuth'
 import Layout from '@/components/global/Layout'
@@ -12,7 +14,7 @@ import CardProduct from '@/components/utils/CardProduct'
 import Actions from '@/components/admin/main/Actions'
 import { MultiTrash, runMultiTrash } from '@/components/admin/main/Trash'
 import { getSections, getProducts } from '@/services/public/inventory'
-import { checkAuth, deleteProduct } from '@/services/admin/inventory'
+import { deleteProduct } from '@/services/admin/inventory'
 import type {
   AdminAction,
   AdminLogistics,
@@ -22,10 +24,10 @@ import type {
   Toggle,
   AdminLogisticsObject
 } from '@/types'
-import { type GetServerSidePropsContext } from 'next'
+// import { type GetServerSidePropsContext } from 'next'
 
 export default function Inventory(): JSX.Element {
-  const router = useRouter()
+  const searchParams = useSearchParams()
   const { isAuthContext } = useIsAuthContext()
   const [sections, setSections] = useState<Sections>([])
   const [products, setProducts] = useState<Product[]>([])
@@ -77,8 +79,7 @@ export default function Inventory(): JSX.Element {
   let finishedRouter = false
   useEffect(() => {
     if (finishedRouter) return
-    const query = router.query
-    const section = query.section ?? 'Todo'
+    const section = searchParams.get('section') ?? 'Todo'
 
     if (typeof section === 'string') {
       if (selecteds.length > 1) setSelecteds([])
@@ -93,7 +94,7 @@ export default function Inventory(): JSX.Element {
       }
       finishedRouter = true
     }
-  }, [router, isAuthContext])
+  }, [searchParams, isAuthContext])
 
   // Html content required
   const plusIn = (): JSX.Element => {
@@ -163,14 +164,16 @@ export default function Inventory(): JSX.Element {
   )
 }
 
-type ServerSideProps = {
-  props: {
-    isAuthenticated: boolean
-  }
-}
+// TODO: Migration server side props (nextjs 14)
 
-export async function getServerSideProps(
-  context: GetServerSidePropsContext
-): Promise<ServerSideProps> {
-  return await checkAuth(context)
-}
+// type ServerSideProps = {
+//   props: {
+//     isAuthenticated: boolean
+//   }
+// }
+
+// export async function getServerSideProps(
+//   context: GetServerSidePropsContext
+// ): Promise<ServerSideProps> {
+//   return await checkAuth(context)
+// }

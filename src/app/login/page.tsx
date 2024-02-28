@@ -1,4 +1,6 @@
-import Router from 'next/router'
+'use client'
+
+import { useRouter } from 'next/navigation'
 import Head from 'next/head'
 import { useEffect } from 'react'
 import { useIsAuthContext } from '@/context/isAuth'
@@ -6,7 +8,7 @@ import Layout from '@/components/global/Layout'
 import { login } from '@/services/public/auth'
 import { jtoast } from '@/packages/jtoast/Jtoast'
 import { nanoid } from 'nanoid'
-import { type GetServerSidePropsContext } from 'next'
+// import { type GetServerSidePropsContext } from 'next'
 import type { Login as TypeLogin } from '@/types'
 
 type PropsSectionForm = {
@@ -46,6 +48,8 @@ export default function Login(): JSX.Element {
   const { isAdminAuthenticated, isAuthenticated } = isAuthContext
   const redirecting = isAdminAuthenticated || isAuthenticated
 
+  const router = useRouter()
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
     const form = e.target as HTMLFormElement
@@ -68,15 +72,8 @@ export default function Login(): JSX.Element {
   }
 
   useEffect(() => {
-    if (isAdminAuthenticated) {
-      Router.push('/admin/inventario').catch((e: Error) => {
-        console.log(e.message)
-      })
-    } else if (isAuthenticated) {
-      Router.push('/').catch((e: Error) => {
-        console.log(e.message)
-      })
-    }
+    if (isAdminAuthenticated) router.push('/admin/inventario')
+    else if (isAuthenticated) router.push('/')
   }, [isAuthContext])
 
   return (
@@ -122,30 +119,30 @@ export default function Login(): JSX.Element {
   )
 }
 
-type ServerSideProps = {
-  props: { isAuthenticated: boolean }
-}
+// type ServerSideProps = {
+//   props: { isAuthenticated: boolean }
+// }
 
-export async function getServerSideProps(
-  context: GetServerSidePropsContext
-): Promise<ServerSideProps> {
-  const cookies = context.req.headers.cookie
-  const auth = cookies
-    ?.split('; ')
-    ?.find(row => row.startsWith('auth'))
-    ?.split('=')[1]
+// export async function getServerSideProps(
+//   context: GetServerSidePropsContext
+// ): Promise<ServerSideProps> {
+//   const cookies = context.req.headers.cookie
+//   const auth = cookies
+//     ?.split('; ')
+//     ?.find(row => row.startsWith('auth'))
+//     ?.split('=')[1]
 
-  if (auth === 'admin-true') {
-    context.res.writeHead(302, { Location: '/admin/inventario' })
-    context.res.end()
-  } else if (auth === 'client-true') {
-    context.res.writeHead(302, { Location: '/' })
-    context.res.end()
-  }
+//   if (auth === 'admin-true') {
+//     context.res.writeHead(302, { Location: '/admin/inventario' })
+//     context.res.end()
+//   } else if (auth === 'client-true') {
+//     context.res.writeHead(302, { Location: '/' })
+//     context.res.end()
+//   }
 
-  return {
-    props: {
-      isAuthenticated: false
-    }
-  }
-}
+//   return {
+//     props: {
+//       isAuthenticated: false
+//     }
+//   }
+// }
