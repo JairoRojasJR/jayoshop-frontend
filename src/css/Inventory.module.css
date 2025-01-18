@@ -1,0 +1,148 @@
+/* INVENTORY */
+.admin__options {
+  position: absolute;
+  align-self: center;
+  right: -0.75em;
+  flex-direction: column;
+  gap: 0.25em;
+
+  display: flex;
+  opacity: 1;
+  transition:
+    opacity 0.3s ease-in-out,
+    display 0.3s ease-in-out allow-discrete;
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+.admin__options-hidden {
+  display: none;
+  opacity: 0;
+}
+
+.admin__option {
+  font-size: 1.5em;
+  padding: 0.25em;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: scale 0.3s;
+  z-index: 10;
+}
+
+.admin__option:hover {
+  scale: 1.1;
+}
+
+.admin__option:global(.admin__option-edit) {
+  background-color: var(--dark-c);
+}
+
+.admin__option:global(.admin__option-trash) {
+  background-color: var(--danger);
+}
+
+.updating {
+  color: var(--skyblue);
+}
+
+.updating-img {
+  border: 3px solid var(--skyblue);
+}
+
+/* CARDS */
+.card__separated {
+  border-bottom-left-radius: 0 solid var(--skyblue) !important;
+  border-bottom-right-radius: 0 solid var(--skyblue) !important;
+  border-bottom: 3px solid var(--skyblue);
+}
+
+/* FLOATING OPTIONS */
+.bottom__floating {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  justify-content: space-between;
+  padding: 0.5rem;
+  font-size: 2.5rem;
+  z-index: 100;
+  color: #000;
+}
+
+.bottom__floating__icon {
+  padding: 0.3rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.add__item {
+  background-color: var(--skyblue);
+}
+
+.multi__select {
+  position: relative;
+  background-color: #933;
+  transition: background-color 0.2s ease-in;
+}
+
+.multi__select-checked {
+  background-color: var(--danger);
+}
+
+.multi__trash__container {
+  display: flex;
+  flex-direction: column;
+}
+
+.multi__trash__items__container {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.multi__select__background {
+  place-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000a;
+  z-index: -1;
+
+  display: none;
+  transition:
+    0.3s translate ease-in-out,
+    0.3s display ease-in-out allow-discrete;
+  translate: 0 100%;
+}
+
+.multi__select__background-show {
+  display: grid;
+  transition: translate 0.3s;
+  translate: 0 0;
+
+  @starting-style {
+    translate: 0 100%;
+  }
+}
+
+.multi__select__del__bottom {
+  background-color: var(--danger);
+  border-radius: 3px;
+  padding: 0.3rem;
+  font-size: 0.5em;
+  cursor: pointer;
+  user-select: none;
+  transition: filter 0.2s ease-in;
+}
+
+.selectable {
+  cursor: pointer;
+}
+
+.selected {
+  border: 3px solid var(--danger);
+}

@@ -1,12 +1,14 @@
+type Props = {
+  size?: number
+  color?: 'black' | 'white'
+  speed?: number
+}
+
 export const DotWaveLoader = ({
   size = 47,
   color = 'black',
   speed = 1
-}: {
-  size?: number
-  color?: 'black' | 'white'
-  speed?: number
-}): JSX.Element => {
+}: Props): JSX.Element => {
   return (
     <div className='container'>
       <div className='dot'></div>

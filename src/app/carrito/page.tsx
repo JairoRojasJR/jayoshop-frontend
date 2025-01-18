@@ -1,11 +1,7 @@
-import Layout from '@/components/global/Layout'
+import { type Metadata } from 'next'
+
+export const metadata: Metadata = { title: 'Carrito - JayoShop' }
 
 export default function Carrito(): JSX.Element {
-  return (
-    <>
-      <Layout>
-        <h1 className='p-5 text-center'>Carrito, próximamente...</h1>
-      </Layout>
-    </>
-  )
+  return <h1 className='p-5 text-center'>Página en desarrollo...</h1>
 }

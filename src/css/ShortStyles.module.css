@@ -1,0 +1,85 @@
+/* LOGIN PAGE */
+.login__container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 100%;
+  min-height: 100%;
+  gap: 3rem;
+  padding: 2rem;
+  align-items: center;
+}
+
+.login__container h1 {
+  font-size: 3rem;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 3px var(--skyblue),
+    0 0 3px var(--skyblue);
+  text-align: center;
+  font-weight: bold;
+  color: var(--dark-b);
+}
+
+/* CONFIRM DELETE */
+.confirm__del {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  padding: 1.5rem;
+
+  background-color: var(--dark-b);
+}
+
+.confirm__del p {
+  flex-basis: 100%;
+}
+
+.confirm__del button {
+  border-radius: 10px;
+  padding: 0.75rem 1.25rem;
+}
+
+.confirm__del__cancel {
+  background-color: inherit;
+}
+
+.confirm__del__cancel:hover {
+  background-color: var(--dark-b);
+  transition: background-color 0.3s;
+}
+
+.confirm__del__send {
+  background-color: var(--danger);
+  color: var(--dark);
+}
+
+.separated {
+  border-top: 3px solid var(--skyblue);
+}
+
+/* AWAITING */
+.awaiting {
+  background-color: #000b;
+  z-index: 10;
+  border: 3px solid var(--skyblue);
+  border-radius: 0.5rem;
+
+  display: none;
+  transition:
+    opacity 0.3s ease-in-out,
+    0.3s display ease-in-out allow-discrete;
+  opacity: 0;
+}
+
+.awaiting-show {
+  display: block;
+  opacity: 1;
+
+  @starting-style {
+    opacity: 0;
+  }
+}

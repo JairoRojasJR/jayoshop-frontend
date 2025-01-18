@@ -1,0 +1,93 @@
+:global(.light) .custom__form {
+  background-color: var(--light-b);
+}
+
+.custom__form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1em;
+  border-radius: 0.5em;
+  padding: 1rem;
+  width: 100%;
+  max-width: 400px;
+  scrollbar-width: thin;
+
+  background-color: var(--dark-b);
+}
+
+.custom__form__section {
+  grid-column: span 2;
+  display: flex;
+}
+
+.custom__form__section:has(h3) {
+  justify-content: flex-end;
+}
+
+.custom__form__section:has(button) {
+  justify-content: center;
+}
+
+.custom__form__title {
+  border-bottom: 3px solid var(--skyblue);
+}
+
+.custom__form__button {
+  border-radius: 0.5rem;
+  background-color: var(--skyblue);
+  color: var(--dark);
+  padding: 0.5rem 1.5rem;
+}
+
+.custom__form__field {
+  display: flex;
+  flex-direction: column;
+}
+
+.custom__form select {
+  flex-grow: 1;
+  color: var(--dark);
+}
+
+.custom__form :is(label, input, textarea):not(input[name='_id']) {
+  display: flex;
+  flex-direction: column;
+  padding: 0.25em 0.5em;
+  color: var(--dark);
+}
+
+.custom__form label {
+  border-top-left-radius: 0.25em;
+  border-top-right-radius: 0.25em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  cursor: pointer;
+  background-color: var(--skyblue);
+  font-weight: bold;
+}
+
+.custom__form :is(input, textarea, select) {
+  width: 100%;
+  border-bottom-left-radius: 0.25em;
+  border-bottom-right-radius: 0.25em;
+}
+
+.custom__form input {
+  color: var(--dark);
+}
+
+.custom__form :is(input, textarea, select):focus {
+  outline: 3px solid var(--skyviolet);
+}
+
+.custom__form input[type='file'] {
+  background-color: var(--light);
+  color: var(--dark);
+}
+
+.custom__form textarea {
+  field-sizing: content;
+  max-height: 200px;
+}

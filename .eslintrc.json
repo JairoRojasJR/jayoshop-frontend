@@ -8,6 +8,7 @@
   },
   "extends": [
     "eslint:recommended",
+    "plugin:@next/next/recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
@@ -41,6 +42,7 @@
     "@typescript-eslint/triple-slash-reference": "off",
     "@typescript-eslint/consistent-type-definitions": "off",
     "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/no-confusing-void-expression": "off",
     "tailwindcss/no-custom-classname": "off",
     "react/react-in-jsx-scope": "off",
     "react/no-unknown-property": [

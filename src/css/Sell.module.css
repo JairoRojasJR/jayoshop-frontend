@@ -1,0 +1,140 @@
+:global(main):has(.shell__container) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.shell__container {
+  margin-top: 1rem;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  width: 100%;
+  max-width: 400px;
+
+  border: 3px solid var(--dark-c);
+  background-color: var(--dark-b);
+}
+
+.shell__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+
+  border-bottom: 3px solid var(--dark-c);
+}
+
+.shell__form label {
+  cursor: pointer;
+}
+
+.shell__form input {
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  color: var(--dark-b);
+}
+
+.shell__form input:focus {
+  outline: 3px solid var(--skyblue);
+}
+
+.shell__instructions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem;
+}
+
+.shell__instructions img {
+  border-radius: 0.5rem;
+}
+
+.hidde {
+  display: none;
+}
+
+/* TABLE */
+.shell__table thead {
+  position: sticky;
+  top: 76px;
+  z-index: 50;
+
+  background-color: var(--dark-b);
+}
+
+.shell__table__item__hero td {
+  padding-top: 0.5rem;
+}
+
+.shell__table__item__hero td:has(img) {
+  padding-left: 1rem;
+}
+
+.shell__table__item__hero td img {
+  width: 100%;
+  aspect-ratio: 4/4;
+  object-fit: cover;
+  border-radius: 0.25em;
+}
+
+.shell__table__item__hero td span {
+  padding-inline: 0.5rem;
+  background-color: var(--dark-c);
+  display: block;
+  padding: 0.5rem;
+}
+
+.shell__table__item__data {
+  text-align: right;
+  border-bottom: 3px solid var(--dark-c);
+}
+
+.shell__table__item__hero-td {
+  border-right: 3px solid var(--dark-c);
+  padding-right: 0.3rem;
+}
+
+.shell__table__foot td {
+  background-color: var(--dark-c);
+  padding: 0.5rem;
+}
+
+.shell__total__container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.shell__total__subcontainer {
+  border-radius: 0.5rem;
+  background-color: var(--dark-b);
+  padding: 0.5rem 1.5rem;
+}
+
+.shell__total__subcontainer span:nth-child(2) {
+  color: var(--skyblue);
+  margin-left: 0.5rem;
+}
+
+.shell__invoice {
+  display: flex;
+  padding: 0.5rem;
+  justify-content: center;
+}
+
+.shell__invoice button {
+  cursor: pointer;
+  border-radius: 0.3rem;
+  background-color: var(--skyblue);
+  padding: 0.5rem 1.5rem;
+  transition: box-shadow 0.2s ease-in;
+  color: var(--dark-b);
+}
+
+.shell__invoice button:hover {
+  box-shadow: 0 0 8px 3px var(--skyviolet);
+}

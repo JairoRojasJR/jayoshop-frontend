@@ -1,7 +1,11 @@
-const AboutUsPage: React.FC = () => {
+import { type Metadata } from 'next'
+
+export const metadata: Metadata = { title: 'Sobre nosotros - JayoShop' }
+
+export default function About(): JSX.Element {
   return (
-    <div className='flex flex-col gap-14 p-16'>
-      <h1 className='mx-auto text-3xl uppercase drop-shadow-skyblue'>
+    <div className='p-6 md:p-8 lg:p-16'>
+      <h1 className='mx-auto pb-4 text-center text-3xl uppercase drop-shadow-skyblue'>
         Sobre nosotros
       </h1>
       <section className='relative  z-20 mx-auto w-fit overflow-hidden  rounded-lg p-4 text-lg text-dark-200 shadow-skyviolet backdrop-blur-sm dark:text-light-200'>
@@ -28,5 +32,3 @@ const AboutUsPage: React.FC = () => {
     </div>
   )
 }
-
-export default AboutUsPage

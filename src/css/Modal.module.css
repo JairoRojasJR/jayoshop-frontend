@@ -1,0 +1,87 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  place-content: center;
+  background-color: initial;
+  backdrop-filter: blur(4px);
+  color: inherit;
+  z-index: 1020;
+
+  display: none;
+  transition:
+    opacity 0.3s ease-in-out,
+    0.3s display ease-in-out allow-discrete;
+  opacity: 0;
+}
+
+.modal__open {
+  display: grid;
+  opacity: 100%;
+  transition: opacity 0.3s;
+
+  @starting-style {
+    opacity: 0%;
+  }
+}
+
+.modal__content__container {
+  position: relative;
+  max-width: 400px;
+}
+
+.modal__closing__onchanges {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-content: center;
+  backdrop-filter: blur(4px);
+  padding: 0.2em;
+  border-radius: 0.5em;
+
+  background-color: #000b;
+}
+
+.modal__closing__card {
+  border-radius: 0.5em;
+  padding: 0.75em;
+  background-color: var(--dark-b);
+}
+
+.modal__closing__buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.75em;
+  margin-top: 1.25em;
+}
+
+.modal__closing__button {
+  cursor: pointer;
+  transition: scale 0.2s;
+}
+
+.modal__closing__button:hover {
+  scale: 1.05;
+}
+
+.modal__closing__button-cancel {
+  color: var(--skyblue);
+}
+
+.modal__closing__button-accept {
+  background: linear-gradient(#f55, #f11);
+  padding: 0.75em 1em;
+  border-radius: 1em 0.5em;
+}
+
+.modal__content__container {
+  max-height: 800px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--dark-c) var(--dark);
+}

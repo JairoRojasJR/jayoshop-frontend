@@ -1,6 +1,6 @@
-import { type SVGProps } from '@/types'
-
-export default function Bars(props: SVGProps): JSX.Element {
+export default function Bars(
+  props: React.SVGAttributes<SVGSVGElement>
+): JSX.Element {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'

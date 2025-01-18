@@ -1,28 +1,44 @@
-import { type Metadata } from 'next'
-import './globals.css'
-
-import { IsAuthContextProvider } from '@/context/isAuth'
-import Modal from '@/components/global/Modal'
+import Link from 'next/link'
+import type { Metadata } from 'next'
+import { cookies } from 'next/headers'
+import AuthProvider from '@/context/Auth'
+import ModalProvider from '@/context/Modal'
+import Nav from '@/components/Nav'
 import JToast from '@/packages/jtoast/Jtoast'
+import { getAuth } from '@/services/auth'
+import '@/app/globals.css'
 
 export const metadata: Metadata = {
-  title: 'Tienda del barrio JayoShop'
+  title: 'JayoShop',
+  description: 'Todos los productos que necesitas en tu tienda online Jayoshop'
 }
 
-export default function RootLayout({
+type Props = Readonly<{ children: React.ReactNode }>
+
+export default async function RootLayout({
   children
-}: Readonly<{
-  children: React.ReactNode
-}>): JSX.Element {
+}: Props): Promise<JSX.Element> {
+  const cookieStore = await cookies()
+  const theme = cookieStore.get('theme')?.value
+  const { rol, isAuthenticated } = await getAuth(cookieStore.toString())
+
   return (
-    <html lang='es' className='dark'>
-      <body className='bg-light-100 dark:bg-dark-100'>
-        <IsAuthContextProvider>
-          <JToast />
-          <Modal />
-          <main>{children}</main>
-        </IsAuthContextProvider>
-      </body>
+    <html lang='es' className={theme !== 'dark' ? theme : undefined}>
+      <AuthProvider initial={{ rol, authenticated: isAuthenticated }}>
+        <body>
+          <ModalProvider>
+            <JToast />
+            <Nav />
+            <main style={{ flexGrow: 1 }}>{children}</main>
+          </ModalProvider>
+          <footer>
+            <Link href='/about'>Sobre nosotros</Link>
+            <Link href='https://www.jayoweb.dev' target='_blank'>
+              Desarrollador de este sitio
+            </Link>
+          </footer>
+        </body>
+      </AuthProvider>
     </html>
   )
 }

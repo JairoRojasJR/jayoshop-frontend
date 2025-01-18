@@ -1,0 +1,338 @@
+.main__nav {
+  display: flex;
+  position: sticky;
+  width: 100%;
+  top: 0;
+  left: 0;
+  justify-content: space-between;
+  padding: 0.5em;
+  z-index: 1010;
+
+  background-color: var(--dark-b);
+}
+
+.nav__home {
+  position: fixed;
+
+  view-timeline-axis: y;
+  animation-timeline: scroll();
+  animation-name: dark-nav-emphasis;
+  animation-range-end: 20%;
+  animation-fill-mode: forwards;
+}
+
+@keyframes dark-nav-emphasis {
+  from {
+    background: linear-gradient(var(--dark-b), transparent);
+  }
+
+  to {
+    background: var(--dark-b);
+  }
+}
+
+.light .main__nav {
+  animation-name: light-nav-emphasis;
+  background-color: var(--light-b);
+}
+
+@media (prefers-color-scheme: light) {
+  .sys .main__nav {
+    animation-name: light-nav-emphasis;
+  }
+}
+
+@keyframes light-nav-emphasis {
+  from {
+    background-color: #fbfbfb00;
+  }
+
+  to {
+    background-color: var(--light-b);
+  }
+}
+
+.nav__logo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 0.5em;
+  border-radius: 0.5em;
+  padding: 0.5em 1em;
+  font-size: 1.5em;
+
+  background-color: var(--dark);
+}
+
+.nav__home .nav__logo {
+  view-timeline-axis: y;
+  animation-timeline: scroll();
+  animation-name: dark-emphasis;
+  animation-range-end: 20%;
+  animation-fill-mode: forwards;
+}
+
+@keyframes dark-emphasis {
+  from {
+    background-color: var(--dark-b);
+  }
+
+  to {
+    background-color: var(--dark);
+  }
+}
+
+.light .nav__logo {
+  animation-name: light-emphasis;
+  background-color: var(--light);
+}
+
+@media (prefers-color-scheme: light) {
+  .sys .nav__logo {
+    animation-name: light-emphasis;
+  }
+}
+
+@keyframes light-emphasis {
+  from {
+    background-color: var(--light-b);
+  }
+
+  to {
+    background-color: var(--light);
+  }
+}
+
+.nav__logo__img {
+  background: url('/favicon.ico');
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+
+.nav__logo__text {
+  font-weight: bold;
+  font-style: oblique;
+}
+
+.nav__switch__menu {
+  padding: 0.25em;
+  font-size: 2.25em;
+  cursor: pointer;
+}
+
+#switchMenu {
+  display: none;
+}
+
+.nav__options {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100dvw;
+  height: 100dvh;
+
+  display: none;
+  transition: display 3s allow-discrete;
+}
+
+#switchMenu:checked ~ .nav__options {
+  display: flex;
+}
+
+.nav__options ul {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  gap: 0.5em;
+  overflow-y: auto;
+
+  background-color: var(--dark);
+  color: var(--light);
+
+  transition: transform 0.3s ease-in allow-discrete;
+}
+
+@media screen and (max-width: 768px) {
+  #switchMenu:checked ~ .nav__options ul {
+    transform: translateX(0);
+
+    @starting-style {
+      transform: translateX(100%);
+    }
+  }
+
+  #switchMenu:not(:checked) ~ .nav__options ul {
+    transform: translateX(100%);
+
+    @starting-style {
+      transform: translateX(0);
+    }
+  }
+}
+
+.nav__switch__side__menu {
+  height: 100%;
+  flex-grow: 1;
+  background-color: #0008;
+  backdrop-filter: blur(10px);
+
+  transition: opacity 0.3s ease-in allow-discrete;
+}
+
+#switchMenu:checked ~ .nav__options .nav__switch__side__menu {
+  opacity: 1;
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+#switchMenu:not(:checked) ~ .nav__options .nav__switch__side__menu {
+  opacity: 0;
+
+  @starting-style {
+    opacity: 1;
+  }
+}
+
+.nav__option {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.5em 1.5em;
+  font-size: 1.5em;
+
+  background-color: var(--dark-b);
+}
+
+.nav__options-aside {
+  justify-content: center;
+  font-size: 1.5em;
+}
+
+.nav__option__aside {
+  background-color: var(--dark);
+  padding: 0.25em;
+  border-radius: 50%;
+}
+
+@media (prefers-color-scheme: light) {
+  .sys .nav__logo {
+    background-color: var(--light);
+  }
+}
+
+.nav__accordion div {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s;
+}
+
+.nav__accordion input {
+  display: none;
+}
+
+.nav__accordion input:checked ~ div {
+  max-height: 200px;
+}
+
+.nav__accordion div {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--dark-b);
+  gap: 0.3em;
+}
+
+.nav__accordion a {
+  display: flex;
+  justify-content: flex-end;
+  background-color: var(--dark);
+  padding: 0.5em;
+  width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .nav__switch__menu {
+    display: none;
+  }
+
+  .nav__options {
+    position: relative;
+    display: flex;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    background-color: inherit;
+    backdrop-filter: none;
+  }
+
+  .nav__options ul {
+    position: relative;
+    top: 0;
+    right: 0;
+    display: flex;
+    height: auto;
+    flex-direction: row;
+    gap: 0.75em;
+    overflow-y: initial;
+    transform: none;
+    align-items: center;
+
+    background-color: inherit;
+    color: inherit;
+  }
+
+  .nav__switch__side__menu {
+    height: auto;
+    flex-grow: initial;
+  }
+
+  .nav__option {
+    display: flex;
+    align-items: center;
+    align-self: center;
+    gap: 0.3em;
+    padding: 0.3em;
+    font-size: 1.2em;
+    border-radius: 0.25em;
+
+    background-color: inherit;
+  }
+
+  .light .nav__options-aside {
+    background-color: var(--light-c);
+  }
+
+  .nav__options-aside {
+    background-color: var(--dark-c);
+    color: var(--light);
+  }
+
+  .nav__accordion {
+    position: relative;
+  }
+
+  .nav__accordion div {
+    position: absolute;
+    width: 100%;
+    border-radius: 0.5em;
+
+    border: 3px solid var(--dark-b);
+  }
+
+  .nav__accordion a {
+    justify-content: center;
+  }
+
+  @media (prefers-color-scheme: light) {
+    .sys nav {
+      background-color: var(--light-c);
+    }
+  }
+}

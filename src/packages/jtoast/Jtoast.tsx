@@ -1,165 +1,88 @@
 'use client'
 
-import { type MutableRefObject, useEffect, useRef, useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import type { Root } from 'react-dom/client'
-import styles from '@/packages/jtoast/JToast.module.css'
-import CircleCheck from '@/svg/Circle-check'
-import CircleX from '@/svg/Circle-x'
-import type { ErrorHandle } from '@/types'
-import { DotWaveLoader } from '@/components/DotWaveLoader'
-
-type options = {
-  duration?: number
-  onAsyncEvents?: {
-    isAsync: boolean
-    callback: () => Promise<void>
-    onSuccess: string
-    handleError?: (e: ErrorHandle) => string
-  }
-  clean?: boolean
-}
-
-type JtoastItemProps = {
-  children: string
-  options?: options
-  id: string
-}
-
-const defaultOption: options = {
-  duration: 3000
-}
+import Sync from './Sync'
+import Async from './Async'
+import type { Props } from './types'
+import styles from './JToast.module.css'
 
 let jtoastRoot: Root
-let counterToaster = 0
 const toasters: JSX.Element[] = []
+const defaultDuration = 3000
 
 export default function JToast(): JSX.Element {
-  let finished = false
+  const toastRef = useRef<HTMLDivElement | null>(null)
+
   useEffect(() => {
-    if (!finished) {
-      const jtoastHTML = document.getElementById(
-        'JToast'
-      ) as unknown as HTMLElement
-      jtoastRoot = createRoot(jtoastHTML)
-      finished = true
-    }
+    if (toastRef.current === null || jtoastRoot !== undefined) return
+    jtoastRoot = createRoot(toastRef.current)
   }, [])
 
   return (
     <div
-      id='JToast'
-      className={`${styles.jtoastPanelCSS} gpL fixed flex flex-col items-center`}
+      ref={toastRef}
+      className={`${styles.jtoastPanelCSS} fixed flex flex-col items-center`}
     />
   )
 }
 
-function JtoastItem({
-  children,
-  options = defaultOption,
-  id
-}: JtoastItemProps): JSX.Element {
+function JItem<T>({ children, options, id }: Props<T>): JSX.Element {
+  const { duration, asyncUtils } = options ?? {}
+  const jtoastRef: React.MutableRefObject<HTMLElement | null> = useRef(null)
   const [active, setActive] = useState(true)
-  const [pending, setPending] = useState(false)
-  const [error, setError] = useState<string>('')
-  const jtoastItemRef: MutableRefObject<HTMLElement | null> = useRef(null)
-  const { duration, onAsyncEvents } = options
-  const isAsync = onAsyncEvents?.isAsync ?? false
 
-  useEffect(() => {
-    if (options?.clean === true) toasters.length = 0
-    if (isAsync) setPending(true)
+  const isAsync = asyncUtils !== undefined
 
-    const jtoastItemHTML = jtoastItemRef.current
-    if (jtoastItemHTML !== null) {
-      jtoastItemHTML.style.animation = `${styles.appear} .3s forwards`
+  const show = (): void => {
+    const $item = jtoastRef.current
+    if ($item === null) return
+    $item.style.animation = `${styles.appear} .3s forwards`
+  }
 
-      const runDisappear = (): void => {
-        setTimeout(() => {
-          jtoastItemHTML.style.animation = `${styles.disappear} .3s forwards`
-          setTimeout(() => {
-            const index = toasters.findIndex(toast => toast.key === id)
-            setActive(false)
-            toasters.splice(index, 1)
-          }, 300)
-        }, duration ?? defaultOption.duration)
-      }
+  const remove = (): void => {
+    const $item = jtoastRef.current
+    if ($item === null) return
 
-      if (onAsyncEvents?.isAsync === true) {
-        const { callback, handleError } = onAsyncEvents
-        const noCallback = callback === undefined
+    setTimeout(() => {
+      $item.style.animation = `${styles.disappear} .3s forwards`
+      setTimeout(() => {
+        const index = toasters.findIndex(toast => toast.key === id)
+        setActive(false)
+        toasters.splice(index, 1)
+      }, 300)
+    }, duration ?? defaultDuration)
+  }
 
-        if (noCallback) throw new Error('Falta la función asincrona a resolver')
-
-        const runCallback = async (): Promise<void> => {
-          try {
-            await callback()
-            setPending(false)
-            runDisappear()
-          } catch (e) {
-            const error = e as ErrorHandle
-
-            let errorMsg
-            if (handleError !== undefined) errorMsg = handleError(error)
-            else errorMsg = error.message
-
-            setPending(false)
-            setError(errorMsg)
-            runDisappear()
-          }
-        }
-
-        runCallback().catch((e: Error) => {
-          console.log(e.message)
-        })
-      } else runDisappear()
-    }
-  }, [])
+  if (!active) return <></>
 
   return (
-    <>
-      {active ? (
-        <span
-          ref={jtoastItemRef}
-          className={`${styles.jtoastItemCSS} flex items-center gap-2 rounded-lg bg-dark-100 p-4 text-center text-light-100`}
-        >
-          {onAsyncEvents?.isAsync === true && pending ? (
-            <DotWaveLoader size={30} speed={1} color='white' />
-          ) : null}
-          {!pending &&
-          error.length === 0 &&
-          onAsyncEvents?.onSuccess !== undefined ? (
-            <>
-              <CircleCheck stroke='#0f0' />
-              {onAsyncEvents?.onSuccess}
-            </>
-          ) : null}
-          {!pending && error.length > 0 ? (
-            <>
-              <CircleX stroke='#f00' />
-              {error}
-            </>
-          ) : null}
-          {pending || !isAsync ? children : null}
-        </span>
-      ) : null}
-    </>
+    <span
+      ref={jtoastRef}
+      className={`${styles.jtoastItemCSS} flex items-center gap-2 rounded-lg bg-dark-100 p-4 text-center text-light-100`}
+    >
+      {isAsync ? (
+        <Async show={show} remove={remove} asyncUtils={asyncUtils}>
+          {children}
+        </Async>
+      ) : (
+        <Sync show={show} remove={remove}>
+          {children}
+        </Sync>
+      )}
+    </span>
   )
 }
 
-function JtoastContainer(): JSX.Element {
-  return <>{toasters.map(toaster => toaster)}</>
-}
-
-export const jtoast = (msg: string, options?: options): void => {
-  counterToaster++
-  const key = `toast-${counterToaster}`
-
-  toasters.push(
-    <JtoastItem key={key} options={options} id={key}>
+export function jtoast<T>(msg: string, options?: Props<T>['options']): void {
+  const key = crypto.randomUUID()
+  const item = (
+    <JItem key={key} options={options} id={key}>
       {msg}
-    </JtoastItem>
+    </JItem>
   )
 
-  jtoastRoot.render(<JtoastContainer />)
+  toasters.push(item)
+  jtoastRoot.render(<>{toasters}</>)
 }

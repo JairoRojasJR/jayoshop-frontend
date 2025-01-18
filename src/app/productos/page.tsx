@@ -1,66 +1,43 @@
-'use client'
+import { type Metadata } from 'next'
+import ProductsProvider from '@/context/Products'
+import { ProductCard } from '@/components/Cards'
+import { SectionsNav } from '@/components/Shorts'
+import { getProducts, getSections } from '@/services/inventory'
+import style from '@/css/Products.module.css'
 
-import { useEffect, useRef, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
-import Layout from '@/components/global/Layout'
-import SubNav from '@/components/admin/utils/SubNav'
-import CardProduct from '@/components/utils/CardProduct'
-import { getProducts, getSections } from '@/services/public/inventory'
-import type { Products, Sections } from '@/types'
+export const metadata: Metadata = { title: 'Productos' }
 
-export default function Productos(): JSX.Element {
-  const searchParams = useSearchParams()
-  const [products, setProducts] = useState<Products>([])
-  const [currentSection, setCurrentSection] = useState<string>('')
-  const [sections, setSections] = useState<Sections>([])
-  const headerRef: React.MutableRefObject<HTMLElement | null> = useRef(null)
-  const mainRef: React.MutableRefObject<HTMLElement | null> = useRef(null)
+type Props = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>
+}
 
-  useEffect(() => {
-    const navHTML = globalThis.navMainHTML
-    if (headerRef.current !== null && mainRef.current !== null) {
-      headerRef.current.style.top = `${navHTML.clientHeight}px`
-      mainRef.current.style.marginTop = `${headerRef.current.clientHeight}px`
-    }
-    getSections(setSections).catch((e: Error) => {
-      console.log(e.message)
-    })
-  }, [])
+export default async function Productos({
+  searchParams
+}: Props): Promise<JSX.Element> {
+  const sections = await getSections()
+  const products = await getProducts()
 
-  let finishedRouter = false
-  useEffect(() => {
-    if (finishedRouter) return
-    const section = searchParams.get('section') ?? 'Todo'
-    setCurrentSection(section)
-    getSections(setSections).catch((e: Error) => {
-      console.log(e.message)
-    })
-    getProducts({ section }, setProducts).catch((e: Error) => {
-      console.log(e)
-    })
-    finishedRouter = true
-  }, [searchParams])
+  const { section } = await searchParams
 
   return (
-    <Layout>
-      <header ref={headerRef} className='fixed left-0 z-[900] w-full px-4'>
-        <SubNav sections={sections} pathBrowsing='/productos' />
-      </header>
-      <section
-        ref={mainRef}
-        className='flex flex-col gap-2 p-8 min-[500px]:grid min-[500px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
-      >
-        {products?.map(product => {
-          const { _id } = product
-          return (
-            <CardProduct
-              key={`productosCardProduct-${_id}`}
-              data={product}
-              showSection={currentSection === 'Todo'}
-            />
-          )
-        })}
+    <ProductsProvider
+      currentSection={section}
+      products={products}
+      sections={sections}
+    >
+      <SectionsNav
+        path='/productos'
+        currentSection={section}
+        sections={sections}
+      />
+      <section className={style.products}>
+        {products.map(
+          product =>
+            (section === product.section || section === undefined) && (
+              <ProductCard key={`Productos-${product._id}`} data={product} />
+            )
+        )}
       </section>
-    </Layout>
+    </ProductsProvider>
   )
 }

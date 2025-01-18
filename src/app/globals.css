@@ -12,44 +12,107 @@
 }
 
 :root {
-  --primary-flash: #000;
-  --danger: #f91444;
-  --turquoise: #7fffd4;
-  --remS: 0.3rem;
+  --min-windows-width: 350px;
+  /* COLORS */
+  /* --dark: #1B1B3B; */
+  --dark: #1b1b4b;
+  --dark-b: #0b0b2b;
+  --dark-c: #3b3b5b;
+  --light: #e9e9e9;
+  --light-b: #f8f8f8;
+  --light-c: #c9c9c9;
+  --dark-opaque: #0b0b2be3;
+  --light-opaque: #f8f8f8e3;
+  --skyblue: #5cfcff;
+  --skyviolet: #8a42ff;
+  --danger: #f55;
+  --skyblue-drop-shadow: drop-shadow(0 0 5px #5cfcff);
 }
 
 html {
-  font-family: 'Baskerville Normal';
-  background-color: var(--primary);
-  color: var(--primaryfontcolor);
+  font-family: 'Baskerville Normal', 'Lucida Sans', 'Lucida Sans Regular',
+    'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.light body {
+  background-color: var(--light);
+  color: var(--dark);
 }
 
 body {
-  min-width: var(350px);
-  min-height: var(350px);
-  @apply text-dark-200 dark:text-light-200;
-  @apply transition duration-300;
-}
-
-.invisible {
-  display: none;
-  opacity: 0;
-}
-
-#globalModal {
-  opacity: 0;
   display: flex;
-  transition: opacity 0.3s;
+  flex-direction: column;
+  min-width: var(--min-windows-width);
+
+  background-color: var(--dark);
+  color: var(--light);
+  min-height: 100dvh;
 }
 
-/* Utils */
-.no-scroll {
-  max-height: 100vh;
-  overflow: hidden;
+body:has(.nav__switch__menu:checked) {
+  overflow-y: hidden;
+}
+
+body:has(.login) main {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (prefers-color-scheme: light) {
+  .sys body {
+    background-color: var(--light);
+    color: var(--dark);
+  }
+}
+
+.title {
+  font-size: 2em;
 }
 
 .shadow-title {
   text-shadow:
     -0.2rem -0.2rem 0.3rem rgb(138, 66, 255),
     0.2rem 0.2rem 0.3rem rgb(92, 252, 255);
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-color: #0009;
+}
+
+/* FOOTER */
+footer {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 2em;
+  gap: 2em;
+  font-style: oblique;
+
+  background-color: var(--dark-b);
+  color: var(--skyblue);
+}
+
+.light footer {
+  background-color: var(--light-b);
+  color: var(--skyviolet);
+}
+
+@media (prefers-color-scheme: light) {
+  .sys footer {
+    background-color: var(--light-b);
+    color: var(--skyviolet);
+  }
 }
